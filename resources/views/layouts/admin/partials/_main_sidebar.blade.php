@@ -65,8 +65,8 @@
         <li class="dropdown {!! (Request::is('units/rented_apartment*') ? "active" : "") !!}">
           <a href="{{ route('units.rented_apartment.list') }}" class="nav-link"><span>Rented Apartment</span></a>
         </li>
-        <li class="dropdown {!! (Request::is('units/leave*') ? "active" : "") !!}">
-          <a href="{{ route('units.leave.list') }}" class="nav-link"><span>Apply Leave</span></a>
+        <li class="dropdown {!! (Request::is('/leave*') ? "active" : "") !!}">
+          <a href="{{ route('leave.list') }}" class="nav-link"><span>Apply Leave</span></a>
         </li>
         @endif
 

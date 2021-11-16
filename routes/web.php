@@ -20,7 +20,7 @@ use App\Http\Controllers\admin\TenantController;
 use App\Http\Controllers\admin\RoomController;
 
 use App\Http\Controllers\Admin\RequestController;
-
+use App\Http\Controllers\Admin\LeavesController;
 use App\Http\Controllers\admin\VisitorController;
 use App\Http\Controllers\admin\EmployeeController;
 use App\Http\Controllers\admin\HelpdeskController;
@@ -301,10 +301,17 @@ Route::group(['middleware' => ['auth:web']], function() {
      Route::delete('/notice/delete/{id}', [NoticeController::class, 'destroy'])->name('delete');
      Route::get('/notice/show/{id}', [NoticeController::class, 'show'])->name('show');
 });
+   //leave routes
+   Route::group(['prefix' => 'leave', 'as' => 'leave.'], function () {
+    Route::get('/leave_list', [LeavesController::class, 'index'])->name('list');
+    Route::get('/leave/create', [LeavesController::class, 'create'])->name('create');
+    Route::post('/leave/store', [LeavesController::class, 'store'])->name('store');
+    Route::get('/leave/edit/{id}', [LeavesController::class, 'edit'])->name('edit');
+    Route::post('/leave/update/{id}', [LeavesController::class, 'update'])->name('update');
+    Route::delete('/leave/delete/{id}', [LeavesController::class, 'destroy'])->name('delete');
+    Route::get('/leave/show/{id}', [LeavesController::class, 'show'])->name('show');
 
-
-
-
+   });
 
 
 
