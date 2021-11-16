@@ -178,7 +178,7 @@
             .team-img1{
                 height: 765px;
             }
-
+            
          </style>
     </head>
    <body>
@@ -232,7 +232,7 @@
                   <div class="col-6 col-md-6 col-lg-6">
                     <div class="card">
 
-                     <form method="POST" action="{{ route('save_job_info') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('save_job_info') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                           <h1>Application Form</h1>
@@ -262,14 +262,14 @@
                         </div>
                         
                         <div class="form-group">
-                            <input id="phone" name="phone" type="tel" class="form-control">
-                            <button type="submit">Submit</button>
+                            <label>Phone</label>
+                            <input type="tel" id="phone" name="phone"  class="form-control">
                         </div>
-                        
-                      <div class="card-footer text-right">
+                        <div class="card-footer text-right">
                         <button class="btn btn-primary mr-1" type="submit">Submit</button>
                     </form>
-                      </div>
+                    
+                        </div>
                     </div>
                 </div>
             </div>
