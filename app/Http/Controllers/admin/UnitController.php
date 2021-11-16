@@ -120,7 +120,16 @@ class UnitController extends Controller
         return view('admin.units.search_by_appartment',compact('units','floor_types','unit_status'));
     }
 
-    
+    public function rented_apartment(){
+        $units = Unit::where('unit_status_code' , 1)->get();
+        $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
+        $unit_status = UnitStatus::all();
+        return view('admin.units.rented_apartment',compact('units','floor_types','unit_status'));
+    }
+    public function leave(){
+        
+        return view('admin.units.leave');
+    }
     /**
      * Show the form for creating a new resource.
      *

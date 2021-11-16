@@ -176,7 +176,7 @@
                 height: 50%;
             }
             .team-img1{
-                height: 748px;
+                height: 765px;
             }
 
          </style>
