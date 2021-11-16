@@ -60,6 +60,8 @@ class StaffController extends Controller
             'staff_date_of_birth' => 'required',
             'staff_present_address' => 'required',
             'staff_permanent_address' => 'required',
+            'leaves_per_month' => 'required',
+            'annual_leaves' => 'required',
             'sallery' => 'required',
             'staff_cpr_no' => 'required|unique:employees,employee_cpr_no',
             'lease_period_start_datetime' => 'required',
@@ -96,6 +98,8 @@ class StaffController extends Controller
             $employee->employee_mobile_phone = $request->number;
             $employee->employee_email_address =  $request->email;;
             $employee->employee_sallery = $request['sallery'];
+            $employee->leaves_per_month = $request['leaves_per_month'];
+            $employee->annual_leaves = $request['annual_leaves'];
             $employee->employee_present_address = $request['staff_present_address'];
             $employee->employee_permanent_address = $request['staff_permanent_address'];
             $employee->employee_cpr_no = $request['staff_cpr_no'];
@@ -206,6 +210,8 @@ class StaffController extends Controller
             'staff_present_address' => 'required',
             'staff_permanent_address' => 'required',
             'sallery' => 'required',
+            'leaves_per_month' => 'required',
+            'annual_leaves' => 'required',
             'staff_cpr_no' => 'required|unique:employees,employee_cpr_no,' . $id,
             'lease_period_start_datetime' => 'required',
             'lease_period_end_datetime' => 'required',
@@ -215,7 +221,9 @@ class StaffController extends Controller
         $old_email = $employee->employee_email_address;
         $employee->employee_name = $request->name;
         $employee->employee_mobile_phone = $request->number;
-        $employee->employee_email_address =  $request->email;;
+        $employee->employee_email_address =  $request->email;
+        $employee->leaves_per_month = $request['leaves_per_month'];
+        $employee->annual_leaves = $request['annual_leaves'];
         $employee->employee_sallery = $request['sallery'];
         $employee->employee_present_address = $request['staff_present_address'];
         $employee->employee_permanent_address = $request['staff_permanent_address'];

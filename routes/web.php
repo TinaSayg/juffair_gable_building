@@ -94,6 +94,13 @@ Route::group(['middleware' => ['auth:web']], function() {
 
         Route::any('/apartment_by_color', [UnitController::class, 'apartment_by_color'])->name('apartment_by_color.list');
         Route::get('/apartment_by_color/show/{id}', [UnitController::class, 'show'])->name('apartment_by_color.show');
+         
+        Route::any('/rented_apartment', [UnitController::class, 'rented_apartment'])->name('rented_apartment.list');
+        Route::get('/rented_apartment/show/{id}', [UnitController::class, 'show'])->name('rented_apartment.show');
+
+        Route::any('/leave', [UnitController::class, 'leave'])->name('leave.list');
+        Route::get('/leave/show/{id}', [UnitController::class, 'show'])->name('leave.show');
+
 
         Route::get('/fetch_floors/{id}', [UnitController::class, 'fetch_floors'])->name('fetch_floors');
         Route::get('/create', [UnitController::class, 'create'])->name('create');
@@ -105,7 +112,9 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::post('/unit/update/{id}', [UnitController::class, 'update'])->name('update');
         Route::delete('/unit/delete/{id}', [UnitController::class, 'destroy'])->name('delete');
         Route::post('/unit/search_filter', [UnitController::class, 'search_filter'])->name('search_filter');
+
     });
+   
 
     // Roles routes
     Route::group(['prefix' => 'role', 'as' => 'role.'], function () {

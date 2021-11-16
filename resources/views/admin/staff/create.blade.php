@@ -91,9 +91,18 @@ Juffair Gable
                         </div>
                      </div>
                      <div class="form-group col-md-4">
-                        <label>Total Sallery (BD)</label>
+                        <label>Total Leaves Per Month</label>
+                        <input type="text" name="leaves_per_month" class="form-control" id="leaves_per_month"></input>
+                     </div>
+                     <div class="form-group col-md-4">
+                        <label>Annual Leaves</label>
+                        <input type="text" name="annual_leaves" class="form-control" id="annual_leaves"></input>
+                     </div>
+                     <div class="form-group col-md-4">
+                        <label>Total Salary (BD)</label>
                         <input type="text" name="sallery" class="form-control" id="sallery"></input>
                      </div>
+
                      <div class="form-group col-md-4">
                         <label>Present Address</label>
                         <textarea name="staff_present_address" class="form-control"></textarea>

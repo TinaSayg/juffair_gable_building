@@ -61,6 +61,15 @@
           </li>
         @endif
 
+        @if(Auth::user()->userType == 'employee')
+        <li class="dropdown {!! (Request::is('units/rented_apartment*') ? "active" : "") !!}">
+          <a href="{{ route('units.rented_apartment.list') }}" class="nav-link"><span>Rented Apartment</span></a>
+        </li>
+        <li class="dropdown {!! (Request::is('units/leave*') ? "active" : "") !!}">
+          <a href="{{ route('units.leave.list') }}" class="nav-link"><span>Apply Leave</span></a>
+        </li>
+        @endif
+
         @if(request()->user()->can('view-unit'))
         <li class="dropdown {!! (Request::is('units/*') ? "active" : "") !!}">
           <a href="{{ route('units.list') }}" class="nav-link"><i class="fas fa-door-open"></i><span>Apartments </span></a>
@@ -104,6 +113,7 @@
           </ul>
         </li>
         --}}
+
         @if(request()->user()->can('view-utility-bill'))
         <li class="dropdown {!! (Request::is('utility_bill/*') ? "active" : "") !!}">
           <a href="{{ route('utility_bill.list') }}" class="nav-link"><i class="
