@@ -55,18 +55,11 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group col-md-4">
-                        <label>Status</label>
-                        <select class="form-control" name="task_status_code" >
-                            @foreach ($task_status_list as $item)
-                                <option value="{{ $item->task_status_code }}">{{ $item->task_status_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
                     @if(Auth::user()->userType != 'employee')
                     <div class="form-group col-md-4">
                         <label>Assign to</label>
                         <select class="form-control" name="assignee_id" >
+                            <option value="">--- select ---</option>
                             @foreach ($employee_list as $item)
                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                             @endforeach
@@ -78,7 +71,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label>description</label>
+                            <label>Description</label>
                             <textarea name="description" class="form-control"></textarea>
                         </div>
                     </div>

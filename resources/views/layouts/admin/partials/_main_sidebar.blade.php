@@ -65,8 +65,30 @@
         <li class="dropdown {!! (Request::is('units/rented_apartment*') ? "active" : "") !!}">
           <a href="{{ route('units.rented_apartment.list') }}" class="nav-link"><span>Rented Apartment</span></a>
         </li>
+        <li class="dropdown {!! (Request::is('tasks/task/*') ? "active" : "") !!}">
+          <a href="{{ route('tasks.list') }}" class="nav-link">
+            <span>
+              @if(\Auth::user()->userType != 'employee')
+              <i class="fas fa-book"></i>Tasks
+              @else
+              Assigned Task
+              @endif
+            </span>
+          </a>
+        </li>
+        <li class="dropdown {!! (Request::is('tasks/completed_task/list') ? "active" : "") !!}">
+          <a href="{{ route('tasks.completed_task.list') }}" class="nav-link">
+            <span>
+              Completed Task
+            </span>
+          </a>
+        </li>
         <li class="dropdown {!! (Request::is('units/leave*') ? "active" : "") !!}">
           <a href="{{ route('units.leave.list') }}" class="nav-link"><span>Apply Leave</span></a>
+        </li>
+
+        <li class="dropdown {!! (Request::is('request/request/*') ? "active" : "") !!}">
+          <a href="{{ route('request.list') }}" class="nav-link"><span>Report Request</span></a>
         </li>
         @endif
 
@@ -115,10 +137,10 @@
         --}}
 
         @if(request()->user()->can('view-utility-bill'))
-        <li class="dropdown {!! (Request::is('utility_bill/*') ? "active" : "") !!}">
+        {{-- <li class="dropdown {!! (Request::is('utility_bill/*') ? "active" : "") !!}">
           <a href="{{ route('utility_bill.list') }}" class="nav-link"><i class="
             fas fa-money-bill-wave"></i><span>Utility Bill</span></a>
-        </li>
+        </li> --}}
         @endif
         
         @if(request()->user()->can('view-maintenance-cost'))
@@ -135,24 +157,24 @@
         
         @if(request()->user()->can('view-task'))
         <li class="dropdown {!! (Request::is('tasks/*') ? "active" : "") !!}">
-          <a href="{{ route('tasks.list') }}" class="nav-link"><i class="fas fa-book"></i>
+          <a href="{{ route('tasks.list') }}" class="nav-link">
             <span>
               @if(\Auth::user()->userType != 'employee')
-              Tasks
-              @else
-              My Task
+              <i class="fas fa-book"></i>Tasks
               @endif
             </span>
           </a>
         </li>
         @endif
         
-        @if(request()->user()->can('view-employees-request'))
+        {{-- @if(request()->user()->can('view-employees-request'))
         <li class="dropdown {!! (Request::is('request/*') ? "active" : "") !!}">
           <a href="{{ route('request.list') }}" class="nav-link"><i class="fas fa-newspaper"></i><span>Employees Request</span></a>
         </li>
         @endif
-        @if(Auth::user()->userType == 'general-manager')
+       
+        --}}
+        @if(Auth::user()->userType == 'general-manager' OR Auth::user()->userType == 'Admin')
         <li class="dropdown {!! (Request::is('complains/*') ? "active" : "") !!}">
           <a href="{{ route('complains.list')}}" class="nav-link">
             <i class="fas fa-comment-dots"></i>
@@ -160,11 +182,10 @@
           </a>
         </li>
         @endif
-
         @if(request()->user()->can('view-visitor'))
-        <li class="dropdown {!! (Request::is('visitor/*') ? "active" : "") !!}">
+        {{-- <li class="dropdown {!! (Request::is('visitor/*') ? "active" : "") !!}">
           <a href="{{ route('visitor.list') }}" class="nav-link"><i class="fas fa-user-friends"></i><span>Visitor List</span></a>
-        </li>
+        </li> --}}
         @endif
 
         @if(Auth::user()->userType == 'general-manager')

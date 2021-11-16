@@ -252,7 +252,7 @@ Route::group(['middleware' => ['auth:web']], function() {
     });
     //Complaints routes
     Route::group(['prefix' => 'tasks', 'as' => 'tasks.'], function () {
-        Route::get('/list', [TaskController::class, 'index'])->name('list');
+        Route::get('task/list', [TaskController::class, 'index'])->name('list');
         Route::get('/task/create', [TaskController::class, 'create'])->name('create');
         Route::post('/task/store', [TaskController::class, 'store'])->name('store');
         Route::get('/task/edit/{id}', [TaskController::class, 'edit'])->name('edit');
@@ -260,6 +260,7 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::delete('/task/delete/{id}', [TaskController::class, 'destroy'])->name('delete');
         Route::get('/task/show/{id}', [TaskController::class, 'show'])->name('show');
         Route::post('/task/complete/{id}', [TaskController::class, 'complete_task']);
+        Route::get('/completed_task/list', [TaskController::class, 'complete_task_list'])->name('completed_task.list');
     });
 
     //Request Routes

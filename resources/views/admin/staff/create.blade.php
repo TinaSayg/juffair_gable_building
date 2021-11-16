@@ -112,8 +112,12 @@ Juffair Gable
                         <textarea name="staff_permanent_address" class="form-control"></textarea>
                      </div>
                      <div class="form-group col-md-4">
-                        <label>CPR</label>
+                        <label>Cpr Number</label>
                         <input type="text" maxlength="9" name="staff_cpr_no" class="form-control" id="cprNumber">
+                     </div>
+                     <div class="form-group col-md-4">
+                        <label>Passport Number</label>
+                        <input type="text" maxlength="9" name="passport_number" class="form-control" id="cprNumber">
                      </div>
                      <div class="form-group col-md-4">
                         <label>LeasePeriodStartDate</label>
@@ -124,15 +128,15 @@ Juffair Gable
                         <input type="date" name="lease_period_end_datetime" class="form-control">
                      </div>
                      <div class="form-group col-md-4">
-                        <label>Staff Passport Copy</label>
+                        <label>Passport Copy</label>
                         <input type="file" accept="image/png, image/jpeg" name="staff_passport_copy" class="form-control">
                      </div>
                      <div class="form-group col-md-4">
-                        <label>Staff CPR Copy</label>
+                        <label>CPR Copy</label>
                         <input type="file" accept="image/png, image/jpeg" name="staff_cpr_copy" class="form-control">
                      </div>
                      <div class="form-group col-md-4">
-                        <label>Staff Contract Copy</label>
+                        <label>Contract Copy</label>
                         <input type="file" accept="image/png, image/jpeg" name="staff_contract_copy" class="form-control">
                      </div>
                      <div class="form-group col-md-12" style="margin-right: 10px">

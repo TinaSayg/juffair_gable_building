@@ -27,13 +27,13 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-           <h4>Complaints</h4>
+           <h4>All Requests</h4>
             
             
-             <div class="card-header-form">
-            <a href="{{ route('complains.create') }}" class="btn btn-primary" role="button">Add Complaint</a>
+            {{-- <div class="card-header-form">
+              <a href="{{ route('complains.create') }}" class="btn btn-primary" role="button">Add Complaint</a>
              
-            </div>
+            </div> --}}
           </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -43,24 +43,25 @@
                       <th>#</th>
                       <th>Title</th>
                       <th>Date</th>
+                      <th>Reported</th>
                       <th>Status</th>
-                      <th>Assigned Complain</th>
+                      <th>Assigned Request</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {{-- @php
-                      if(Auth::user()->userType == 'employee' || Auth::user()->userType == 'tenant')
-                      {
-                        $employee_id = Auth::user()->id;
-                        $complaints = \App\Models\Complain::where('assignee_id' , $employee_id)->get();
-                      }
-                    @endphp --}}
+                    
                     @foreach($complaints as $key => $complain)
                     <tr>
                       <th>{{ $key+1 }}</th>
                       <td>{{ $complain->complain_title }}</td>
                       <td>{{ \Carbon\Carbon::parse($complain->compaint_date)->toFormattedDateString() }}</td>
+                      <td>
+                        @php
+                          $user = \App\Models\User::where('id', $complain->complain_person_id)->first();
+                        @endphp
+                        <span class="badge-outline col-indigo">{{ $user->name }} ({{ $user->userType }})</span>
+                      </td>
                       <td>
                       @php
                         $class = '';
@@ -83,16 +84,23 @@
                         {{ isset($complain->complain_status) ? $complain->complain_status->complain_status_name : '' }}
                       </span>
                       </td>
-                      <td></td>
+                      <td>
+                        @php
+                          $user = \App\Models\User::where('id', $complain->assigneed_id)->first();
+                          
+                        @endphp
+                        <span class="badge-outline col-indigo">{{ $user->name }} ({{ $user->userType }})</span>
+                      </td>
                      
                       <td>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Assigned Complain"><i class="fas fa-user-shield mr-2"></i> </a>
+                        <a href="#" data-toggle="tooltip" data-placement="top" title="Assigned Request"><i class="fas fa-user-shield mr-2"></i> </a>
                         <a href="#" data-toggle="tooltip" data-placement="top" title="View Detail" onclick="getUtilityBillDetails({{ $complain->id }})"><i class="fa fa-eye mr-2"></i> </a>
                         @if(Auth::user()->userType != 'employee' && Auth::user()->userType != 'tenant')
                           <a href="#" data-toggle="tooltip" data-placement="top" title="Delete" onclick="form_alert('complain-{{ $complain->id }}','Want to delete this Complaint')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
                         @endif
-                        
-                        <a data-toggle="tooltip" data-placement="top" title="Edit" href="{{ route('complains.edit', $complain->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
+                        <a href="#" data-toggle="tooltip" data-placement="top" title="Add Solution"><i class="
+                          fas fa-thumbs-up mr-2"></i> </a>
+                        {{-- <a data-toggle="tooltip" data-placement="top" title="Edit" href="{{ route('complains.edit', $complain->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a> --}}
                         
                         @if(Auth::user()->userType != 'employee' && Auth::user()->userType != 'tenant')
                         <form action="{{ route('complains.delete', $complain->id) }}"

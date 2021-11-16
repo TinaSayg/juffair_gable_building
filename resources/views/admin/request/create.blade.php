@@ -40,16 +40,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Date</label>
-                        <input type="text" name="assign_date" class="form-control datepicker">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label>Assign to</label>
-                        <select class="form-control" name="assigned_id" >
-                            <option value="">--- Select ---</option>
-                            @foreach ($manager_list as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
+                        <input type="text" name="posted_date" class="form-control datepicker">
                     </div>
                 </div>
                 

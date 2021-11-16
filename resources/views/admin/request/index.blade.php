@@ -27,88 +27,94 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-           <h4>Employees Request</h4>
+           <h4>All Requests</h4>
             
-          {{-- @if(request()->user()->can('create-task'))
+            
             <div class="card-header-form">
-              <a href="{{ route('tasks.create') }}" class="btn btn-primary" role="button">Add Task</a>
+              <a href="{{ route('request.create') }}" class="btn btn-primary" role="button">Add Request</a>
+             
             </div>
-          @endif --}}
           </div>
-            
             <div class="card-body">
-                <div class="table-responsive">
-                    <table id="tableExport" class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Name</th>
-                          <th>Designation</th>
-                          <th>Title</th>
-                          <th>Date</th>
-                          <th>Status</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+              <div class="table-responsive">
+                <table id="table-2" class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Title</th>
+                      <th>Date</th>
+                      <th>Status</th>
+                      <th>Assigned Request</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    
+                    @foreach($complaints as $key => $complain)
+                    <tr>
+                      <th>{{ $key+1 }}</th>
+                      <td>{{ $complain->complain_title }}</td>
+                      <td>{{ \Carbon\Carbon::parse($complain->compaint_date)->toFormattedDateString() }}</td>
+                      <td>
+                      @php
+                        $class = '';
+                        switch ($complain->complain_status_code) {
+                          case 1:
+                            $class = 'badge-warning';
+                            break;
+                          case 2:
+                            $class = 'badge-success';
+                            break;
+                          case 3:
+                            $class = 'badge-success';
+                            break;
+                          default:
+                            $class = 'badge-danger';
+                            break;
+                        }
+                      @endphp
+                      <span class="badge {{ $class }}">
+                        {{ isset($complain->complain_status) ? $complain->complain_status->complain_status_name : '' }}
+                      </span>
+                      </td>
+                      <td>
                         @php
-                          if(Auth::user()->userType == 'Admin'){
-                              $all_requests = \App\Models\Request::all();
-                          }
-                          else {
-                           
-                            $all_requests = \App\Models\Request::where('assigned_id', Auth::user()->id)->get();
-                          }
+                          $user = \App\Models\User::where('id', $complain->assigneed_id)->first();
                         @endphp
-                        @foreach($all_requests as $key => $item)
-                        @php
-                          $user = \App\Models\User::with('roles')->where('id' , $item->posted_by)->first();
-                          $name = $user->name;
-                          $designation = $user->roles()->first()->name;
-                        @endphp
-                        <tr>
-                          <th>{{ $key+1 }}</th>
-                          <td>{{ $name }}</td>
-                          <td>{{ $designation }}</td>
-                          <td>{{ $item->title }}</td>
-                          <td>{{ \Carbon\Carbon::parse($item->date)->toFormattedDateString() }}</td>
-                          <td>
-                            @php
-                            $class = '';
-                            switch ($item->request_status_code) {
-                              case 1:
-                                $class = 'badge-warning';
-                                break;
-                              case 2:
-                                $class = 'badge-success';
-                                break;
-                              default:
-                                $class = 'badge-danger';
-                                break;
-                            }
-                            @endphp
-                            <span class="badge {{ $class }}" style="border-radius:0px !important">
-                              {{ isset($item->request_status) ? $item->request_status->request_status_name : ''}}
-                            </span>
-                          </td>
-                          <td>
-                            <button class="btn btn-primary" onclick="get_request_details({{ $item->id }})">View</button>
-                            @if($item->request_status_code == 1)
-                            <button class="btn btn-success request-button" data-request_id="{{ $item->id }}" data-action_id="2">Accept</button>
-                            <button class="btn btn-danger request-button" data-request_id="{{ $item->id }}" data-action_id="3">Reject</button>
-                            @endif
-                        </td>
-                        </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
-                  </div>
+                        <span class="badge-outline col-indigo">{{ $user->name }} ({{ $user->userType }})</span>
+                      </td>
+                     
+                      <td>
+                        
+                        <a href="#" data-toggle="tooltip" data-placement="top" title="View Detail"><i class="fa fa-eye mr-2"></i> </a>
+                        @if(Auth::user()->userType != 'employee' && Auth::user()->userType != 'tenant')
+                        <a href="#" data-toggle="tooltip" data-placement="top" title="Delete" onclick="form_alert('complain-{{ $complain->id }}','Want to delete this Complaint')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
+                        @endif
+                        
+                        {{-- <a data-toggle="tooltip" data-placement="top" title="Edit" href="{{ route('complains.edit', $complain->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a> --}}
+                        <a href="#" data-toggle="tooltip" data-placement="top" title="Add Solution"><i class="
+                          fas fa-thumbs-up mr-2"></i> </a>
+                        
+                        @if(Auth::user()->userType != 'employee' && Auth::user()->userType != 'tenant')
+                        <form action="{{ route('complains.delete', $complain->id) }}"
+                            method="post" id="complain-{{ $complain->id }}">
+                            @csrf @method('delete')
+                        </form> 
+                        @endif
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
-     </div>
-</section>
-<div class="modal" id="requestDetailModal" >
+      </div>
+    </div>
+  </section>
+{{-- Utility Bill modal --}}
+<div class="modal" id="utilityBillModal" tabindex="-1" role="dialog" aria-labelledby="formModal"  aria-modal="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -118,98 +124,36 @@
         </button>
       </div>
       <div class="card-body">
+        <form class="table-responsive">
           <table id="mainTable" class="table table-striped">
             <tbody>
-              @include('admin.task.partials.request_detail_modal')
+              @include('admin.utility_bill.partials.utility_bill_view_modal')
             </tbody>
           </table>
       </div>
     </div>
   </div>
 </div>
-
-<div class="modal" id="confirmModal" >
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="formModal">Confirm Employee Request</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="card-body">
-        <form action="{{url('')}}" method="POST" id="requestActionForm">
-          @csrf
-          <div>
-            <p id="confirmMesssage" class="ml-2"></p>
-          </div>
-          <input type="hidden" class="form-control" name="action_id" id="requestAction">
-          <button type="submit" class="btn m-t-15 waves-effect">save</button>
-        </form>
-      </div>
-  </div>
-</div>
-</div>
-
-
 @stop
 @section('footer_scripts')
 <!-- JS Libraies -->
-<!-- JS Libraies -->
-<script src="{{asset('public/admin/assets/bundles/datatables/datatables.min.js')}}"></script>
-<script src="{{asset('public/admin/assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js')}}"></script>
-<script src="{{asset('public/admin/assets/bundles/datatables/export-tables/dataTables.buttons.min.js')}}"></script>
-<script src="{{asset('public/admin/assets/bundles/datatables/export-tables/buttons.flash.min.js')}}"></script>
-<script src="{{asset('public/admin/assets/bundles/datatables/export-tables/jszip.min.js')}}"></script>
-<script src="{{asset('public/admin/assets/bundles/datatables/export-tables/pdfmake.min.js')}}"></script>
-<script src="{{asset('public/admin/assets/bundles/datatables/export-tables/vfs_fonts.js')}}"></script>
-<script src="{{asset('public/admin/assets/bundles/datatables/export-tables/buttons.print.min.js')}}"></script>
-<script src="{{asset('public/admin/assets/js/page/datatables.js')}}"></script>
+<script src="{{ asset('public/admin/assets/') }}/bundles/datatables/datatables.min.js"></script>
+<script src="{{ asset('public/admin/assets/') }}/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
+<script src="{{ asset('public/admin/assets/') }}/bundles/jquery-ui/jquery-ui.min.js"></script>
+<!-- Page Specific JS File -->
+<script src="{{ asset('public/admin/assets/') }}/js/page/datatables.js"></script>
 <script>
-  $('#tableExport2').DataTable({
-    dom: 'Bfrtip',
-    "ordering": false,
-    buttons: [
-      'excel', 'pdf', 'print'
-    ]
-  })
-
-  $(".request-button").click(function(){
-    let id = $(this).attr('data-request_id')
-    let action = $(this).attr('data-action_id')
+  function getUtilityBillDetails(id) {
     
-    if(action == 3)
-    {
-      $("#confirmMesssage").html("Do you want to reject this request?")
-      $(".waves-effect").addClass('btn-danger')
-      $(".waves-effect").text('Reject')
-      $("#requestAction").val(action)
-    }
-    else
-    {
-      $("#confirmMesssage").html("Do you want to accept this request?")
-      $(".waves-effect").addClass('btn-success')
-      $(".waves-effect").text('Accept')
-      $("#requestAction").val(action)
-    }
-
-    let act = {!! json_encode(url('/')) !!} + '/request/request/action/' + id
-   
-    $("#requestActionForm").attr("action", act)
-
-    $("#confirmModal").modal("show")
-  })
-  
-  function get_request_details(id) {
     $.get({
-        url: '{{route('request.show', '')}}' + "/"+ id,
+        url: '{{route('complains.show', '')}}' + "/"+ id,
         dataType: 'json',
         success: function (data) {
-            $("#requestDetailModal tbody").html(data.html_response)
-            $("#requestDetailModal").modal("show")
+            console.log(data.options)
+            $("#utilityBillModal tbody").html(data.html_response)
+            $("#utilityBillModal").modal("show")
         }
     });
   }
-
 </script>
 @stop

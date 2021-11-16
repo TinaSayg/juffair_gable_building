@@ -64,6 +64,7 @@ class StaffController extends Controller
             'annual_leaves' => 'required',
             'sallery' => 'required',
             'staff_cpr_no' => 'required|unique:employees,employee_cpr_no',
+            'passport_number' => 'required|unique:employees,passport_number',
             'lease_period_start_datetime' => 'required',
             'lease_period_end_datetime' => 'required',
             'staff_passport_copy' => 'required',
@@ -103,6 +104,7 @@ class StaffController extends Controller
             $employee->employee_present_address = $request['staff_present_address'];
             $employee->employee_permanent_address = $request['staff_permanent_address'];
             $employee->employee_cpr_no = $request['staff_cpr_no'];
+            $employee->passport_number = $request['passport_number'];
             $employee->employee_start_datetime = $request['lease_period_start_datetime'];
             $employee->employee_end_datetime = $request['lease_period_end_datetime'];
             $employee->employee_date_of_birth = $request['staff_date_of_birth'];
@@ -213,6 +215,7 @@ class StaffController extends Controller
             'leaves_per_month' => 'required',
             'annual_leaves' => 'required',
             'staff_cpr_no' => 'required|unique:employees,employee_cpr_no,' . $id,
+            'passport_number' => 'required|unique:employees,passport_number,' . $id,
             'lease_period_start_datetime' => 'required',
             'lease_period_end_datetime' => 'required',
         ]);
@@ -228,6 +231,7 @@ class StaffController extends Controller
         $employee->employee_present_address = $request['staff_present_address'];
         $employee->employee_permanent_address = $request['staff_permanent_address'];
         $employee->employee_cpr_no = $request['staff_cpr_no'];
+        $employee->passport_number = $request['passport_number'];
         $employee->employee_start_datetime = $request['lease_period_start_datetime'];
         $employee->employee_end_datetime = $request['lease_period_end_datetime'];
         $employee->employee_date_of_birth = $request['staff_date_of_birth'];

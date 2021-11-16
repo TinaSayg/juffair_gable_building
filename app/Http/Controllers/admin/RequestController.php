@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\Complain;
+use Illuminate\Http\Request;
 use App\Models\RequestStatus;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
+
 class RequestController extends Controller
 {
     /**
@@ -17,7 +19,9 @@ class RequestController extends Controller
      */
     public function index()
     {
-        return view('admin.request.index');
+        $complaints =Complain::where('complain_person_id', Auth::user()->id)->orWhere('assigneed_id', Auth::user()->id)->orderBy('id','desc')->get();
+        
+        return view('admin.request.index', compact('complaints'));
     }
 
     /**
@@ -43,24 +47,20 @@ class RequestController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'assign_date' => 'required|string',
-            'assigned_id' => 'required',
-        ],[
-            'assigned_id.required' => 'Select the assign to value'
+            'posted_date' => 'required|string',
         ]);
 
-        $employee_request = \App\Models\Request::create([
-            'title' => $request['title'],
-            'description' => $request['description'],
-            'date' => $request['assign_date'],
-            'posted_by' => Auth::user()->id,
-            'assigned_id' => $request['assigned_id'],
-            'request_status_code' => 1, //padding
-        ]);
+        $complaint = new Complain();
+        $complaint->complain_title = $request->input('title');
+        $complaint->complain_description = $request->input('description');
+        $complaint->complain_date = $request->input('posted_date');
+        $complaint->complain_person_id = Auth::user()->id;
+        $complaint->complain_status_code = 1;
 
-        if($employee_request){
+        if($complaint->save() )
+        {
             Toastr::success('Your request submit successfully.');
-            return redirect()->route('tasks.list', ['tab' => '1']);
+            return redirect()->route('request.list', ['tab' => '1']);
         }
         else
         {

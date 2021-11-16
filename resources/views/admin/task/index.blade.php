@@ -44,24 +44,40 @@
                     <tr>
                       <th>#</th>
                       <th>Title</th>
-                      <th>Date</th>
-                      <th>time</th>
-                      <th>Assign by</th>
+                      <th>Task Assign Date Time</th>
                       <th>Assign to</th>
+                      <th>Task Completed Date Time</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($tasks as $key => $item)
+                    
                     <tr>
                       <th>{{ $key+1 }}</th>
                       <td>{{ $item->title }}</td>
-                      <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }}</td>
-                      <td>{{ $item->assign_time }}</td>
-                      <td>{{ \App\Models\User::where('id' , $item->assignor_id)->first()->name }}</td>
-                      <td>{{ \App\Models\User::where('id' , $item->assignee_id)->first()->name }}</td>
-                      <td>{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</td>
+                      <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ \Carbon\Carbon::parse($item->assign_time)->format('g:i A') }}</td>
+                      <td>
+                        
+                        {{ \App\Models\User::where('id' , $item->assignee_id)->first()->name }}
+                        
+                      </td>
+                      <td>{{ isset($item->complete_date)? \Carbon\Carbon::parse($item->complete_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->complete_time)->format('g:i A') : '' }}</td>
+                      <td>
+                        @php
+                          $class = '';
+                          switch ($item->task_status_code) {
+                            case 1:
+                              $class = 'badge-warning';
+                              break;
+                            default:
+                              $class = 'badge-success';
+                              break;
+                          }
+                        @endphp
+                        <span class="badge {{ $class }}">{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</span>
+                      </td>
                       <td>
                         @if(request()->user()->can('view-task'))
                         <a href="{{ route('tasks.show', $item->id) }}"><i class="fa fa-eye mr-2"></i> </a>
@@ -103,9 +119,9 @@
             </ul>
             <div class="tab-content" id="myTabContent">
               <div class="tab-pane @if(!request()->has('tab')) active @else fade @endif" id="assignedWork" role="tabpanel" aria-labelledby="assigned-work-tab">
-                <div class="my-2 mr-3" style="text-align: right;">
+                {{-- <div class="my-2 mr-3" style="text-align: right;">
                   <a href="{{ route('tasks.create') }}" class="btn btn-primary" role="button">Add Task</a>
-                </div>
+                </div> --}}
                 <div class="table-responsive">
                   <table id="tableExport" class="table table-striped">
                     <thead>
@@ -115,26 +131,24 @@
                         <th>Date</th>
                         <th>time</th>
                         <th>Assign by</th>
-                        <th>Assign to</th>
                         <th>Status</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
                       @php
-                        $tasks = \App\Models\Task::where('assignee_id', Auth::user()->id)->orderBy('id','desc')->get();
+                        $tasks = \App\Models\Task::where('assignee_id', Auth::user()->id)->where('task_status_code', 1)->orderBy('id','desc')->get();
                       @endphp
                       @foreach($tasks as $key => $item)
                       <tr>
                         <th>{{ $key+1 }}</th>
                         <td>{{ $item->title }}</td>
                         <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }}</td>
-                        <td>{{ $item->assign_time }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->assign_time)->format('g:i A') }}</td>
                         <td>{{ \App\Models\User::where('id' , $item->assignor_id)->first()->name }}</td>
-                        <td>{{ \App\Models\User::where('id' , $item->assignee_id)->first()->name }}</td>
                         <td>
                          
-                          <span class="badge" style="border-radius: 0px !important">{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</span>
+                          <span class="badge badge-warning" style="border-radius: 0px !important">{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</span>
                         </td>
                         <td>
                           <a href="{{ route('tasks.show', $item->id) }}" type="button" class="btn btn-primary">View Task</a>

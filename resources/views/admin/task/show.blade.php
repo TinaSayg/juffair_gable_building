@@ -40,7 +40,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Date</label>
-                        <input type="text" readonly value="{{ isset($task) ? $task->assign_date : '' }}" name="assign_date" class="form-control">
+                        <input type="text" readonly value="{{ isset($task) ? $task->assign_date : '' }}" name="assign_date" class="form-control datepicker">
                     </div>
                     <div class="form-group col-md-4">
                         <label>Time</label>

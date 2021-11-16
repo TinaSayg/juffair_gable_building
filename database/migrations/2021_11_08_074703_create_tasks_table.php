@@ -22,7 +22,7 @@ class CreateTasksTable extends Migration
             $table->string('assign_time');
 
             $table->dateTime('complete_date')->nullable();
-            $table->dateTime('complete_time')->nullable();
+            $table->string('complete_time')->nullable();
 
             $table->integer('assignor_id');
             $table->integer('assignee_id');

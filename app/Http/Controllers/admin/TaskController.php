@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\admin;
 
 use DataTables;
+use Carbon\Carbon;
 use App\Models\Task;
 use App\Models\User;
 use App\Models\TaskStatus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -20,7 +21,7 @@ class TaskController extends Controller
      */
     public function index(Request $request)
     {
-        $tasks = Task::all();
+        $tasks = Task::orderBy('id', 'desc')->get();
 
         return view('admin.task.index', compact('tasks'));
     }
@@ -50,14 +51,13 @@ class TaskController extends Controller
             'description' => 'required',
             'assign_date' => 'required|string',
             'assign_time' => 'required',
-            'task_status_code' => 'required',
         ]);
 
         $task = new Task();
         $task->title = $request['title'];
         $task->description = $request['description'];
-        $task->assign_date = $request['assign_date'];
-        $task->assign_time = $request['assign_time'];
+        $task->assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
+        $task->assign_time = Carbon::parse($request['assign_time'])->format("H:i");
         $task->assignor_id = Auth::user()->id;
         if(Auth::user()->userType != 'employee')
         {
@@ -67,7 +67,8 @@ class TaskController extends Controller
         {
             $task->assignee_id = Auth::user()->id;
         }
-        $task->task_status_code = $request['task_status_code'];
+
+        $task->task_status_code = 1;
         
 
         if($task->save()){
@@ -122,17 +123,16 @@ class TaskController extends Controller
             'assign_date' => 'required|string',
             'assign_time' => 'required',
             'assignee_id' => 'required',
-            'task_status_code' => 'required',
         ]);
 
         $task = Task::find($id);
         $task->title = $request['title'];
         $task->description = $request['description'];
-        $task->assign_date = $request['assign_date'];
-        $task->assign_time = $request['assign_time'];
+        $task->assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
+        $task->assign_time = Carbon::parse($request['assign_time'])->format("H:i");
         $task->assignor_id = Auth::user()->id;
         $task->assignee_id = $request['assignee_id'];
-        $task->task_status_code = $request['task_status_code'];
+        $task->task_status_code = 1;
         
 
         if($task->save()){
@@ -166,7 +166,10 @@ class TaskController extends Controller
     {
         $task = Task::find($id);
 
+        $current_date_time = Carbon::now();
         $task->task_status_code = '2'; //completed
+        $task->complete_date = Carbon::parse($current_date_time)->format('Y-m-d');
+        $task->complete_time = Carbon::parse($current_date_time)->format('H:i');
 
         if($task->save()){
             Toastr::success('Your task is completed.');
@@ -177,5 +180,13 @@ class TaskController extends Controller
             Toastr::success('Something went wrong.');
             return back();
         }
+    }
+
+    public function complete_task_list(Request $request)
+    {
+        $login_user_id = Auth::user()->id;
+        $tasks = Task::where('assignee_id', $login_user_id)->where('task_status_code', 2)->get();
+       
+        return view('admin.task.completed_task', compact('tasks'));
     }
 }

@@ -91,6 +91,11 @@
                       <p class="text-muted">{{isset($employee) ? $employee->employee_cpr_no : ''}}</p>
                     </div>
                     <div class="col-md-3 col-6 b-r">
+                      <strong>Passport Number</strong>
+                      <br>
+                      <p class="text-muted">{{isset($employee) ? $employee->passport_number : ''}}</p>
+                    </div>
+                    <div class="col-md-3 col-6 b-r">
                       <strong>Salary Per Month</strong>
                       <br>
                       <p class="text-muted">BD{{ isset($employee->employee_sallery )? round($employee->employee_sallery,0)  : '' }}</p>
@@ -98,11 +103,18 @@
                   </div>
                   
                    
-                   <div class="section-title">Employee Details</div>
+                  <div class="section-title">Employee Details</div>
 
                   <ul>
                     <li>Joining Date:({{isset($employee->employee_start_datetime) ? \Carbon\Carbon::parse($employee->employee_start_datetime)->toFormattedDateString() : '' }})</li>
                     <li>Contract end date:({{isset($employee->employee_end_datetime) ? \Carbon\Carbon::parse($employee->employee_end_datetime)->toFormattedDateString() : '' }})</li>
+                  </ul>
+
+                  <div class="section-title">Leave Details</div>
+
+                  <ul>
+                    <li>Leave Per Month: {{isset($employee) ? $employee->leaves_per_month : '' }}</li>
+                    <li>Annual Leaves: {{isset($employee) ? $employee->annual_leaves : '' }}</li>
                   </ul>
                   <div class="section-title">Documents</div>
                   

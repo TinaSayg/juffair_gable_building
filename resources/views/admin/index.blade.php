@@ -34,7 +34,7 @@ Juffair Gable
     <div class="card">
       <p class="mb-0" style="padding:20px;font-size: 17px;">Hello <span style="font-size: 17px;font-weight:600">{{ Auth::user()->name }},</span></p>
     </div>
-    @if(\Auth::user()->userType != 'tenant')
+    @if(\Auth::user()->userType == 'general-manager')
       @php
         $total_units = 0;
         $vacant_units = 0;
@@ -51,6 +51,8 @@ Juffair Gable
         foreach (\App\Models\MaintenanceCost::pluck('maintenance_cost_total_amount') as $key => $value) {
           $total_maintenance_cost += $value;
         }
+
+        
       @endphp
       <div class="row">
         <div class="col-lg-3 col-sm-6">
@@ -149,11 +151,81 @@ Juffair Gable
           </div>
         </div>
       </div>
-
+      @endif
       @if(\Auth::user()->userType == 'employee')
       @php
         $tasks = \App\Models\Task::where('task_status_code', 1)->where('assignee_id', Auth::user()->id)->get();
+        $average_time = explode(":", $average_time);
+        $hours = $average_time[0];
+        $minutes = round($average_time[1]);
       @endphp
+      <div class="row">
+        
+        @php
+          $email = Auth::user()->email;
+          $employee_detail = \App\Models\Employee::where('employee_email_address', $email)->first();
+        @endphp
+        <div class="col-lg-3 col-sm-6">
+          <div class="card card-box">
+            <div class="card-statistic-4">
+              <div class="info-box7-block">
+                <h6 class="m-b-20 text-right">Passport number</h6>
+                <h4 class="text-right"><i class="material-icons  pull-left bg-cyan c-icon">phone_in_talk</i><span>{{ $employee_detail->passport_number }}</span>
+                </h4>
+                <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card card-box">
+            <div class="card-statistic-4">
+              <div class="info-box7-block">
+                <h6 class="m-b-20 text-right">Phone number</h6>
+                <h4 class="text-right"><i class="material-icons  pull-left bg-cyan c-icon">phone_in_talk</i><span>{{ $employee_detail->employee_mobile_phone }}</span>
+                </h4>
+                <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card card-box">
+            <div class="card-statistic-4">
+              <div class="info-box7-block">
+                <h6 class="m-b-20 text-right">Start date of work at this building</h6>
+                <h4 class="text-right"><i class="fas fas fa-calendar-alt pull-left bg-cyan c-icon mt-4"></i><span>{{ \Carbon\Carbon::parse($employee_detail->employee_start_datetime)->toFormattedDateString() }}</span>
+                </h4>
+                <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card card-box">
+            <div class="card-statistic-4">
+              <div class="info-box7-block">
+                <h6 class="m-b-20 text-right">End date of work at this building</h6>
+                <h4 class="text-right"><i class="fas fas fa-calendar-alt pull-left bg-cyan c-icon mt-4"></i><span>{{ \Carbon\Carbon::parse($employee_detail->employee_end_datetime)->toFormattedDateString() }}</span>
+                </h4>
+                <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card card-box">
+            <div class="card-statistic-4">
+              <div class="info-box7-block">
+                <h6 class="m-b-20 text-right">Average time to resolve an assigned task</h6>
+                <h4 class="text-right"><i class="fas fa-clock pull-left bg-cyan c-icon mt-4"></i><span>{{ isset($hours)? $hours: '' }} hours {{ isset($minutes) ? $minutes : ''}} minutes</span>
+                </h4>
+                <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col-12">
           <div class="card">
@@ -207,7 +279,6 @@ Juffair Gable
         </div>
       </div>
       @endif
-    @endif
   </div>
 {{-- Confirm modal --}}
 <div class="modal" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="formModal"  aria-modal="true">
