@@ -7,6 +7,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\admin\RentController;
 use App\Http\Controllers\admin\RoleController;
+use App\Http\Controllers\admin\RoomController;
 use App\Http\Controllers\admin\TaskController;
 use App\Http\Controllers\admin\UnitController;
 use App\Http\Controllers\Auth\LoginController;
@@ -15,12 +16,12 @@ use App\Http\Controllers\admin\OwnerController;
 use App\Http\Controllers\admin\StaffController;
 use App\Http\Controllers\admin\ModuleController;
 use App\Http\Controllers\admin\NoticeController;
-use App\Http\Controllers\admin\TenantController;
 
-use App\Http\Controllers\admin\RoomController;
+use App\Http\Controllers\admin\TenantController;
 
 use App\Http\Controllers\Admin\RequestController;
 
+use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\VisitorController;
 use App\Http\Controllers\admin\EmployeeController;
 use App\Http\Controllers\admin\HelpdeskController;
@@ -28,13 +29,13 @@ use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\ComplaintsController;
 use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\admin\RentreportController;
+use App\Http\Controllers\admin\ReservationController;
 use App\Http\Controllers\admin\UtilitybillController;
 use App\Http\Controllers\admin\VisitorsreportController;
 use App\Http\Controllers\admin\ComplaintreportController;
 use App\Http\Controllers\admin\MaintenanceCostController;
 use App\Http\Controllers\admin\SecuritydepositController;
 use App\Http\Controllers\admin\UnitstatusreportController;
-use App\Http\Controllers\admin\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,7 @@ Route::post('/save_job_info', [PagesController::class, 'save_job_info'])->name('
 Route::get('/login', [LoginController::class, 'showLoginForm']);
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
+
 Route::group(['middleware' => ['auth:web']], function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/fetch_floors/{floor_type_code}', [PagesController::class, 'fetch_floors'])->name('floor_type.fetch_floors');
@@ -73,6 +75,18 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::delete('/floor/delete/{id}', [FloorController::class, 'destroy'])->name('delete');
         Route::get('/floor/edit/{id}', [FloorController::class, 'edit'])->name('edit');
         Route::post('/floor/update/{id}', [FloorController::class, 'update'])->name('update');
+       
+    });
+
+    //Service Contract list
+    Route::group(['prefix' => 'service_contract', 'as' => 'service_contract.'], function () {
+        Route::get('/list', [ServiceController::class, 'index'])->name('list');
+        Route::get('/create', [ServiceController::class, 'create'])->name('create');
+        Route::post('/service_contract/store', [ServiceController::class, 'store'])->name('store');
+        Route::get('/service_contract/show/{id}', [ServiceController::class, 'show'])->name('show');
+        Route::delete('/service_contract/delete/{id}', [ServiceController::class, 'destroy'])->name('delete');
+        Route::get('/service_contract/edit/{id}', [ServiceController::class, 'edit'])->name('edit');
+        Route::post('/service_contract/update/{id}', [ServiceController::class, 'update'])->name('update');
        
     });
 

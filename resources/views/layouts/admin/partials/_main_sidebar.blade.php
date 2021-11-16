@@ -52,8 +52,8 @@
           <li class="dropdown {!! (Request::is('floors/floor_list') ? "active" : "") !!}">
             <a href="{{ route('tenants.list') }}" class="nav-link"><span>Add New Tenant</span></a>
           </li>
-          <li class="dropdown {!! (Request::is('floors/floor_list') ? "active" : "") !!}">
-            <a href="{{ route('floors.list') }}" class="nav-link"><span>Add a new service contract</span></a>
+          <li class="dropdown {!! (Request::is('service_contract*') ? "active" : "") !!}">
+            <a href="{{ route('service_contract.list') }}" class="nav-link"><span>Add a new service contract</span></a>
           </li>
           
           <li class="dropdown {!! (Request::is('floors/floor_list') ? "active" : "") !!}">
