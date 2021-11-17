@@ -136,7 +136,20 @@ Juffair Gable
                                 <td>{{ isset($unit->floor->floor_type) ? $unit->floor->floor_type->floor_type_name : '' }}</td>
                                 <td>{{ $unit->no_of_bed_rooms }}</td>
                                 <td>{{ $unit->unit_area }} m<sup>2</sup></td>
-                                <td>{{ isset($unit->unit_status) ? $unit->unit_status->unit_status_name : '' }}</td>
+                                <td>
+                                    @php
+                                        $class = '';
+                                        switch ( $unit->unit_status_code) {
+                                        case 1:
+                                            $class = 'badge-success';
+                                            break;
+                                        default:
+                                            $class = 'badge-warning';
+                                            break;
+                                        }
+                                    @endphp
+                                    <span class="badge {{ $class }}">{{ isset($unit->unit_status) ? $unit->unit_status->unit_status_name : '' }}</span>
+                                </td>
                                 <td>{{ $unit->color_code }}</td>
                                 @if(request()->user()->userType == 'general-manager')
                                 <td>

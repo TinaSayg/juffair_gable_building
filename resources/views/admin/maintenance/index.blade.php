@@ -51,7 +51,6 @@
                         <td>{{ \Carbon\Carbon::parse($maintenancecost->maintenance_date)->toFormattedDateString() }}</td>
                         <td>{{ $maintenancecost->maintenance_cost_total_amount}}</td>
                         <td>
-                          view-maintenance-cost
                           @if(request()->user()->can('view-maintenance-cost'))
                           <a href="#" onclick="getMaintenancecostDetails({{ $maintenancecost->id }})"><i class="fa fa-eye mr-2"></i> </a>
                           @endif

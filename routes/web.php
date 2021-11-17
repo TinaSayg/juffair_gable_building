@@ -121,7 +121,7 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::get('/create', [UnitController::class, 'create'])->name('create');
         Route::post('/unit/store', [UnitController::class, 'store'])->name('store');
         Route::get('/unit/show/{id}', [UnitController::class, 'show'])->name('show');
-        Route::get('/search_by_apartment', [UnitController::class, 'search_by_appartment'])->name('search_by_apartment_list');
+        Route::any('/search_by_apartment', [UnitController::class, 'search_by_appartment'])->name('search_by_apartment_list');
         Route::get('/search_by_apartment/show/{id}', [UnitController::class, 'show'])->name('search_by_apartment.show');
         Route::get('/unit/edit/{id}', [UnitController::class, 'edit'])->name('edit');
         Route::post('/unit/update/{id}', [UnitController::class, 'update'])->name('update');
@@ -250,6 +250,8 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::post('/complaints/update/{id}', [ComplaintsController::class, 'update'])->name('update');
         Route::delete('/complaints/delete/{id}', [ComplaintsController::class, 'destroy'])->name('delete');
         Route::get('/complaints/show/{id}', [ComplaintsController::class, 'show'])->name('show');
+        Route::post('/assign_request/', [ComplaintsController::class, 'assign_request'])->name('assign_request');
+        Route::post('/add_solution/', [ComplaintsController::class, 'add_solution'])->name('add_solution');
     });
     //Complaints routes
     Route::group(['prefix' => 'tasks', 'as' => 'tasks.'], function () {

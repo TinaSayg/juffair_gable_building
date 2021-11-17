@@ -111,13 +111,30 @@ class UnitController extends Controller
         return view('admin.units.apartment_by_color',compact('units','apartment_colors'));
     }
 
-    public function search_by_appartment()
+    public function search_by_appartment(Request $request)
     {
-        $units = Unit::orderBy('id','desc')->get();
-        
-        $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
-        $unit_status = UnitStatus::all();
-        return view('admin.units.search_by_appartment',compact('units','floor_types','unit_status'));
+        $apartment_number = $request->input('apartment_number');
+       
+        if($apartment_number)
+        {
+            
+            if($apartment_number)
+            {
+                $units = Unit::where('unit_number', $apartment_number)->orderBy('id','desc')->get();
+            }
+            else
+            {
+                $units = collect([]);
+            }
+
+        }
+        else
+        {
+            $units = Unit::orderBy('id','desc')->get();
+
+        }
+
+        return view('admin.units.search_by_appartment',compact('units'));
     }
 
     public function rented_apartment(){

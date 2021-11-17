@@ -16,7 +16,7 @@ class CreateServiceContractsTable extends Migration
         Schema::create('service_contracts', function (Blueprint $table) {
             $table->id();
             $table->longText('description');
-            $table->decimal('amount', 5, 3);
+            $table->decimal('amount', 15, 3);
             $table->integer('frequency_of_pay');
             $table->dateTime('contract_renew_date');
             

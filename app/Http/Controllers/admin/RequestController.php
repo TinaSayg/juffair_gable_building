@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Complain;
 use Illuminate\Http\Request;
 use App\Models\RequestStatus;
+use App\Models\ComplainStatus;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
@@ -20,8 +21,8 @@ class RequestController extends Controller
     public function index()
     {
         $complaints =Complain::where('complain_person_id', Auth::user()->id)->orWhere('assigneed_id', Auth::user()->id)->orderBy('id','desc')->get();
-        
-        return view('admin.request.index', compact('complaints'));
+        $complaint_status_list = ComplainStatus::all();
+        return view('admin.request.index', compact('complaints','complaint_status_list'));
     }
 
     /**

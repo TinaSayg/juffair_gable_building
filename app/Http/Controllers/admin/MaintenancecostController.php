@@ -65,7 +65,6 @@ class MaintenanceCostController extends Controller
             'maintenance_description' => $request['maintenance_description'],
             'maintenance_date' => $request['maintenance_date'],
             'maintenance_cost_total_amount' => $request['maintenance_cost_total_amount'],
-            
         ]);
         Toastr::success('Maintenance Cost added successfully!');
         return redirect()->route('maintenancecosts.list');

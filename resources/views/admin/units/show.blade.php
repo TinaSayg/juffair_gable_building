@@ -32,11 +32,12 @@ Juffair Gable
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
                       aria-controls="home" aria-selected="true">Apartment Information</a>
                   </li>
+                  @if($unit->tenant)
                   <li class="nav-item">
                     <a class="nav-link" id="tenant-tab" data-toggle="tab" href="#tenant" role="tab"
                       aria-controls="profile" aria-selected="false">Tenant Information</a>
                   </li>
-                
+                  @endif
                 </ul>
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -79,6 +80,7 @@ Juffair Gable
                       
                     </div>
                   </div>
+                  @if($unit->tenant)
                   <div class="tab-pane fade" id="tenant" role="tabpanel" aria-labelledby="tenant-tab">
                     <div class="row mt-sm-5">
                       <div class="col-12 col-md-12 col-lg-4">
@@ -196,7 +198,7 @@ Juffair Gable
                       </div>
                     </div>
                   </div>
-                  
+                  @endif
                 </div>
               </div>
             </div>

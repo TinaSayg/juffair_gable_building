@@ -154,10 +154,14 @@ Juffair Gable
       @endif
       @if(\Auth::user()->userType == 'employee')
       @php
+       
         $tasks = \App\Models\Task::where('task_status_code', 1)->where('assignee_id', Auth::user()->id)->get();
-        $average_time = explode(":", $average_time);
-        $hours = $average_time[0];
-        $minutes = round($average_time[1]);
+        if($average_time)
+        {
+          $average_time = explode(":", $average_time);
+          $hours = $average_time[0];
+          $minutes = round($average_time[1]);
+        }
       @endphp
       <div class="row">
         
@@ -217,8 +221,8 @@ Juffair Gable
           <div class="card card-box">
             <div class="card-statistic-4">
               <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Average time to resolve an assigned task</h6>
-                <h4 class="text-right"><i class="fas fa-clock pull-left bg-cyan c-icon mt-4"></i><span>{{ isset($hours)? $hours: '' }} hours {{ isset($minutes) ? $minutes : ''}} minutes</span>
+                <h6 class="m-b-20 text-right">Average time to resolve an assigned tasks</h6>
+                <h4 class="text-right"><i class="fas fa-clock pull-left bg-cyan c-icon mt-4"></i><span>{{ isset($hours)? $hours.' '.'hours': '0' }}  {{ isset($minutes) ? $minutes.' '. 'minutes' : ''}} </span>
                 </h4>
                 <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>

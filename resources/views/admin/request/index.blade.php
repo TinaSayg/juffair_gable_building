@@ -66,10 +66,10 @@
                             $class = 'badge-success';
                             break;
                           case 3:
-                            $class = 'badge-success';
+                            $class = 'badge-warning';
                             break;
                           default:
-                            $class = 'badge-danger';
+                            $class = 'badge-success';
                             break;
                         }
                       @endphp
@@ -86,13 +86,13 @@
                      
                       <td>
                         
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="View Detail"><i class="fa fa-eye mr-2"></i> </a>
+                        <a href="#" data-toggle="tooltip" data-placement="top" onclick="getComplainDetails({{ $complain->id }})" title="View Detail"><i class="fa fa-eye mr-2"></i> </a>
                         @if(Auth::user()->userType != 'employee' && Auth::user()->userType != 'tenant')
                         <a href="#" data-toggle="tooltip" data-placement="top" title="Delete" onclick="form_alert('complain-{{ $complain->id }}','Want to delete this Complaint')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
                         @endif
                         
                         {{-- <a data-toggle="tooltip" data-placement="top" title="Edit" href="{{ route('complains.edit', $complain->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a> --}}
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Add Solution"><i class="
+                        <a href="#" data-toggle="tooltip" data-complain_id="{{ $complain->id }}" data-placement="top" title="Add Solution"><i class="
                           fas fa-thumbs-up mr-2"></i> </a>
                         
                         @if(Auth::user()->userType != 'employee' && Auth::user()->userType != 'tenant')
@@ -113,7 +113,46 @@
       </div>
     </div>
   </section>
-{{-- Utility Bill modal --}}
+{{-- Add Solution Modal --}}
+<div class="modal" id="solutionModal" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formModal">Add Solution</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="card-body">
+        <form action="{{ route('complains.add_solution') }}" method="POST" id="addSolutionForm">
+          @csrf
+          <div class="row">
+            <div class="col-6 mt-3">
+              <input type="hidden" name="complain_id" id="solutionComplainInputField">
+              <div class="form-group">
+                <label for="">Select Status</label>
+                <select name="complain_status_code" class="form-control" id="">
+                  <option value="">--- Select ---</option>
+                  @foreach ($complaint_status_list as $item)
+                      <option value="{{ $item->complain_status_code }}">{{  $item->complain_status_name }}</option>
+                  @endforeach
+                </select>
+              </div>
+            </div>
+            <div class="col-12 mt-3 officer-select" >
+              <div class="form-group">
+                <label for="">Add Solution</label>
+                <textarea name="solution" id="" class="form-control" cols="30" rows="10"></textarea>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary m-t-15 waves-effect">save</button>
+        </form>
+      </div>
+  </div>
+</div>
+</div>
+{{-- request modal --}}
 <div class="modal" id="utilityBillModal" tabindex="-1" role="dialog" aria-labelledby="formModal"  aria-modal="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -134,6 +173,27 @@
     </div>
   </div>
 </div>
+{{-- complain modal --}}
+<div class="modal" id="complainModal" tabindex="-1" role="dialog" aria-labelledby="formModal"  aria-modal="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="formModal">View</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="card-body">
+        <form class="table-responsive">
+          <table id="mainTable" class="table table-striped">
+            <tbody>
+             
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+</div>
 @stop
 @section('footer_scripts')
 <!-- JS Libraies -->
@@ -142,16 +202,23 @@
 <script src="{{ asset('public/admin/assets/') }}/bundles/jquery-ui/jquery-ui.min.js"></script>
 <!-- Page Specific JS File -->
 <script src="{{ asset('public/admin/assets/') }}/js/page/datatables.js"></script>
+
 <script>
-  function getUtilityBillDetails(id) {
+  $(".fa-thumbs-up").on("click", function(){
+    let complain_id = $(this).parent().attr("data-complain_id")
+    $("#solutionComplainInputField").val(complain_id)
+    $("#solutionModal").modal("show")
+  })
+
+function getComplainDetails(id) {
     
     $.get({
         url: '{{route('complains.show', '')}}' + "/"+ id,
         dataType: 'json',
         success: function (data) {
             console.log(data.options)
-            $("#utilityBillModal tbody").html(data.html_response)
-            $("#utilityBillModal").modal("show")
+            $("#complainModal tbody").html(data.html_response)
+            $("#complainModal").modal("show")
         }
     });
   }

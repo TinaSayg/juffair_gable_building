@@ -27,7 +27,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-           <h4>All Tasks</h4>
+           <h4>Completed Task</h4>
             
           @if(request()->user()->can('create-task'))
             <div class="card-header-form">

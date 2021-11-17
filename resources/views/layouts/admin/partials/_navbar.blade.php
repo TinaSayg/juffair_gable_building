@@ -19,9 +19,9 @@
       </ul>
     </div>
     <ul class="navbar-nav navbar-right">
-      <a href="profile.html" class="dropdown-item has-icon"> <i class="far
+      {{-- <a href="profile.html" class="dropdown-item has-icon"> <i class="far
             fa-user"></i> Profile
-      </a> 
+      </a>  --}}
       <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger" onclick="event.preventDefault();
         document.getElementById('logout-form').submit();"> <i class="fas fa-sign-out-alt"></i>
           Logout
