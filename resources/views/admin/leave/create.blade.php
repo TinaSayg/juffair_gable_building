@@ -9,9 +9,7 @@
 </style>
 @stop
 @section('content')
-
     <section class="section">
-      
         <div class="section-body">
             <form method="POST" action="{{ route('leave.store') }}" enctype="multipart/form-data">
                 @csrf
@@ -41,31 +39,36 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Leave Type</label>
-                                    <select class="form-control" name="leave_type_code">
+                                    <select class="form-control" onchange="checkLeaveType(this);" name="leave_type_code">
                                         @foreach ($leave_types as $leaveType)
                                         <option value="{{ $leaveType->leave_type_code }}" >{{ $leaveType->leave_type_name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label>Attach Document</label>
+                                <div class="form-group col-md-4 attachdocument">
+                                    <label>Attach Medical Certificate</label>
                                     <input type="file" name="leave_document" class="form-control">
                                 </div>
                         </div>
                         <button  class="btn btn-primary mr-1" type="submit">save</a>
-                  
                     </div>
                 </form>
-                </div>
+             </div>
         </div>
     </section>
-    
-
-
 @stop
 @section('footer_scripts')
 <script src="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script>
-  
+  function checkLeaveType(type) {
+    if(type.value==1)
+    {
+        $('.attachdocument').show()
+    }
+    else
+    {
+        $('.attachdocument').hide()
+    }
+   }
 </script>
 @stop

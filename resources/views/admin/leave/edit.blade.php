@@ -47,7 +47,7 @@
                             </select>
                            </div>
                         <div class="form-group col-md-4">
-                           <label>Attach document</label>
+                           <label>Attach Medical Certificate</label>
                            <input type="file" name="leave_document"  class="form-control">
                            @if(isset($employeeleave->leave_document) && !empty($employeeleave->leave_document))
                                <img src="{{asset('public/admin/assets/img/documents/'.$employeeleave->leave_document)}}" height="150" width="150">

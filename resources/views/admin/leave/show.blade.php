@@ -41,7 +41,7 @@
                                 <label>leave type</label>
                                 <input type="text" name="leave_type_code" value="{{ isset($employeeleave->leave_type_code) ? $employeeleave->leave_type_name : '' }}" class="form-control">
                             </div>
-                            <div class="section-title">Attach Documents</div>
+                            <div class="section-title">Attach Medical Certificate</div>
                             <ul>
                               <li><a href="{{ url('public/admin/assets/img/documents').'/'. $employeeleave->leave_document }}" target="blank">Passport Copy</a></li>
                              

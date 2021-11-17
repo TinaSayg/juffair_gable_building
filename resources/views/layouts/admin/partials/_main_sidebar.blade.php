@@ -175,12 +175,15 @@
              <li><a class="nav-link" href="{{ route('room.list') }}">Add Rooms</a></li>
           </ul>
         </li>
-        <li class="dropdown">
-          <a href="/" class="menu-toggle nav-link has-dropdown"><i class="fas fa-chalkboard"></i><span>Approve Leaves</span></a>
-          <ul class="dropdown-menu">
-            <li><a class="nav-link" href="{{ route('approveleave.list') }}">Approve Leaves List</a></li>
-          </ul>
+        
+        
+        @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
+        <li class="dropdown {!! (Request::is('approveleave/*') ? "active" : "") !!}">
+          <a href="{{ route('approveleave.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Approve Leave</span></a>
         </li>
+        @endif  
+         
+  
         <li class="dropdown">
           <a href="/" class="menu-toggle nav-link has-dropdown"><i class="fas fa-chalkboard"></i><span>Notice Board</span></a>
           <ul class="dropdown-menu">

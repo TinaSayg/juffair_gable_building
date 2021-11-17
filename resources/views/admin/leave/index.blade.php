@@ -19,11 +19,19 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-           <h4>Apply Leave</h4>
+           <h4>
+              @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
+              Approve Leave
+              @else
+              Apply Leave
+              @endif
+            </h4>
              <div class="card-header-form">
-              <a href="{{ route('leave.create') }}" type="button"  class="btn btn-primary">Add leave request</a>
-              
-             </a>
+              @if(Auth::user()->userType == 'employee' )
+              <a href="{{ route('leave.create') }}" type="button"  class="btn btn-primary">Apply leave request</a>
+             
+              @endif
+            </a>
             </div>
           </div>
             <div class="card-body">
@@ -32,6 +40,10 @@
                   <thead>
                     <tr>
                       <th>#</th>
+                      @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
+                      <th>Employee Name
+                      @endif
+                    </th>
                       <th>start date</th>
                       <th>end date</th>
                       <th>apply date</th>
@@ -41,9 +53,25 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php
+                      if(Auth::user()->userType == 'employee')
+                      {
+                        $employeeleave = $employeeleave->where('staff_id', Auth::user()->id);
+                      }
+
+                    @endphp
                     @foreach($employeeleave as $key => $leave)
                     <tr>
                         <td>{{ $key+1 }}</td>
+                        @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
+                        <td>
+                          @php
+                            $staff_id = $leave->staff_id;
+                            $employee_name = \App\Models\User::where('id', $staff_id)->first()->name;
+                          @endphp
+                          {{ isset($employee_name)? $employee_name : '' }}
+                        </td>
+                        @endif
                         <td>{{ \Carbon\Carbon::parse($leave->leave_start_date)->toFormattedDateString() }}</td>
                         <td>{{ \Carbon\Carbon::parse($leave->leave_end_date)->toFormattedDateString() }}</td>
                         <td>{{ \Carbon\Carbon::parse($leave->apply_date)->toFormattedDateString() }}</td>
@@ -51,11 +79,13 @@
                         <td>{{ isset($leave->leaveStatus) ? $leave->leaveStatus->leave_status_name : '' }}</td>
                         <td>
                           <a href="#" onclick="getLeaveDetails({{ $leave->id }})"><i class="fa fa-eye mr-2"></i> </a>
+                          @if(Auth::user()->userType == 'employee' )
                           <a href="#" onclick="form_alert('leave-{{ $leave->id }}','Want to delete this leave')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
                           <a href="{{ route('leave.edit', $leave->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
                           <form action="{{ route('leave.delete', $leave->id) }}"
                             method="post" id="leave-{{ $leave->id }}">
                             @csrf @method('delete')
+                            @endif
                         </form> 
                       </td>
                     </tr>
