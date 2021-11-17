@@ -157,7 +157,7 @@ class LeavesController extends Controller
             unlink(public_path('admin/assets/img/documents/'). $employeeleave->leave_document);
             $file_name = time().'_'.trim($request->file('leave_document')->getClientOriginalName());
             
-            $image = Image::make($request->file('leave_document')->getRealPath());
+             $image = Image::make($request->file('leave_document')->getRealPath());
             $image->resize(300,200);
             $image->save(public_path('admin/assets/img/documents/'). $file_name);
             $filename= $file_name;  
