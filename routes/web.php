@@ -278,7 +278,7 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::post('/request/action/{id}', [RequestController::class, 'request_action']);
     });
      //Visitors routes
-     Route::group(['prefix' => 'visitor', 'as' => 'visitor.'], function () {
+       Route::group(['prefix' => 'visitor', 'as' => 'visitor.'], function () {
         Route::get('/visitor_list', [VisitorController::class, 'index'])->name('list');
         Route::get('/visitor/create', [VisitorController::class, 'create'])->name('create');
         Route::post('/visitor/store', [VisitorController::class, 'store'])->name('store');
@@ -331,7 +331,16 @@ Route::group(['middleware' => ['auth:web']], function() {
 
    });
 
-
+   //Approve routes
+   Route::group(['prefix' => 'approveleave', 'as' => 'approveleave.'], function () {
+    Route::get('/approveleave_list', [LeavesController::class, 'index'])->name('list');
+    Route::get('/approveleave/create', [LeavesController::class, 'create'])->name('create');
+    Route::post('/approveleave/store', [LeavesController::class, 'store'])->name('store');
+    Route::get('/approveleave/edit/{id}', [LeavesController::class, 'edit'])->name('edit');
+    Route::post('/approveleave/update/{id}', [LeavesController::class, 'update'])->name('update');
+    Route::delete('/approveleave/delete/{id}', [LeavesController::class, 'destroy'])->name('delete');
+    Route::get('/approveleave/show/{id}', [LeavesController::class, 'show'])->name('show');
+});
 
 
     Route::get('/helpdesk_list', [HelpdeskController::class, 'index'])->name('helpdesk');

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\admin;
 use Session;
 use Hash;
@@ -47,23 +46,30 @@ class LeavesController extends Controller
      */
     public function store(Request $request)
     {
+       
         $request->validate([
             'leave_start_date' => 'required',
             'leave_end_date' =>  'required' ,
             'apply_date' => 'required',
             'leave_reason' => 'required',
             'leave_type_code' => 'required',
-            'leave_document' => 'required',
-
         ], [
             'leave_start_date.required' => 'Leave start date is required!',
             'leave_end_date.required'  => 'Leave end date is required!',
             'apply_date.required' => 'Apply date is required!',
             'leave_reason.required' => 'Leave reason is required!',
             'leave_type_code.required' => 'Apply date is required!',
-            'leave_document.required' => 'Leave reason is required!',
-            
         ]);
+
+        if($request['leave_type_code'] == 1)
+        {
+            $request->validate([
+                'leave_document' => 'required',
+    
+            ], [
+                'leave_document.required' => 'Leave document is required!',
+            ]);
+        }
 
         $filename ='';
         if($request->file('leave_document'))
@@ -157,7 +163,7 @@ class LeavesController extends Controller
             unlink(public_path('admin/assets/img/documents/'). $employeeleave->leave_document);
             $file_name = time().'_'.trim($request->file('leave_document')->getClientOriginalName());
             
-            $image = Image::make($request->file('leave_document')->getRealPath());
+             $image = Image::make($request->file('leave_document')->getRealPath());
             $image->resize(300,200);
             $image->save(public_path('admin/assets/img/documents/'). $file_name);
             $filename= $file_name;  

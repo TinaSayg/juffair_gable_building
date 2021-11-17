@@ -14,5 +14,9 @@
     <td>Leave Type</td>
     <td>{{ isset($employeeleave->leave_types) ? $employeeleave->leave_types->leave_type_name : '' }}</td>
 </tr>
+<tr>
+    <td>Medical Certificate</td>
+    <td><a href="{{ url('public/admin/assets/img/documents') }}/{{ isset($employeeleave->leave_document)? $employeeleave->leave_document : '' }}" target="blank">view</a></td>
+</tr>
 
     
