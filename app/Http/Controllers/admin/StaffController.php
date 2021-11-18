@@ -212,7 +212,6 @@ class StaffController extends Controller
             'staff_present_address' => 'required',
             'staff_permanent_address' => 'required',
             'sallery' => 'required',
-            'leaves_per_month' => 'required',
             'annual_leaves' => 'required',
             'staff_cpr_no' => 'required|unique:employees,employee_cpr_no,' . $id,
             'passport_number' => 'required|unique:employees,passport_number,' . $id,
@@ -225,7 +224,6 @@ class StaffController extends Controller
         $employee->employee_name = $request->name;
         $employee->employee_mobile_phone = $request->number;
         $employee->employee_email_address =  $request->email;
-        $employee->leaves_per_month = $request['leaves_per_month'];
         $employee->annual_leaves = $request['annual_leaves'];
         $employee->employee_sallery = $request['sallery'];
         $employee->employee_present_address = $request['staff_present_address'];

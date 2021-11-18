@@ -21,7 +21,7 @@
           <div class="card-header">
            <h4>
               @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
-              Approve Leave
+              Approve Leaves
               @else
               Apply Leave
               @endif
@@ -36,7 +36,7 @@
           </div>
             <div class="card-body">
               <div class="table-responsive">
-                <table id="table-2" class="table table-striped">
+                <table id="table-2" class="table table-striped display nowrap">
                   <thead>
                     <tr>
                       <th>#</th>
@@ -76,17 +76,42 @@
                         <td>{{ \Carbon\Carbon::parse($leave->leave_end_date)->toFormattedDateString() }}</td>
                         <td>{{ \Carbon\Carbon::parse($leave->apply_date)->toFormattedDateString() }}</td>
                         <td>{{ isset($leave->leave_types) ? $leave->leave_types->leave_type_name : '' }}</td>
-                        <td>{{ isset($leave->leaveStatus) ? $leave->leaveStatus->leave_status_name : '' }}</td>
                         <td>
-                          <a href="#" onclick="getLeaveDetails({{ $leave->id }})"><i class="fa fa-eye mr-2"></i> </a>
+                          @php
+                            $class = '';
+                            switch ($leave->leave_status_code) {
+                              case 1:
+                                $class = 'badge-success';
+                                break;
+                              case 2:
+                                $class = 'badge-warning';
+                                break;
+                              default:
+                                $class = 'badge-danger';
+                                break;
+                            }
+                          @endphp
+                          <span class="badge {{ $class }}">{{ isset($leave->leaveStatus) ? $leave->leaveStatus->leave_status_name : '' }}</span>
+                        </td>
+                        <td class="d-flex">
+                          @if(Auth::user()->userType == 'Admin' OR Auth::user()->userType == 'general-manager' )
+                          <button class="btn btn-info mr-2" onclick="getLeaveDetails({{ $leave->id }})">View</button>
+                          @if($leave->leave_status_code ==2)
+                          <button class="btn btn-success mr-2 approve_leave" data-leave_id="{{ $leave->id }}" data-approve_leave="1">Approve</button>
+                          <button class="btn btn-danger disapprove_leave" data-leave_id="{{ $leave->id }}" data-disapprove_leave="3">Disapprove</button>
+                          @endif
+                          @endif
                           @if(Auth::user()->userType == 'employee' )
+                          <a href="#" onclick="getLeaveDetails({{ $leave->id }})"><i class="fa fa-eye mr-2"></i> </a>
+                          @if($leave->leave_status_code ==2)
                           <a href="#" onclick="form_alert('leave-{{ $leave->id }}','Want to delete this leave')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
                           <a href="{{ route('leave.edit', $leave->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
                           <form action="{{ route('leave.delete', $leave->id) }}"
                             method="post" id="leave-{{ $leave->id }}">
                             @csrf @method('delete')
                             @endif
-                        </form> 
+                          </form> 
+                          @endif
                       </td>
                     </tr>
                     @endforeach
@@ -99,8 +124,32 @@
       </div>
     </div>
   </section>
-{{-- maintenance cost modal --}}
-<div class="modal" id="leaveModal" tabindex="-1" role="dialog" aria-labelledby="formModal"  aria-modal="true">
+  <div class="modal" id="leaveModal" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="formModal"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="card-body">
+          <form action="{{ route('approveleave.save_leave_status') }}" method="POST" id="leaveForm">
+            @csrf
+            <input type="hidden" name="leave_status_code" id="leaveStatusInputField">
+            <input type="hidden" name="leave_id" id="leaveIdInputField">
+            <div>
+              <p class="leave_modal_message"></p>
+            </div>
+            <button type="submit" class="btn  m-t-15 waves-effect">save</button>
+          </form>
+        </div>
+    </div>
+  </div>
+  </div>
+
+{{-- leave detail modal --}}
+<div class="modal" id="leaveDetailModal" tabindex="-1" role="dialog" aria-labelledby="formModal"  aria-modal="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -113,7 +162,7 @@
         <form class="table-responsive">
           <table id="mainTable" class="table table-striped">
             <tbody>
-              @include('admin.leave.partials.leave_view_modal')
+             
             </tbody>
           </table>
       </div>
@@ -137,10 +186,38 @@
         dataType: 'json',
         success: function (data) {
             console.log(data.options)
-            $("#leaveModal tbody").html(data.html_response)
-            $("#leaveModal").modal("show")
+            $("#leaveDetailModal tbody").html(data.html_response)
+            $("#leaveDetailModal").modal("show")
         }
     });
   }
+
+  $(".approve_leave").click(function(){
+    let leave_status_code = $(this).attr('data-approve_leave')
+    let leave_id = $(this).attr('data-leave_id')
+
+    $("#leaveModal .modal-title").text("Approve Leave")
+    $("#leaveStatusInputField").val(leave_status_code)
+    $("#leaveIdInputField").val(leave_id)
+    $("#leaveModal .leave_modal_message").html('Do you want to approve ?')
+    $("#leaveForm button").removeClass("btn-danger")
+    $("#leaveForm button").addClass("btn-success")
+    $("#leaveForm button").text("Approve")
+    $("#leaveModal").modal("show")
+  })
+
+  $(".disapprove_leave").click(function(){
+    let leave_status_code = $(this).attr('data-disapprove_leave')
+    let leave_id = $(this).attr('data-leave_id')
+
+    $("#leaveModal .modal-title").text("Disapprove Leave")
+    $("#leaveStatusInputField").val(leave_status_code)
+    $("#leaveIdInputField").val(leave_id)
+    $("#leaveModal .leave_modal_message").html('Do you want to Disapprove ?')
+    $("#leaveForm button").removeClass("btn-success")
+    $("#leaveForm button").addClass("btn-danger")
+    $("#leaveForm button").text("Dispprove")
+    $("#leaveModal").modal("show")
+  })
 </script>
 @stop

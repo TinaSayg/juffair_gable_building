@@ -73,7 +73,7 @@
           <a href="{{ route('tasks.completed_task.list') }}" class="nav-link"><i class="fas fa-check-circle"></i><span>Completed Task</span></a>
         </li>
         
-        <li class="dropdown {!! (Request::is('/leave*') ? "active" : "") !!}">
+        <li class="dropdown {!! (Request::is('leave/*') ? "active" : "") !!}">
           <a href="{{ route('leave.list') }}" class="nav-link"><i class="
             fas fa-pen-alt"></i><span>Apply Leave</span></a>
         </li>
@@ -134,11 +134,7 @@
         </li> --}}
         @endif
         
-        @if(request()->user()->can('view-maintenance-cost'))
-        <li class="dropdown {!! (Request::is('maintenancecost/*') ? "active" : "") !!}">
-          <a href="{{ route('maintenancecosts.list') }}" class="nav-link"><i class="fas fas fa-toolbox"></i><span>Maintenance Costs</span></a>
-        </li>
-        @endif
+       
         
         {{-- @if(request()->user()->can('view-security-deposit'))
         <li class="dropdown {!! (Request::is('securitydeposit/*') ? "active" : "") !!}">
@@ -180,28 +176,32 @@
         @endif
 
         @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
-        <li class="dropdown">
+        {{-- <li class="dropdown">
           <a href="/" class="menu-toggle nav-link has-dropdown"><i class="fas fa-check-square"></i><span>Reservations</span></a> 
           <ul class="dropdown-menu">
             <li><a class="nav-link" href="{{ route('reservation.list') }}">Reservation Details</a></li>
              <li><a class="nav-link" href="{{ route('room.list') }}">Add Rooms</a></li>
           </ul>
-        </li>
+        </li> --}}
         
         
         @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
         <li class="dropdown {!! (Request::is('approveleave/*') ? "active" : "") !!}">
-          <a href="{{ route('approveleave.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Approve Leave</span></a>
+          <a href="{{ route('approveleave.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Approve Leaves</span></a>
         </li>
         @endif  
          
-  
-        <li class="dropdown">
+        @if(request()->user()->can('view-maintenance-cost'))
+        <li class="dropdown {!! (Request::is('maintenancecost/*') ? "active" : "") !!}">
+          <a href="{{ route('maintenancecosts.list') }}" class="nav-link"><i class="fas fas fa-toolbox"></i><span>Maintenance Costs</span></a>
+        </li>
+        @endif
+        {{-- <li class="dropdown">
           <a href="/" class="menu-toggle nav-link has-dropdown"><i class="fas fa-chalkboard"></i><span>Notice Board</span></a>
           <ul class="dropdown-menu">
             <li><a class="nav-link" href="{{ route('notice.list') }}">Notice List</a></li>
           </ul>
-        </li>
+        </li> --}}
         @endif
         {{--<li class="dropdown">
           <a href="/" class="menu-toggle nav-link has-dropdown"><i class="far fa-user"></i><span>Complaints & Suggestions</span></a>
@@ -235,7 +235,7 @@
         </li> --}}
         @if(request()->user()->can('view-role-and-permission'))
         <li  class="dropdown {!! (Request::is('role/list') ? "active" : "") !!} {!! (Request::is('role/create') ? "active" : "") !!} {!! (Request::is('role/edit/*') ? "active" : "") !!} {!! (Request::is('module/list') ? "active" : "") !!} {!! (Request::is('module/create') ? "active" : "") !!} {!! (Request::is('module/edit/*') ? "active" : "") !!} {!! (Request::is('permission/list') ? "active" : "") !!} {!! (Request::is('permission/create') ? "active" : "") !!} {!! (Request::is('permission/edit/*') ? "active" : "") !!} {!! (Request::is('role/assign-permission/*') ? "active" : "") !!}" >
-          <a href="#" class="menu-toggle nav-link has-dropdown role-permission-dropdown"><i class="fas fa-user-shield"></i><span>Roles & Permission</span></a>
+          <a href="#" style="display: none" class="menu-toggle nav-link has-dropdown role-permission-dropdown"><i class="fas fa-user-shield"></i><span>Roles & Permission</span></a>
           <ul class="dropdown-menu">
               <li><a class="nav-link" href="{{ route('role.list') }}">Roles</a></li>
               

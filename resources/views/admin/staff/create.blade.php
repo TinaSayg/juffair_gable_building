@@ -90,10 +90,7 @@ Juffair Gable
                            </div>
                         </div>
                      </div>
-                     <div class="form-group col-md-4">
-                        <label>Total Leaves Per Month</label>
-                        <input type="text" name="leaves_per_month" class="form-control" id="leaves_per_month"></input>
-                     </div>
+                     
                      <div class="form-group col-md-4">
                         <label>Annual Leaves</label>
                         <input type="text" name="annual_leaves" class="form-control" id="annual_leaves"></input>

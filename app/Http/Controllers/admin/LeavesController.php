@@ -1,8 +1,11 @@
 <?php
 namespace App\Http\Controllers\admin;
-use Session;
 use Hash;
 use Image;
+use Session;
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Employee;
 use App\Models\LeaveType;
 use App\Models\LeaveStatus;
 use Illuminate\Http\Request;
@@ -197,5 +200,92 @@ class LeavesController extends Controller
 
         Toastr::success('Leave deleted successfully!');
         return back();
+    }
+
+    public function save_leave_status(Request $request)
+    {
+        $id = $request->input("leave_id");
+        $leave_status_code = $request->input("leave_status_code");
+
+        $leave = EmployeeLeaves::find($id);
+
+        if($leave_status_code == 3) 
+        {
+            $leave->leave_status_code = 3; // dissapprove
+            if($leave->save())
+            {
+                Toastr::success('This leave request is disapproved.');
+                return back();
+
+            }
+            else
+            {
+                Toastr::error('Something went wrong.');
+                return back();
+            }
+        }
+        else
+        {
+            $email = User::where('id', $leave->staff_id)->first()->email;
+            $employee_detail = Employee::where('employee_email_address', $email)->first();
+
+            $leave_apply_date = Carbon::parse($leave->apply_date);
+            $employee_contract_start_date = Carbon::parse($employee_detail->employee_start_datetime);
+            $employee_contract_end_date = Carbon::parse($employee_detail->employee_end_datetime);
+            
+            if($leave->leave_type_code == 2) //vaction leave
+            {
+                if($leave_apply_date->gt($employee_contract_start_date) && $leave_apply_date->lt($employee_contract_end_date))
+                {
+                    $leave_start_date = Carbon::parse($leave->leave_start_date);
+                    $leave_end_date = Carbon::parse($leave->leave_end_date);
+    
+                    //leave taken days
+                    $leave_taken = $leave_start_date->diffInDays($leave_end_date);
+    
+                    //leave taken contract years
+                    $leave_contract_years = Carbon::parse($employee_contract_start_date)->format('Y'). '-'. Carbon::parse($employee_contract_end_date)->format('Y');
+                    
+                    $leave->leave_status_code = 1; // approved
+                    $leave->leaves_taken = $leave_taken;
+                    $leave->leaves_taken_year = $leave_contract_years;
+    
+                    if($leave->save())
+                    {
+                        Toastr::success('This leave request is approved.');
+                        return back();
+    
+                    }
+                    else
+                    {
+                        Toastr::error('Something went wrong.');
+                        return back();
+                    }
+                    
+                }
+                else
+                {
+                    Toastr::error('Employee contract period is finished.');
+                    return back();
+                }
+
+            }
+            else
+            {
+                $leave->leave_status_code = 1; // approved
+                if($leave->save())
+                {
+                    Toastr::success('This leave request is approved.');
+                    return back();
+
+                }
+                else
+                {
+                    Toastr::error('Something went wrong.');
+                    return back();
+                }
+            }
+            
+        }
     }
 }

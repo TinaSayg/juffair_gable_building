@@ -23,6 +23,9 @@ class CreateEmployeeLeavesTable extends Migration
             $table->integer('leave_type_code');
             $table->string('leave_document');
             $table->Integer('staff_id');
+
+            $table->Integer('leaves_taken')->nullable();
+            $table->string('leaves_taken_year')->nullable();
             $table->timestamps();
         });
     }

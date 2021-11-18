@@ -19,7 +19,7 @@ class CreateLeaveStatusesTable extends Migration
             $table->integer('leave_status_code');
         });
         DB::table('leave_statuses')->insert(array('leave_status_id' => '1',
-        'leave_status_name' => 'Approve',
+        'leave_status_name' => 'Approved',
         'leave_status_code' => '1'));
 
         DB::table('leave_statuses')->insert(array('leave_status_id' => '2',
@@ -27,7 +27,7 @@ class CreateLeaveStatusesTable extends Migration
                 'leave_status_code' => '2'));
 
         DB::table('leave_statuses')->insert(array('leave_status_id' => '3',
-                'leave_status_name' => 'Disapprove',
+                'leave_status_name' => 'Disapproved',
                 'leave_status_code' => '3'));
     }
     

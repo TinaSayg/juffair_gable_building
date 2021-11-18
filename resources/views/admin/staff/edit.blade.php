@@ -112,10 +112,7 @@ Juffair Gable
                            @endif  
                         </div>
                      </div>
-                     <div class="form-group col-md-4">
-                        <label>Total Leaves Per Month</label>
-                        <input type="text" value="{{ isset($staffData['leaves_per_month']) ? $staffData['leaves_per_month'] : '' }}" name="leaves_per_month" class="form-control" id="leaves_per_month"></input>
-                     </div>
+                     
                      <div class="form-group col-md-4">
                         <label>Annual Leaves</label>
                         <input type="text" value="{{ isset($staffData['annual_leaves']) ? $staffData['annual_leaves'] : '' }}" name="annual_leaves" class="form-control" id="annual_leaves"></input>

@@ -113,7 +113,7 @@
                   <div class="section-title">Leave Details</div>
 
                   <ul>
-                    <li>Leave Per Month: {{isset($employee) ? $employee->leaves_per_month : '' }}</li>
+                    <li>Leave Per Month: {{isset($employee) ? round($employee->annual_leaves/12,1) : '' }}</li>
                     <li>Annual Leaves: {{isset($employee) ? $employee->annual_leaves : '' }}</li>
                   </ul>
                   <div class="section-title">Documents</div>

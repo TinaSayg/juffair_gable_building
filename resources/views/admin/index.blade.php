@@ -170,7 +170,7 @@ Juffair Gable
           $employee_detail = \App\Models\Employee::where('employee_email_address', $email)->first();
         @endphp
         <div class="col-lg-3 col-sm-6">
-          <div class="card card-box">
+          <div class="card card-box" style="padding: 10px 15px !important">
             <div class="card-statistic-4">
               <div class="info-box7-block">
                 <h6 class="m-b-20 text-right">Passport number</h6>
@@ -182,7 +182,7 @@ Juffair Gable
           </div>
         </div>
         <div class="col-lg-3 col-sm-6">
-          <div class="card card-box">
+          <div class="card card-box" style="padding: 10px 15px !important">
             <div class="card-statistic-4">
               <div class="info-box7-block">
                 <h6 class="m-b-20 text-right">Phone number</h6>
@@ -229,12 +229,56 @@ Juffair Gable
             </div>
           </div>
         </div>
+        @php
+            $email = \App\Models\User::where('id', Auth::user()->id)->first()->email;
+            $employee_detail = \App\Models\Employee::where('employee_email_address', $email)->first();
+      
+            $employee_contract_start_date = \Illuminate\Support\Carbon::parse($employee_detail->employee_start_datetime);
+            $employee_contract_end_date = Illuminate\Support\Carbon::parse($employee_detail->employee_end_datetime);
+            $annual_leaves = $employee_detail->annual_leaves;
+           
+            //leave taken contract years
+            $leave_contract_years = Illuminate\Support\Carbon::parse($employee_contract_start_date)->format('Y'). '-'. Illuminate\Support\Carbon::parse($employee_contract_end_date)->format('Y');
+           
+            $leaves_taken = 0;
+            $leaves = \App\Models\EmployeeLeaves::where('staff_id', Auth::user()->id)->where('leaves_taken_year', $leave_contract_years)->pluck('leaves_taken');
+            
+            if($leaves->count() > 0)
+            {
+              $leaves_taken = array_sum($leaves->toArray());
+            }
+           
+        @endphp
+        <div class="col-lg-3 col-sm-6">
+          <div class="card card-box" >
+            <div class="card-statistic-4">
+              <div class="info-box7-block">
+                <h6 class="m-b-20 text-right">Leaves Taken</h6>
+                <h4 class="text-right"><i class="fas fa-clock pull-left bg-cyan c-icon mt-4"></i><span>{{ $leaves_taken }} </span>
+                </h4>
+                <a href="{{ route('leave.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+          <div class="card card-box">
+            <div class="card-statistic-4">
+              <div class="info-box7-block">
+                <h6 class="m-b-20 text-right">Earned Leaves</h6>
+                <h4 class="text-right"><i class="fas fa-clock pull-left bg-cyan c-icon mt-4"></i><span>{{ $annual_leaves-$leaves_taken }} </span>
+                </h4>
+                <a href="{{ route('leave.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="row">
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-            <h4>Pending Tasks</h4>
+            <h4>Assigned Task</h4>
             </div>
               
               <div class="card-body">

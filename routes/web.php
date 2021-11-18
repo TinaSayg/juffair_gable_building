@@ -334,12 +334,7 @@ Route::group(['middleware' => ['auth:web']], function() {
    //Approve routes
    Route::group(['prefix' => 'approveleave', 'as' => 'approveleave.'], function () {
     Route::get('/approveleave_list', [LeavesController::class, 'index'])->name('list');
-    Route::get('/approveleave/create', [LeavesController::class, 'create'])->name('create');
-    Route::post('/approveleave/store', [LeavesController::class, 'store'])->name('store');
-    Route::get('/approveleave/edit/{id}', [LeavesController::class, 'edit'])->name('edit');
-    Route::post('/approveleave/update/{id}', [LeavesController::class, 'update'])->name('update');
-    Route::delete('/approveleave/delete/{id}', [LeavesController::class, 'destroy'])->name('delete');
-    Route::get('/approveleave/show/{id}', [LeavesController::class, 'show'])->name('show');
+    Route::post('/save_leave_status', [LeavesController::class, 'save_leave_status'])->name('save_leave_status');
 });
 
 
