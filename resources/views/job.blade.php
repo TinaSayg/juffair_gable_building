@@ -176,9 +176,11 @@
                 height: 50%;
             }
             .team-img1{
-                height: 765px;
+                height: 800px;
             }
-            
+            .iti--allow-dropdown{
+                width:100%;
+            }
          </style>
     </head>
    <body>
@@ -231,44 +233,82 @@
                 <div class="row">
                   <div class="col-6 col-md-6 col-lg-6">
                     <div class="card">
-
+                    @if(session()->has('message'))
+                        <div class="alert alert-success">
+                            {{ session()->get('message') }}
+                        </div>
+                    @endif
                     <form method="POST" action="{{ route('save_job_info') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="card-body">
                           <h1>Application Form</h1>
                         <div class="form-group ">
                           <label>First Name</label>
-                          <input type="text" name="first_name" class="form-control">
+                          <input type="text" name="first_name" class="form-control  @error('first_name') is-invalid @enderror">
+                          @error('first_name')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
                         </div>
                         <div class="form-group">
                             <label>Last Name</label>
-                            <input type="text" name="last_name" class="form-control">
-                          </div>
+                            <input type="text" name="last_name" class="form-control @error('last_name') is-invalid @enderror">
+                            @error('last_name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                        </div>
                         <div class="form-group">
                           <label>Address</label>
-                          <textarea name="address" class="form-control"></textarea>
+                          <textarea name="address" class="form-control @error('address') is-invalid @enderror"></textarea>
+                          @error('address')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
                         </div>
                         <div class="form-group">
                           <label>Date Of Birth</label>
-                          <input type="date" name="date_of_birth" class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>Email</label>
-                          <input type="email"  class="form-control">
-                        </div>
-                        <div class="form-group">
-                          <label>Attach CV</label>
-                          <input type="file" name="cv" class="form-control">
+                          <input type="date" name="date_of_birth" class="form-control @error('date_of_birth') is-invalid @enderror"></textarea>
+                          @error('date_of_birth')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
                         </div>
                         
                         <div class="form-group">
+                          <label>Email</label>
+                          <input type="email" name="email_address"  class="form-control  @error('email_address') is-invalid @enderror">
+                          @error('email_address')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
+                        </div>
+                        <div class="form-group">
                             <label>Phone</label>
-                            <input type="tel" id="phone" name="phone"  class="form-control">
+                            <input type="tel" id="phone" name="phone"  class="form-control  @error('phone') is-invalid @enderror">
+                            @error('phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                          <label>Attach CV</label>
+                          <input type="file" name="cv" class="form-control  @error('cv') is-invalid @enderror">
+                          @error('cv')
+                          <span class="invalid-feedback" role="alert">
+                              <strong>{{ $message }}</strong>
+                          </span>
+                      @enderror
                         </div>
                         <div class="card-footer text-right">
                         <button class="btn btn-primary mr-1" type="submit">Submit</button>
                     </form>
-                    
                         </div>
                     </div>
                 </div>
@@ -402,26 +442,27 @@
       <script>
       var input = document.querySelector("#phone");
       window.intlTelInput(input, {
-      // allowDropdown: false,
-      // autoHideDialCode: false,
-      // autoPlaceholder: "off",
-      // dropdownContainer: document.body,
-      // excludeCountries: ["us"],
-      // formatOnDisplay: false,
-      // geoIpLookup: function(callback) {
-      //   $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
-      //     var countryCode = (resp && resp.country) ? resp.country : "";
-      //     callback(countryCode);
-      //   });
-      // },
-      // hiddenInput: "full_number",
-      // initialCountry: "auto",
-      // localizedCountries: { 'de': 'Deutschland' },
-      // nationalMode: false,
-      // onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
-      // placeholderNumberType: "MOBILE",
-      // preferredCountries: ['cn', 'jp'],
-      // separateDialCode: true,
+    //   allowDropdown: false,
+    //   autoHideDialCode: true,
+      autoPlaceholder: "On",
+    //   dropdownContainer: document.body,
+    //   excludeCountries: ["us"],
+    //   formatOnDisplay: true,
+      geoIpLookup: function(callback) {
+        $.get("http://ipinfo.io", function() {}, "jsonp").always(function(resp) {
+          var countryCode = (resp && resp.country) ? resp.country : "";
+          callback(countryCode);
+        });
+      },
+    //   hiddenInput: "full_number",
+    //   initialCountry: "auto",
+    //   localizedCountries: { 'de': 'Deutschland' },
+    //   nationalMode: false,
+    //   onlyCountries: ['us', 'gb', 'ch', 'ca', 'do'],
+      placeholderNumberType: "MOBILE",
+    //   preferredCountries: ['cn', 'jp'],
+      separateDialCode: true,
+      
       utilsScript: "build/js/utils.js",
     });
   </script>
