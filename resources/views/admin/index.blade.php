@@ -168,6 +168,7 @@ Juffair Gable
         @php
           $email = Auth::user()->email;
           $employee_detail = \App\Models\Employee::where('employee_email_address', $email)->first();
+         
         @endphp
         <div class="col-lg-3 col-sm-6">
           <div class="card card-box" style="padding: 10px 15px !important">
