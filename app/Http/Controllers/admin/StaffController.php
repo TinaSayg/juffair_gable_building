@@ -6,6 +6,7 @@ use Image;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Employee;
+use App\Models\StaffDetail;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,7 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $staffs=User::with('staffDetail')->whereIn('userType',['employee','officer'])->get()->except(Auth::id())->toArray();
+        $staffs=User::with('StaffDetail')->whereIn('userType',['employee','officer'])->get()->except(Auth::id())->toArray();
         
         return view('admin.staff.index', compact('staffs'));
     }
@@ -60,7 +61,6 @@ class StaffController extends Controller
             'staff_date_of_birth' => 'required',
             'staff_present_address' => 'required',
             'staff_permanent_address' => 'required',
-            'leaves_per_month' => 'required',
             'annual_leaves' => 'required',
             'sallery' => 'required',
             'staff_cpr_no' => 'required|unique:employees,employee_cpr_no',
@@ -71,7 +71,7 @@ class StaffController extends Controller
             'staff_cpr_copy' => 'required',
             'staff_contract_copy' => 'required',
         ]);
-
+        
         $staff = new User();
         $staff->name = $request->name;
         $staff->number = $request->number;
@@ -80,18 +80,17 @@ class StaffController extends Controller
         $staff->userType = $request->staffType;
         $staff->address='';
         $staff->status=1;
-
+        
         //save owner image
         if($request->file('staff_image'))
         {
             $file_name = time().'_'.trim($request->file('staff_image')->getClientOriginalName());
-            
             $image = Image::make($request->file('staff_image')->getRealPath());
             $image->resize(300,300);
             $image->save(public_path('admin/assets/img/staff/'). $file_name);
             $staff->image = $file_name;
         }
-
+        
         if($staff->save())
         {
             $employee = new Employee();
@@ -99,7 +98,6 @@ class StaffController extends Controller
             $employee->employee_mobile_phone = $request->number;
             $employee->employee_email_address =  $request->email;;
             $employee->employee_sallery = $request['sallery'];
-            $employee->leaves_per_month = $request['leaves_per_month'];
             $employee->annual_leaves = $request['annual_leaves'];
             $employee->employee_present_address = $request['staff_present_address'];
             $employee->employee_permanent_address = $request['staff_permanent_address'];

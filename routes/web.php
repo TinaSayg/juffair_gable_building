@@ -19,10 +19,10 @@ use App\Http\Controllers\admin\NoticeController;
 
 use App\Http\Controllers\admin\TenantController;
 
-use App\Http\Controllers\Admin\RequestController;
+use App\Http\Controllers\admin\RequestController;
 
 use App\Http\Controllers\admin\ServiceController;
-use App\Http\Controllers\Admin\LeavesController;
+use App\Http\Controllers\admin\LeavesController;
 use App\Http\Controllers\admin\VisitorController;
 use App\Http\Controllers\admin\EmployeeController;
 use App\Http\Controllers\admin\HelpdeskController;
