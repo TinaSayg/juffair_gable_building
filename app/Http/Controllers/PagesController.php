@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Image;
 use App\Models\Unit;
 use App\Models\Building;
+use App\Models\JobOpportunities;
 use App\Models\FloorType;
 use App\Models\FloorDetail;
 use Illuminate\Http\Request;
+use Brian2694\Toastr\Facades\Toastr;
+
 
 class PagesController extends Controller
 {
@@ -77,7 +80,49 @@ class PagesController extends Controller
             'options1' => $res1,
         ]);
     }
-
+    public function save_job_info(Request  $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' =>  'required' ,
+            'address' => 'required',
+            'date_of_birth' => 'required',
+            'email_address' =>  'required|email|unique:job_opportunities,email_address',
+            'phone' =>  'required|unique:job_opportunities,phone',
+            'cv' => 'required',
+        ], [
+            'first_name.required' => 'First Name is required!',
+            'last_name.required'  => 'Last Name  is required!',
+            'address.required' => 'Address is required!',
+            'date_of_birth.required' => 'Date of birth is required!',
+            'email_address.required' => 'Email is required!',
+            'phone.required' =>  'Phone is required',
+            'cv' => 'cv required!',
+        ]);
+        
+        $filename ='';
+        if($request->file('cv'))
+        {
+            $file_name = time().'_'.trim($request->file('cv')->getClientOriginalName());
+            
+            $image = Image::make($request->file('cv')->getRealPath());
+            $image->resize(300,200);
+            $image->save(public_path('admin/assets/img/documents/'). $file_name);
+            $filename= $file_name;  
+        }
+       
+        $jobopprotunities = new JobOpportunities();
+        $jobopprotunities->first_name = $request['first_name'];
+        $jobopprotunities->last_name = $request['last_name'];
+        $jobopprotunities->address = $request['address'];
+        $jobopprotunities->date_of_birth = $request['date_of_birth'];
+        $jobopprotunities->email_address = $request['email_address'];
+        $jobopprotunities->phone = $request['phone'];
+        $jobopprotunities->cv = $request['cv'];
+        $jobopprotunities->save();
+       return redirect()->back()->with('message', 'Application submitted successfully!We will contact you soon!');
+    }
+        
     public function fetch_units($floor_id)
     {
         
