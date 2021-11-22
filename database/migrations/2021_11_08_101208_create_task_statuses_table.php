@@ -21,12 +21,16 @@ class CreateTaskStatusesTable extends Migration
 
          // Insert Pre-populated Table Values
          DB::table('task_statuses')->insert(array('task_status_id' => '1',
-         'task_status_name' => 'Pending',
+         'task_status_name' => 'Assigned',
          'task_status_code' => '1'));
 
          DB::table('task_statuses')->insert(array('task_status_id' => '2',
-                'task_status_name' => 'Completed',
+                'task_status_name' => 'In progress',
                 'task_status_code' => '2'));
+
+         DB::table('task_statuses')->insert(array('task_status_id' => '3',
+                'task_status_name' => 'Completed',
+                'task_status_code' => '3'));
     }
 
     /**

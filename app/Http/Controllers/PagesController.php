@@ -75,6 +75,7 @@ class PagesController extends Controller
                 $res1 .= '<option value="' . $unit->id . '"  >' . $unit->unit_number . '</option>';
             }
         }
+        
         return response()->json([
             'options' => $res,
             'options1' => $res1,

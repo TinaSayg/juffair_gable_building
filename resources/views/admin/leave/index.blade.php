@@ -102,16 +102,29 @@
                           @endif
                           @endif
                           @if(Auth::user()->userType == 'employee' )
-                          <a href="#" onclick="getLeaveDetails({{ $leave->id }})"><i class="fa fa-eye mr-2"></i> </a>
-                          @if($leave->leave_status_code ==2)
+                          {{-- <a href="#" onclick="getLeaveDetails({{ $leave->id }})"><i class="fa fa-eye mr-2"></i> </a> --}}
+                          <div class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">Options</a>
+                            <div class="dropdown-menu">
+                              <a href="#" class="dropdown-item has-icon" onclick="getLeaveDetails({{ $leave->id }})"><i class="fas fa-eye"></i> View</a>
+                              @if($leave->leave_status_code ==2)
+                              <a href="{{ route('leave.edit', $leave->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
+                              <div class="dropdown-divider"></div>
+                              <a href="#" onclick="form_alert('leave-{{ $leave->id }}','Want to delete this leave')" class="dropdown-item has-icon text-danger"><i class="far fa-trash-alt"></i>
+                                Delete</a>
+                              @endif
+                            </div>
+                            <form action="{{ route('leave.delete', $leave->id) }}"
+                              method="post" id="leave-{{ $leave->id }}">
+                              @csrf @method('delete')
+                              @endif
+                            </form> 
+                          </div>
+                          {{-- @if($leave->leave_status_code ==2)
                           <a href="#" onclick="form_alert('leave-{{ $leave->id }}','Want to delete this leave')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
                           <a href="{{ route('leave.edit', $leave->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                          <form action="{{ route('leave.delete', $leave->id) }}"
-                            method="post" id="leave-{{ $leave->id }}">
-                            @csrf @method('delete')
-                            @endif
-                          </form> 
-                          @endif
+                          
+                          @endif --}}
                       </td>
                     </tr>
                     @endforeach

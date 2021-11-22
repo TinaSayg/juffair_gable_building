@@ -18,6 +18,9 @@ Juffair Gable
     table.dataTable td, table.dataTable th {
         vertical-align: middle;
     }
+    tr:hover {
+    background: #a3a3a3 !important;
+   }
 </style>
 @stop
 @section('content')
@@ -50,7 +53,7 @@ Juffair Gable
                       <tr>
                         <th>Name</th>
                         <th>Conctact No</th>
-                        <th>image</th>
+                        <th>Image</th>
                         <th>Email</th>
                         <th>Designation</th>
                         <th>Action</th>
@@ -58,18 +61,18 @@ Juffair Gable
                     </thead>
                     <tbody>
                     @foreach ($staffs as $staff)
-                    <tr>
-                        <td> {{ $staff['name'] }}</td>
-                        <td>{{ $staff['number'] }}</td>
-                        <td>
-                            @if(!empty($staff['image']))
-                            <img src="{{ asset('public/admin/assets/img/staff')}}/{{ $staff['image'] }}" alt="" width="100" height="100">
-                            @else
-                            <img src="{{asset('public/admin/assets/img/staff/no-image.png')}}" alt="" width="100" height="100">
-                            @endif
+                    <tr style="cursor:pointer">
+                    <td data-href='{{ route('staff.show',$staff['id']) }}'> {{ $staff['name'] }}</td>
+                    <td data-href='{{ route('staff.show',$staff['id']) }}'>{{ $staff['number'] }}</td>
+                    <td data-href='{{ route('staff.show',$staff['id']) }}'>
+                        @if(!empty($staff['image']))
+                        <img src="{{ asset('public/admin/assets/img/staff')}}/{{ $staff['image'] }}" alt="" width="100" height="100">
+                        @else
+                        <img src="{{asset('public/admin/assets/img/staff/no-image.png')}}" alt="" width="100" height="100">
+                        @endif
                       </td>
-                      <td>{{ $staff['email']}}</td>
-                      <td>{{ $staff['userType'] }}</td>
+                      <td data-href='{{ route('staff.show',$staff['id']) }}'>{{ $staff['email']}}</td>
+                      <td data-href='{{ route('staff.show',$staff['id']) }}'>{{ $staff['userType'] }}</td>
                        
                         {{-- <td>
                             @if($staff['status'] ==1)
@@ -79,16 +82,25 @@ Juffair Gable
                             @endif
                         </td> --}}
                         <td>
-                            <a href="{{ route('staff.show',$staff['id']) }}"><i class="fa fa-eye mr-2" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                            @if(request()->user()->can('edit-staff'))
-                                <a title="Edit Staff"  href="{{ route('staff.edit', $staff['id']) }}"><i class="fas fa-edit"></i></a>&nbsp;&nbsp;
-                            @endif
+                            <div class="dropdown">
+                                <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                                <div class="dropdown-menu">
+                                <a href="{{ route('staff.show',$staff['id']) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
+                                @if(request()->user()->can('edit-staff'))
+                                <a href="{{ route('staff.edit', $staff['id']) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
+                                @endif
+                                @if(request()->user()->can('delete-staff'))
+                                <div class="dropdown-divider"></div>
+                                <a href="#" onclick="form_alert('staff-{{ $staff['id'] }}','Want to delete this staff')" class="dropdown-item has-icon text-danger"><i class="far fa-trash-alt"></i>
+                                    Delete</a>
+                                </div>
+                                @endif
+                            </div>
                             @if(request()->user()->can('delete-staff'))
-                                <a title="delete Staff" href="#" onclick="form_alert('staff-{{ $staff['id'] }}','Want to delete this staff')" class="confirmDelete"><i class="fas fa-trash text-danger"></i></a>
-                                <form action="{{ route('staff.delete', $staff['id']) }}"
+                            <form action="{{ route('staff.delete', $staff['id']) }}"
                                     method="post" id="staff-{{ $staff['id'] }}">
                                     @csrf @method('delete')
-                                </form>
+                            </form>
                             @endif
                         </td>
                       </tr>  
@@ -115,4 +127,9 @@ Juffair Gable
 <script src="{{asset('public/admin/assets/bundles/datatables/export-tables/vfs_fonts.js')}}"></script>
 <script src="{{asset('public/admin/assets/bundles/datatables/export-tables/buttons.print.min.js')}}"></script>
 <script src="{{asset('public/admin/assets/js/page/datatables.js')}}"></script>
+<script>
+    $("tr td:not(:last-child)").click(function() {
+        window.location = $(this).data("href");
+    });
+</script>
 @stop

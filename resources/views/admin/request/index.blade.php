@@ -85,22 +85,18 @@
                       </td>
                      
                       <td>
-                        
-                        <a href="#" data-toggle="tooltip" data-placement="top" onclick="getComplainDetails({{ $complain->id }})" title="View Detail"><i class="fa fa-eye mr-2"></i> </a>
-                        @if(Auth::user()->userType != 'employee' && Auth::user()->userType != 'tenant')
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Delete" onclick="form_alert('complain-{{ $complain->id }}','Want to delete this Complaint')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                        @endif
-                        
-                        {{-- <a data-toggle="tooltip" data-placement="top" title="Edit" href="{{ route('complains.edit', $complain->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a> --}}
-                        <a href="#" data-toggle="tooltip" data-complain_id="{{ $complain->id }}" data-placement="top" title="Add Solution"><i class="
-                          fas fa-thumbs-up mr-2"></i> </a>
-                        
-                        @if(Auth::user()->userType != 'employee' && Auth::user()->userType != 'tenant')
-                        <form action="{{ route('complains.delete', $complain->id) }}"
-                            method="post" id="complain-{{ $complain->id }}">
-                            @csrf @method('delete')
-                        </form> 
-                        @endif
+                        <div class="dropdown">
+                          <a href="#" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">Options</a>
+                          <div class="dropdown-menu">
+                            <a href="#" class="dropdown-item has-icon" onclick="getComplainDetails({{ $complain->id }})"><i class="fas fa-eye"></i> View</a>
+                            <a href="#" class="dropdown-item has-icon add-solution"><i class="fas fa-thumbs-up"></i> Add Solutin</a>
+                            <div class="dropdown-divider"></div>
+                            @if(Auth::user()->userType != 'employee' && Auth::user()->userType != 'tenant')
+                            <a href="#" class="dropdown-item has-icon text-danger" onclick="form_alert('complain-{{ $complain->id }}','Want to delete this Complaint')"><i class="far fa-trash-alt"></i>
+                              Delete</a>
+                            @endif
+                          </div>
+                        </div>
                       </td>
                     </tr>
                     @endforeach
@@ -204,7 +200,7 @@
 <script src="{{ asset('public/admin/assets/') }}/js/page/datatables.js"></script>
 
 <script>
-  $(".fa-thumbs-up").on("click", function(){
+  $(".add-solution").on("click", function(){
     let complain_id = $(this).parent().attr("data-complain_id")
     $("#solutionComplainInputField").val(complain_id)
     $("#solutionModal").modal("show")

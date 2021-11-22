@@ -6,7 +6,9 @@
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/datatables.min.css">
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
 <style>
-   
+   tr:hover {
+    background: #a3a3a3 !important;
+   }
 </style>
 @stop
 @section('content')
@@ -36,7 +38,7 @@
                       <th>#</th>
                       <th>Maintenance Title</th>
                       <th>Description</th>
-                      <th>date</th>
+                      <th>Date</th>
                       <th>Total Amount</th>
                      
                       <th>Actions</th>
@@ -44,26 +46,35 @@
                   </thead>
                   <tbody>
                     @foreach($maintenancecosts as $key => $maintenancecost)
-                    <tr>
-                        <td>{{ $key+1 }}</td>
-                        <td>{{ $maintenancecost->maintenance_title }}</td>
-                        <td>{{ $maintenancecost->maintenance_description}}</td>
-                        <td>{{ \Carbon\Carbon::parse($maintenancecost->maintenance_date)->toFormattedDateString() }}</td>
-                        <td>{{ $maintenancecost->maintenance_cost_total_amount}}</td>
+                    <tr style="cursor:pointer;">
+                        <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ $key+1 }}</td>
+                        <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ $maintenancecost->maintenance_title }}</td>
+                        <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ $maintenancecost->maintenance_description}}</td>
+                        <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ \Carbon\Carbon::parse($maintenancecost->maintenance_date)->toFormattedDateString() }}</td>
+                        <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ $maintenancecost->maintenance_cost_total_amount}}</td>
                         <td>
-                          @if(request()->user()->can('view-maintenance-cost'))
-                          <a href="#" onclick="getMaintenancecostDetails({{ $maintenancecost->id }})"><i class="fa fa-eye mr-2"></i> </a>
-                          @endif
+                          <div class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                            <div class="dropdown-menu">
+                              @if(request()->user()->can('view-maintenance-cost'))
+                              <a href="#" onclick="getMaintenancecostDetails({{ $maintenancecost->id }})" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
+                              @endif
+                              @if(request()->user()->can('edit-maintenance-cost'))
+                              <a href="{{ route('maintenancecosts.edit', $maintenancecost->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
+                              @endif
+                              @if(request()->user()->can('delete-maintenance-cost'))
+                              <div class="dropdown-divider"></div>
+                              <a href="#" onclick="form_alert('maintenancecosts-{{ $maintenancecost->id }}','Want to delete this maintenance cost')" class="dropdown-item has-icon text-danger"><i class="far fa-trash-alt"></i>
+                                Delete</a>
+                              @endif
+                            </div>
+                          </div>
                           @if(request()->user()->can('delete-maintenance-cost'))
-                          <a href="#" onclick="form_alert('maintenancecosts-{{ $maintenancecost->id }}','Want to delete this maintenance cost')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                          @endif
-                          @if(request()->user()->can('edit-maintenance-cost'))
-                          <a href="{{ route('maintenancecosts.edit', $maintenancecost->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                          @endif
                           <form action="{{ route('maintenancecosts.delete', $maintenancecost->id) }}"
-                            method="post" id="maintenancecosts-{{ $maintenancecost->id }}">
-                            @csrf @method('delete')
-                        </form> 
+                              method="post" id="maintenancecosts-{{ $maintenancecost->id }}">
+                              @csrf @method('delete')
+                          </form>
+                          @endif
                       </td>
                     </tr>
                     @endforeach

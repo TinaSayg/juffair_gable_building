@@ -15,8 +15,8 @@ class CreateTasksTable extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
             $table->longText('description');
+            $table->string('comments', 500)->nullable();
 
             $table->dateTime('assign_date');
             $table->string('assign_time');
@@ -26,6 +26,14 @@ class CreateTasksTable extends Migration
 
             $table->integer('assignor_id');
             $table->integer('assignee_id');
+            $table->integer('location_id');
+
+            $table->integer('floor_id')->nullable();
+            $table->integer('unit_id')->nullable();
+
+            $table->integer('common_area_id')->nullable();
+            $table->integer('service_area_id')->nullable();
+
             $table->integer('task_status_code');
 
             $table->timestamps();

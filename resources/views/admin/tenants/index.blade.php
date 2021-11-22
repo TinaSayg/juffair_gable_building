@@ -8,7 +8,9 @@ Juffair Gable
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/datatables.min.css">
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
 <style>
-   
+   tr:hover {
+    background: #a3a3a3 !important;
+   }
 </style>
 @stop
 @section('content')
@@ -53,27 +55,32 @@ Juffair Gable
                   </thead>
                   <tbody>
                     @foreach($tenants as $key => $tenant)
-                    <tr>
-                        <td>{{ $key+1 }}</td>
-                        <td>{{ $tenant->tenant_first_name }} {{ $tenant->tenant_last_name }}</td>
-                        <td>{{ $tenant->tenant_mobile_phone }}</td>
-                        <td>{{ $tenant->tenant_email_address  }}</td>
-                        <td>{{ isset($tenant->unit) ? $tenant->unit->unit_number : '' }}</td>
+                    <tr style="cursor:pointer;">
+                        <td data-href='{{ route('tenants.show',$tenant->id) }}'>{{ $key+1 }}</td>
+                        <td data-href='{{ route('tenants.show',$tenant->id) }}'>{{ $tenant->tenant_first_name }} {{ $tenant->tenant_last_name }}</td>
+                        <td data-href='{{ route('tenants.show',$tenant->id) }}'>{{ $tenant->tenant_mobile_phone }}</td>
+                        <td data-href='{{ route('tenants.show',$tenant->id) }}'>{{ $tenant->tenant_email_address  }}</td>
+                        <td data-href='{{ route('tenants.show',$tenant->id) }}'>{{ isset($tenant->unit) ? $tenant->unit->unit_number : '' }}</td>
                         <td>
-                          <a href="{{ route('tenants.show',$tenant->id) }}"><i class="fa fa-eye mr-2" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                          @if(request()->user()->userType != 'employee')
-                            @if(request()->user()->can('delete-tenant') OR \Auth::user()->userType == 'officer')
-                            <a href="#" onclick="form_alert('tenant-{{ $tenant->id }}','Want to delete this tenant')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                            @endif
-                            @if(request()->user()->can('edit-tenant') OR \Auth::user()->userType == 'officer')
-                              <a href="{{ route('tenants.edit',$tenant->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                            @endif
-                            @if(request()->user()->can('delete-tenant') OR \Auth::user()->userType == 'officer')
+                          <div class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                            <div class="dropdown-menu">
+                              <a href="{{ route('tenants.show',$tenant->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
+                              @if(request()->user()->can('edit-tenant'))
+                              <a href="{{ route('tenants.edit',$tenant->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
+                              @endif
+                              @if(request()->user()->can('delete-tenant'))
+                              <div class="dropdown-divider"></div>
+                              <a href="#" onclick="form_alert('tenant-{{ $tenant->id }}','Want to delete this tenant')" class="dropdown-item has-icon text-danger"><i class="far fa-trash-alt"></i>
+                                Delete</a>
+                              @endif
+                            </div>
+                          </div>
+                          @if(request()->user()->can('delete-tenant'))
                             <form action="{{route('tenants.delete',[$tenant->id])}}"
                               method="post" id="tenant-{{ $tenant->id }}">
                                 @csrf @method('delete')
                             </form>
-                            @endif
                           @endif
                         </td>
                     </tr>
@@ -96,6 +103,8 @@ Juffair Gable
 <!-- Page Specific JS File -->
 <script src="{{ asset('public/admin/assets/') }}/js/page/datatables.js"></script>
 <script>
-    
+    $("tr td:not(:last-child)").click(function() {
+        window.location = $(this).data("href");
+    });
 </script>
 @stop
