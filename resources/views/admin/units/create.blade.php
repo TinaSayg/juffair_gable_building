@@ -38,7 +38,7 @@ Juffair Gable
           <div class="card">
             <form 
             action="{{route('units.store') }}" 
-             method="POST"  enctype="multipart/form-data">
+             method="POST"  enctype="multipart/form-data" autocomplete="off">
               @csrf
               <div class="card-header">
                 <h4>Add Apartment</h4>
@@ -64,11 +64,21 @@ Juffair Gable
                 <div class="form-group row">
                     <div class="form-group col-md-6">
                       <label for="name">Apartment Numbers</label>
-                      <input type="text" name="unit_number" class="form-control" maxlength="4" id="unitNumber">
+                      <input type="text" name="unit_number" value="{{ old('unit_number') }}" class="form-control" maxlength="4" id="unitNumber">
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-3">
+                      <label for="name">Apartment Type</label>
+                      <select name="apartment_type" class="form-control" id="">
+                        <option value="Type 1">Type 1</option>
+                        <option value="Type 2">Type 2</option>
+                        <option value="Type 3">Type 3</option>
+                        <option value="Type 4">Type 4</option>
+                        <option value="Type 5">Type 5</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-3">
                       <label for="">Pick Color</label>
-                      <input type="text" name="color_code" class="form-control colorpickerinput">
+                      <input type="text" name="color_code" value="{{ old('color_code') }}" class="form-control colorpickerinput">
                       
                     </div>
                 </div>
@@ -77,7 +87,7 @@ Juffair Gable
                 <div class="form-group row">
                   <div class="form-group col-md-3">
                     <label for="name">Total Rent (BD)</label>
-                    <input type="text" name="unit_rent" class="form-control" id="totalRent" maxlength="8">
+                    <input type="text" value="{{ old('unit_rent') }}" name="unit_rent" class="form-control" id="totalRent" maxlength="8">
                   </div>
                   <div class="form-group col-md-3">
                     <label for="name">No of bed rooms</label>
@@ -96,7 +106,7 @@ Juffair Gable
                   </div>
                   <div class="form-group col-md-3">
                     <label for="number">Apartment Area (m<sup>2</sup>)</label>
-                    <input type="text" maxlength="3" name="unit_area" placeholder="" class="form-control" id="unitArea">
+                    <input type="text" maxlength="3" value="{{ old('unit_area') }}" name="unit_area" placeholder="" class="form-control" id="unitArea">
                   </div>
                   <div class="form-group col-md-3">
                     <label for="number">Apartment Status</label>
@@ -107,10 +117,6 @@ Juffair Gable
                     </select>
                   </div>
                 </div>
-
-
-         
- 
       </div>
 
       

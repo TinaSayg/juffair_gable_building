@@ -8,7 +8,9 @@
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/datatables.min.css">
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
 <style>
-   
+   tr:hover {
+    background: #a3a3a3 !important;
+   }
 </style>
 @stop
 @section('content')
@@ -42,8 +44,8 @@
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Contract Description</th>
-                      <th>Contract Cost</th>
+                      <th>Description</th>
+                      <th>Cost</th>
                       <th>Frequency of pay</th>
                       <th>Renew Date</th>
                       <th>Actions</th>
@@ -51,25 +53,27 @@
                   </thead>
                   <tbody>
                     @foreach($services_contract_list as $key => $item)
-                    <tr>
-                      <th>{{ $key+1 }}</th>
-                      <td>{{ $item->description }}</td>
-                      <td>{{ $item->amount }} BD</td>
-                      <td>{{ $item->frequency_of_pay }}</td>
-                      <td>{{ \Carbon\Carbon::parse($item->contract_renew_date)->toFormattedDateString() }}</td>
+                    <tr style="cursor:pointer">
+                      <td onclick="getServiceContractDetails({{ $item->id }})">{{ $key+1 }}</td>
+                      <td onclick="getServiceContractDetails({{ $item->id }})">{{ $item->description }}</td>
+                      <td onclick="getServiceContractDetails({{ $item->id }})">{{ $item->amount }} BD</td>
+                      <td onclick="getServiceContractDetails({{ $item->id }})">{{ $item->frequency_of_pay }}</td>
+                      <td onclick="getServiceContractDetails({{ $item->id }})">{{ \Carbon\Carbon::parse($item->contract_renew_date)->toFormattedDateString() }}</td>
                       <td>
-                        @if(request()->user()->can('view-utility-bill'))
-                        <a href="#" onclick="getUtilityBillDetails({{ $item->id }})"><i class="fa fa-eye mr-2"></i> </a>
-                        @endif
-                        
-                        <a href="#" onclick="form_alert('service_contract-{{ $item->id }}','Want to delete this Service Contract')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                       
-                        <a href="{{ route('service_contract.edit', $item->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                        
+                        <div class="dropdown">
+                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                          <div class="dropdown-menu">
+                            <a href="#" onclick="getServiceContractDetails({{ $item->id }})" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
+                            <a href="{{ route('service_contract.edit', $item->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" onclick="form_alert('service_contract-{{ $item->id }}','Want to delete this Service Contract')" class="dropdown-item has-icon text-danger"><i class="far fa-trash-alt"></i>
+                              Delete</a>
+                          </div>
+                        </div>
                         <form action="{{ route('service_contract.delete', $item->id) }}"
                             method="post" id="service_contract-{{ $item->id }}">
                             @csrf @method('delete')
-                        </form> 
+                        </form>
                       </td>
                     </tr>
                     @endforeach
@@ -82,8 +86,8 @@
       </div>
     </div>
   </section>
-{{-- Utility Bill modal --}}
-<div class="modal" id="utilityBillModal" tabindex="-1" role="dialog" aria-labelledby="formModal"  aria-modal="true">
+{{-- Service Contract modal --}}
+<div class="modal" id="serviceContractModal" tabindex="-1" role="dialog" aria-labelledby="formModal"  aria-modal="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -96,7 +100,7 @@
         <form class="table-responsive">
           <table id="mainTable" class="table table-striped">
             <tbody>
-              @include('admin.task.partials.request_detail_modal')
+             
             </tbody>
           </table>
       </div>
@@ -112,15 +116,14 @@
 <!-- Page Specific JS File -->
 <script src="{{ asset('public/admin/assets/') }}/js/page/datatables.js"></script>
 <script>
-  function getUtilityBillDetails(id) {
-    
+  function getServiceContractDetails(id) {
     $.get({
-        url: '{{route('utility_bill.show', '')}}' + "/"+ id,
+        url: '{{route('service_contract.show', '')}}' + "/"+ id,
         dataType: 'json',
         success: function (data) {
             console.log(data.options)
-            $("#utilityBillModal tbody").html(data.html_response)
-            $("#utilityBillModal").modal("show")
+            $("#serviceContractModal tbody").html(data.html_response)
+            $("#serviceContractModal").modal("show")
         }
     });
   }

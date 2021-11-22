@@ -27,34 +27,18 @@
           </ul>
         </li> --}}
         
-        @if(request()->user()->can('view-floor'))
-        <li class="dropdown {!! (Request::is('floors/floor_list') ? "active" : "") !!}">
-          <a href="{{ route('floors.list') }}" class="nav-link"><i class="fas fa-home"></i><span>Floors</span></a>
-        </li>
-        @endif
-
         @if(Auth::user()->userType == 'officer')
-          <li class="dropdown {!! (Request::is('units/search_by_apartment*') ? "active" : "") !!}">
-            <a href="{{ route('units.search_by_apartment_list') }}" class="nav-link"><i class="fas fa-home"></i><span>Search by apartment</span></a>
-          </li>
+          
           <li class="dropdown {!! (Request::is('units/full_apartment*') ? "active" : "") !!}">
-            <a href="{{ route('units.full_apartment.list') }}" class="nav-link"><i class="fas fa-home"></i><span>Full apartment list</span></a>
+            <a href="{{ route('units.full_apartment.list') }}" class="nav-link"><i class="fas fa-home"></i><span>Full Apartment List</span></a>
           </li>
-          <li class="dropdown {!! (Request::is('units/apartment_by_floor*') ? "active" : "") !!}">
-            <a href="{{ route('units.apartment_by_floor.list') }}" class="nav-link"><i class="fas fa-home"></i><span>Apartments by floor</span></a>
-          </li>
-          <li class="dropdown {!! (Request::is('units/apartment_by_type*') ? "active" : "") !!}">
-            <a href="{{ route('units.apartment_by_type.list') }}" class="nav-link"><i class="fas fa-home"></i><span>Apartments by type</span></a>
-          </li>
-          <li class="dropdown {!! (Request::is('units/apartment_by_color*') ? "active" : "") !!}">
-            <a href="{{ route('units.apartment_by_color.list') }}" class="nav-link"><i class="fas fa-home"></i><span>Apartments by color</span></a>
-          </li>
-          <li class="dropdown {!! (Request::is('floors/floor_list') ? "active" : "") !!}">
-            <a href="{{ route('tenants.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Add new tenant</span></a>
+          
+          <li class="dropdown {!! (Request::is('tenants*') ? "active" : "") !!}">
+            <a href="{{ route('tenants.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Add New Tenant</span></a>
           </li>
           <li class="dropdown {!! (Request::is('service_contract*') ? "active" : "") !!}">
             <a href="{{ route('service_contract.list') }}" class="nav-link"><i class="
-              fas fa-plus-circle"></i><span>Add a new service contract</span></a>
+              fas fa-plus-circle"></i><span>Add a New Service Contract</span></a>
           </li>
           
           <li class="dropdown {!! (Request::is('floors/floor_list') ? "active" : "") !!}">
@@ -67,7 +51,7 @@
         <li class="dropdown {!! (Request::is('units/rented_apartment*') ? "active" : "") !!}">
           <a href="{{ route('units.rented_apartment.list') }}" class="nav-link"><i class="fas fa-home"></i><span>Rented Apartment</span></a>
         </li>
-        <li class="dropdown {!! (Request::is('tasks/task/*') ? "active" : "") !!}"><a href="{{ route('tasks.list') }}" class="nav-link">@if(\Auth::user()->userType != 'employee')<i class="fas fa-book"></i><span>Tasks </span>@else <i class="fas fa-book"></i><span>Assigned Task</span> @endif</a>
+        <li class="dropdown {!! (Request::is('tasks/task/*') ? "active" : "") !!}"><a href="{{ route('tasks.list') }}" class="nav-link">@if(\Auth::user()->userType != 'employee')<i class="fas fa-book"></i><span>Tasks </span>@else <i class="fas fa-book"></i><span>Active Tasks</span> @endif</a>
         </li>
         <li class="dropdown {!! (Request::is('tasks/completed_task/list') ? "active" : "") !!}">
           <a href="{{ route('tasks.completed_task.list') }}" class="nav-link"><i class="fas fa-check-circle"></i><span>Completed Task</span></a>
@@ -83,11 +67,7 @@
         </li>
         @endif
 
-        @if(request()->user()->can('view-unit'))
-        <li class="dropdown {!! (Request::is('units/*') ? "active" : "") !!}">
-          <a href="{{ route('units.list') }}" class="nav-link"><i class="fas fa-door-open"></i><span>Apartments </span></a>
-        </li>
-        @endif
+       
 
         @if(request()->user()->can('view-tenant'))
         <li class="dropdown {!! (Request::is('tenants/*') ? "active" : "") !!}">
@@ -196,6 +176,17 @@
           <a href="{{ route('maintenancecosts.list') }}" class="nav-link"><i class="fas fas fa-toolbox"></i><span>Maintenance Costs</span></a>
         </li>
         @endif
+
+        @if(request()->user()->can('view-floor') OR request()->user()->can('view-unit'))
+        <li  class="dropdown {!! (Request::is('floors/*') ? "active" : "") !!} {!! (Request::is('units*') ? "active" : "") !!} {!! (Request::is('role/edit/*') ? "active" : "") !!} {!! (Request::is('module/list') ? "active" : "") !!} {!! (Request::is('module/create') ? "active" : "") !!} {!! (Request::is('module/edit/*') ? "active" : "") !!} {!! (Request::is('permission/list') ? "active" : "") !!} {!! (Request::is('permission/create') ? "active" : "") !!} {!! (Request::is('permission/edit/*') ? "active" : "") !!} {!! (Request::is('role/assign-permission/*') ? "active" : "") !!}" >
+          <a href="#" class="menu-toggle nav-link has-dropdown role-permission-dropdown"><i class="
+              fas fa-cogs"></i><span>Building Setting</span></a>
+          <ul class="dropdown-menu">
+              <li><a href="{{ route('floors.list') }}" class="nav-link">Floors</a></li>
+              <li><a href="{{ route('units.list') }}" class="nav-link">Apartments</a></li>
+          </ul>
+        </li>
+        @endif
         {{-- <li class="dropdown">
           <a href="/" class="menu-toggle nav-link has-dropdown"><i class="fas fa-chalkboard"></i><span>Notice Board</span></a>
           <ul class="dropdown-menu">
@@ -234,8 +225,8 @@
           </ul>
         </li> --}}
         @if(request()->user()->can('view-role-and-permission'))
-        <li  class="dropdown {!! (Request::is('role/list') ? "active" : "") !!} {!! (Request::is('role/create') ? "active" : "") !!} {!! (Request::is('role/edit/*') ? "active" : "") !!} {!! (Request::is('module/list') ? "active" : "") !!} {!! (Request::is('module/create') ? "active" : "") !!} {!! (Request::is('module/edit/*') ? "active" : "") !!} {!! (Request::is('permission/list') ? "active" : "") !!} {!! (Request::is('permission/create') ? "active" : "") !!} {!! (Request::is('permission/edit/*') ? "active" : "") !!} {!! (Request::is('role/assign-permission/*') ? "active" : "") !!}" >
-          <a href="#" style="display: none" class="menu-toggle nav-link has-dropdown role-permission-dropdown"><i class="fas fa-user-shield"></i><span>Roles & Permission</span></a>
+        <li style="display:none;" class="dropdown {!! (Request::is('role/list') ? "active" : "") !!} {!! (Request::is('role/create') ? "active" : "") !!} {!! (Request::is('role/edit/*') ? "active" : "") !!} {!! (Request::is('module/list') ? "active" : "") !!} {!! (Request::is('module/create') ? "active" : "") !!} {!! (Request::is('module/edit/*') ? "active" : "") !!} {!! (Request::is('permission/list') ? "active" : "") !!} {!! (Request::is('permission/create') ? "active" : "") !!} {!! (Request::is('permission/edit/*') ? "active" : "") !!} {!! (Request::is('role/assign-permission/*') ? "active" : "") !!}" >
+          <a href="#"  class="menu-toggle nav-link has-dropdown role-permission-dropdown"><i class="fas fa-user-shield"></i><span>Roles & Permission</span></a>
           <ul class="dropdown-menu">
               <li><a class="nav-link" href="{{ route('role.list') }}">Roles</a></li>
               

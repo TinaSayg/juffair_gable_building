@@ -72,7 +72,14 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
+        $service_contract = ServiceContract::find($id);
         
+        $html_response = view('admin.service_contract.partials.service_contract_view_modal', compact('service_contract'))->render();
+
+        return response()->json([
+            'success' => true,
+            'html_response' => $html_response
+        ]);
     }
 
     /**

@@ -104,7 +104,10 @@
         @else
         <div class="card">
           <div class="card-header">
-            <h4>Assigned Task</h4>
+            <h4>Active Tasks</h4>
+            <div class="card-header-form">
+              <a href="{{ route('tasks.create') }}" class="btn btn-primary" role="button">Add Task</a>
+            </div>
           </div>
           <div class="card-body">
             <div class="table-responsive">
@@ -113,9 +116,8 @@
                   <tr>
                     <th>#</th>
                     <th>Title</th>
-                    <th>Date</th>
-                    <th>time</th>
-                    <th>Assign by</th>
+                    <th>Date Assigned</th>
+                    <th>Deadline Date</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
@@ -128,9 +130,8 @@
                   <tr>
                     <th>{{ $key+1 }}</th>
                     <td>{{ $item->title }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }}</td>
-                    <td>{{ \Carbon\Carbon::parse($item->assign_time)->format('g:i A') }}</td>
-                    <td>{{ \App\Models\User::where('id' , $item->assignor_id)->first()->name }}</td>
+                    <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ \Carbon\Carbon::parse($item->assign_time)->format('g:i A') }}</td>
+                    <td></td>
                     <td>
                      
                       <span class="badge badge-warning" style="border-radius: 0px !important">{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</span>

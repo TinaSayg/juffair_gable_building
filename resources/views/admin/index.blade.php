@@ -32,9 +32,22 @@ Juffair Gable
       <li class="breadcrumb-item active">Dashboard</li>
     </ul> --}}
     <div class="card">
-      <p class="mb-0" style="padding:20px;font-size: 17px;">Hello <span style="font-size: 17px;font-weight:600">{{ Auth::user()->name }},</span></p>
+      @php
+        $user = Auth::user();
+        $email = Auth::user()->email;
+        $employee_detail = \App\Models\Employee::where('employee_email_address', $email)->first();
+      @endphp
+      <div style="padding:20px;font-size: 17px;">
+        <p class="mb-0">Welcome <span style="font-size: 17px;font-weight:800">{{ ucwords($user->name) }},</span></p>
+        <p class="mb-0"><span style="font-weight: 600">Email</span> : {{ $user->email }}</p>
+        <p class="mb-0"><span style="font-weight: 600">Phone Number</span> : {{ $user->number }}</p>
+        @if(Auth::user()->userType != 'Admin')
+        
+          <p class="mb-0"><span style="font-weight: 600">Date Of Joining</span> : {{ \Carbon\Carbon::parse($employee_detail->employee_start_datetime)->toFormattedDateString() }}</p>
+        @endif
+      </div>
     </div>
-    @if(\Auth::user()->userType == 'general-manager')
+    @if(\Auth::user()->userType == 'general-manager' OR \Auth::user()->userType == 'Admin')
       @php
         $total_units = 0;
         $vacant_units = 0;
@@ -170,55 +183,7 @@ Juffair Gable
           $employee_detail = \App\Models\Employee::where('employee_email_address', $email)->first();
          
         @endphp
-        <div class="col-lg-3 col-sm-6">
-          <div class="card card-box" style="padding: 10px 15px !important">
-            <div class="card-statistic-4">
-              <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Passport number</h6>
-                <h4 class="text-right"><i class="material-icons  pull-left bg-cyan c-icon">phone_in_talk</i><span>{{ $employee_detail->passport_number }}</span>
-                </h4>
-                <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-          <div class="card card-box" style="padding: 10px 15px !important">
-            <div class="card-statistic-4">
-              <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Phone number</h6>
-                <h4 class="text-right"><i class="material-icons  pull-left bg-cyan c-icon">phone_in_talk</i><span>{{ $employee_detail->employee_mobile_phone }}</span>
-                </h4>
-                <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-          <div class="card card-box">
-            <div class="card-statistic-4">
-              <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Start date of work at this building</h6>
-                <h4 class="text-right"><i class="fas fas fa-calendar-alt pull-left bg-cyan c-icon mt-4"></i><span>{{ \Carbon\Carbon::parse($employee_detail->employee_start_datetime)->toFormattedDateString() }}</span>
-                </h4>
-                <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-          <div class="card card-box">
-            <div class="card-statistic-4">
-              <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">End date of work at this building</h6>
-                <h4 class="text-right"><i class="fas fas fa-calendar-alt pull-left bg-cyan c-icon mt-4"></i><span>{{ \Carbon\Carbon::parse($employee_detail->employee_end_datetime)->toFormattedDateString() }}</span>
-                </h4>
-                <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
+        <div class="col-lg-4 col-sm-6">
           <div class="card card-box">
             <div class="card-statistic-4">
               <div class="info-box7-block">
@@ -250,26 +215,24 @@ Juffair Gable
             }
            
         @endphp
-        <div class="col-lg-3 col-sm-6">
-          <div class="card card-box" >
+        <div class="col-lg-4 col-sm-6">
+          <div class="card card-box" style="padding-bottom:19px">
             <div class="card-statistic-4">
               <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Leaves Taken</h6>
-                <h4 class="text-right"><i class="fas fa-clock pull-left bg-cyan c-icon mt-4"></i><span>{{ $leaves_taken }} </span>
-                </h4>
-                <a href="{{ route('leave.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-          <div class="card card-box">
-            <div class="card-statistic-4">
-              <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Earned Leaves</h6>
-                <h4 class="text-right"><i class="fas fa-clock pull-left bg-cyan c-icon mt-4"></i><span>{{ $annual_leaves-$leaves_taken }} </span>
-                </h4>
-                <a href="{{ route('leave.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <div class="row">
+                  <div class="col-md-6 col-12">
+                    <h6 class="m-b-20">Leaves Taken</h6>
+                    <h4 ><span>{{ $leaves_taken }} </span>
+                    </h4>
+                  </div>
+                  <div class="col-md-6 col-12">
+                    <h6 class="m-b-20 text-right">Earned Leaves</h6>
+                    <h4 class="text-right"><span >{{ $annual_leaves-$leaves_taken }} </span>
+                    </h4>
+                  </div>
+                </div>
+                
+                <a href="{{ route('leave.list') }}" style="position:relative;top:18px" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
           </div>
@@ -289,10 +252,8 @@ Juffair Gable
                       <tr>
                         <th>#</th>
                         <th>Title</th>
-                        <th>Date</th>
-                        <th>time</th>
-                        <th>Assign by</th>
-                        <th>Assign to</th>
+                        <th>Date Assigned</th>
+                        <th>Deadline Date</th>
                         <th>Status</th>
                         <th>Actions</th>
                       </tr>
@@ -302,10 +263,8 @@ Juffair Gable
                       <tr>
                         <td>{{ $key+1 }}</td>
                         <td>{{ $item->title }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }}</td>
-                        <td>{{ $item->assign_time }}</td>
-                        <td>{{ \App\Models\User::where('id' , $item->assignor_id)->first()->name }}</td>
-                        <td>{{ \App\Models\User::where('id' , $item->assignee_id)->first()->name }}</td>
+                        <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ $item->assign_time }}</td>
+                        <td></td>
                         <td>{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</td>
                         <td>
                           <a href="{{ route('tasks.show', $item->id) }}" type="button" class="btn btn-primary">View Task</a>
@@ -343,9 +302,9 @@ Juffair Gable
         <form action="{{ url('') }}" method="POST" id="completeTaskForm">
           @csrf
           <div>
-            <p>Do you want to complete this task?</p>
+            <p>Do you confirm the task has been completed?</p>
           </div>
-          <button type="submit" class="btn btn-primary m-t-15 waves-effect">save</button>
+          <button type="submit" class="btn btn-primary m-t-15 waves-effect">Confirm</button>
         </form>
       </div>
   </div>

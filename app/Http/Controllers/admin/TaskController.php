@@ -5,8 +5,12 @@ namespace App\Http\Controllers\admin;
 use DataTables;
 use Carbon\Carbon;
 use App\Models\Task;
+use App\Models\Unit;
 use App\Models\User;
+use App\Models\CommonArea;
 use App\Models\TaskStatus;
+use App\Models\FloorDetail;
+use App\Models\ServiceArea;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
@@ -46,6 +50,7 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'title' => 'required',
             'description' => 'required',
@@ -188,5 +193,86 @@ class TaskController extends Controller
         $tasks = Task::where('assignee_id', $login_user_id)->where('task_status_code', 2)->get();
        
         return view('admin.task.completed_task', compact('tasks'));
+    }
+
+    public function get_task_location($location_id)
+    {
+        if($location_id == 1)
+        {
+            $floors = FloorDetail::where('floor_type_code', 2)->get();
+
+            $res = '<div class="form-group col-md-4 floor-dropdown"><label>Select Floor</label><select onchange="getUnits(this.value)" class="form-control" name="floor_id" id="floorSelect">';
+            $res1 = '<div class="form-group col-md-4 unit-dropdown"><label>Select Apartment</label><select class="form-control" name="unit_id" id="unitSelect">';
+
+            $res .= '<option value="' . 0 . '" disabled >---Select---</option>';
+            foreach ($floors as $floor) {
+                $res .= '<option value="' . $floor->id . '"  >' . $floor->number . '</option>';
+            }
+
+            $res .= "</select></div>";
+
+            $res1 .= '<option value="' . 0 . '" disabled >---Select---</option>';
+
+            if($floors->isNotEmpty())
+            {
+                
+                $first_floor_id = $floors->first()->id;
+                
+                $units = Unit::where('floor_id' , $first_floor_id)->get();
+                
+                foreach ($units as $unit) {
+                    $res1 .= '<option value="' . $unit->id . '"  >' . $unit->unit_number . '</option>';
+                }
+            }
+
+            $res1 .= "</select></div>";
+       
+            return response()->json([
+                'floor_select' => $res,
+                'unit_select' => $res1,
+            ]);
+        
+        }
+        elseif($location_id == 2)
+        {
+            $res = '<div class="form-group col-md-4 common_area_select"><label>Select Common Area</label><select class="form-control" name="common_area_id" id="commonAreaSelect">';
+            $common_areas = CommonArea::all();
+            
+            foreach ($common_areas as $common_area) {
+                $res .= '<option value="' . $common_area->id . '"  >' . $common_area->area_name . '</option>';
+            }
+
+            return response()->json([
+                'common_area_select' => $res,
+            ]);
+        }
+        elseif($location_id == 3)
+        {
+            $res = '<div class="form-group col-md-4 parking_floor_select"><label>Select Floor</label><select class="form-control" name="floor_id" id="parkingFloorSelect">';
+            $parking_floors = FloorDetail::where('floor_type_code', 1)->get();
+           
+            
+            foreach ($parking_floors as $floor) {
+                $res .= '<option value="' . $floor->id . '"  >' . $floor->number . '</option>';
+            }
+
+            return response()->json([
+                'parking_floors' => $res,
+            ]);
+        }
+        else
+        {
+            $res = '<div class="form-group col-md-4 service_area_select"><label>Select Service Area</label><select class="form-control" name="service_area_id" id="serviceAreaSelect">';
+            $service_area_list = ServiceArea::all();
+           
+            
+            foreach ($service_area_list as $service_area) {
+                $res .= '<option value="' . $service_area->id . '"  >' . $service_area->service_area_name . '</option>';
+            }
+
+            return response()->json([
+                'service_areas_select' => $res,
+            ]);
+        }
     }
 }

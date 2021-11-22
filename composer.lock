@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cbcd631c47b773f75ffe779d60b7f47e",
+    "content-hash": "eaf8022c57fde53af3f9e67e8ab6d0ad",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2329,6 +2329,55 @@
                 "source": "https://github.com/opis/closure/tree/3.6.2"
             },
             "time": "2021-04-09T13:42:10+00:00"
+        },
+        {
+            "name": "ourcodeworld/name-that-color",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ourcodeworld/name-that-color.git",
+                "reference": "758b1f9b4b521da63f0ae4226e80cae620b0f648"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ourcodeworld/name-that-color/zipball/758b1f9b4b521da63f0ae4226e80cae620b0f648",
+                "reference": "758b1f9b4b521da63f0ae4226e80cae620b0f648",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ourcodeworld\\NameThatColor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "Carlos Delgado",
+                    "email": "dev@ourcodeworld.com",
+                    "homepage": "https://ourcodeworld.com"
+                }
+            ],
+            "description": "A non-official PHP port of the NTC JS library to find out the name of the closest matching color.",
+            "keywords": [
+                "color converted",
+                "hex",
+                "hsl",
+                "name that color",
+                "rgb"
+            ],
+            "support": {
+                "issues": "https://github.com/ourcodeworld/name-that-color/issues",
+                "source": "https://github.com/ourcodeworld/name-that-color/tree/master"
+            },
+            "time": "2018-08-03T18:14:49+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -8238,12 +8287,14 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "ourcodeworld/name-that-color": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
