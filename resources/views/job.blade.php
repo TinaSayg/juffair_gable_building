@@ -181,6 +181,10 @@
             .iti--allow-dropdown{
                 width:100%;
             }
+            .invalid-feedback
+            {
+                display: block !important;
+            }
          </style>
     </head>
    <body>
@@ -216,7 +220,6 @@
         <!-- Header End -->
     </header>
     <main>
-
         <div class="main-content">
             <section class="section">
               <ul class="breadcrumb breadcrumb-style ">
@@ -298,8 +301,8 @@
                             @enderror
                         </div>
                         <div class="form-group">
-                          <label>Attach CV</label>
-                          <input type="file" name="cv" class="form-control  @error('cv') is-invalid @enderror">
+                          <label>Attach CV</label> 
+                          <input type="file" name="cv" accept="application/pdf" class="form-control" @error('cv') is-invalid @enderror">
                           @error('cv')
                           <span class="invalid-feedback" role="alert">
                               <strong>{{ $message }}</strong>
@@ -307,7 +310,7 @@
                       @enderror
                         </div>
                         <div class="card-footer text-right">
-                        <button class="btn btn-primary mr-1" type="submit">Submit</button>
+                        <button class="btn btn-primary mr-1"  type="submit">Submit</button>
                     </form>
                         </div>
                     </div>
@@ -317,7 +320,7 @@
           
                 <div class="single-team mb-30">
                     <div class="team-img1">
-                        <img src="{{ asset('public/assets/img/gallery/001.jpg') }}" width="100%" height="100%" alt="">
+                        <img src="{{ asset('public/assets/img/gallery/003.jpg') }}" width="100%" height="100%" alt="">
                     </div>
         </div>   
     </div>
@@ -465,6 +468,7 @@
       
       utilsScript: "build/js/utils.js",
     });
+    
   </script>
         
     </body>

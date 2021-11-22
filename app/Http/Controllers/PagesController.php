@@ -89,7 +89,7 @@ class PagesController extends Controller
             'date_of_birth' => 'required',
             'email_address' =>  'required|email|unique:job_opportunities,email_address',
             'phone' =>  'required|unique:job_opportunities,phone',
-            'cv' => 'required',
+            'cv' => 'required|max:20480| mimes:application/pdf',
         ], [
             'first_name.required' => 'First Name is required!',
             'last_name.required'  => 'Last Name  is required!',
@@ -97,7 +97,8 @@ class PagesController extends Controller
             'date_of_birth.required' => 'Date of birth is required!',
             'email_address.required' => 'Email is required!',
             'phone.required' =>  'Phone is required',
-            'cv' => 'cv required!',
+            'cv.required' => 'cv required!',
+            'cv.mimes' => 'CV should should be in .pdf format',
         ]);
         
         $filename ='';
