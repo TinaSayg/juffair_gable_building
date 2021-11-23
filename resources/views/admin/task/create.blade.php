@@ -47,12 +47,12 @@
                         <label>Task Title</label>
                         <input type="text" name="title" class="form-control">
                     </div>
-                    <div class="form-group col-md-4">
-                        <label>Date</label>
+                    {{-- <div class="form-group col-md-4">
+                        <label>Assign Date</label>
                         <input type="text" name="assign_date" class="form-control datepicker">
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Time</label>
+                        <label>Assign Time</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
@@ -62,23 +62,30 @@
                             <input type="text"  name="assign_time" class="form-control timepicker">
                         </div>
                     </div>
+
                     @if(Auth::user()->userType != 'employee')
                     <div class="form-group col-md-4">
-                        <label>Assign to</label>
-                        <select class="form-control" name="assignee_id" >
-                            <option value="">--- select ---</option>
-                            @foreach ($employee_list as $item)
-                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                            @endforeach
-                        </select>
+                        <label>Deadline Date</label>
+                        <input type="text" name="deadline_date" class="form-control datepicker">
                     </div>
-                    @endif
+                    <div class="form-group col-md-4">
+                        <label>Deadline Time</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                            </div>
+                            <input type="text"  name="deadline_time" class="form-control timepicker">
+                        </div>
+                    </div>
+                    @endif --}}
                 </div>
                 
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label>Comments</label>
+                            <label>Description</label>
                             <textarea name="description" class="form-control"></textarea>
                         </div>
                     </div>

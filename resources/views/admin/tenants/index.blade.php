@@ -106,5 +106,7 @@ Juffair Gable
     $("tr td:not(:last-child)").click(function() {
         window.location = $(this).data("href");
     });
+
+    
 </script>
 @stop

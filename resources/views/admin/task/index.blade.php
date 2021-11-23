@@ -7,8 +7,12 @@
 @section('header_styles')
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/datatables.min.css">
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
 <style>
-   
+   tr:hover {
+    background: #a3a3a3 !important;
+   }
 </style>
 @stop
 @section('content')
@@ -39,32 +43,59 @@
             
             <div class="card-body">
               <div class="table-responsive">
-                <table id="table-2" class="table table-striped">
+                <table id="table-2" class="table table-striped display nowrap"  width="100%">
                   <thead>
                     <tr>
                       <th>#</th>
                       <th>Title</th>
-                      <th>Task Assign Date Time</th>
-                      <th>Assign to</th>
-                      <th>Task Completed Date Time</th>
+                      <th>Location</th>
+                      <th>Assigned Date</th>
+                      <th>Deadline Date</th>
+                      <th>Completed Date</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($tasks as $key => $item)
-                    
-                    <tr>
-                      <th>{{ $key+1 }}</th>
-                      <td>{{ $item->title }}</td>
-                      <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ \Carbon\Carbon::parse($item->assign_time)->format('g:i A') }}</td>
-                      <td>
-                        
-                        {{ \App\Models\User::where('id' , $item->assignee_id)->first()->name }}
-                        
+                    <tr style="cursor: pointer">
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $key+1 }}</td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $item->title }}</td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>
+                        @if($item->location_id == 1)
+                          @php
+                            $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                            $apartment_number = \App\Models\Unit::where('id', $item->unit_id)->first()->unit_number;
+                          @endphp
+                          Floor {{ $floor_number }}, Apartment {{ $apartment_number }}
+                        @endif
+
+                        @if($item->location_id == 2)
+                          @php
+                            $location_area = \App\Models\CommonArea::where('id', $item->common_area_id)->first()->area_name;
+                          @endphp
+                          {{ $location_area }}
+                        @endif
+
+                        @if($item->location_id == 3)
+                        @php
+                          $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                        @endphp
+                        Floor {{ $floor_number }}
+                        @endif
+
+                        @if($item->location_id == 4)
+                          @php
+                            $location_area = \App\Models\ServiceArea::where('id', $item->service_area_id)->first()->service_area_name;
+                          @endphp
+                          {{ $location_area }} Area
+                        @endif
                       </td>
-                      <td>{{ isset($item->complete_date)? \Carbon\Carbon::parse($item->complete_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->complete_time)->format('g:i A') : '' }}</td>
-                      <td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ isset($item->assign_date)? \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->assign_time)->format('g:i A') : '' }} </td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ isset($item->deadline_date)? \Carbon\Carbon::parse($item->deadline_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->deadline_time)->format('g:i A') : '' }} </td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ isset($item->complete_date)? \Carbon\Carbon::parse($item->complete_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->complete_time)->format('g:i A') : '' }} </td>
+                      {{-- <td>{{ isset($item->complete_date)? \Carbon\Carbon::parse($item->complete_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->complete_time)->format('g:i A') : '' }}</td> --}}
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>
                         @php
                           $class = '';
                           switch ($item->task_status_code) {
@@ -79,19 +110,21 @@
                         <span class="badge {{ $class }}">{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</span>
                       </td>
                       <td>
-                        @if(request()->user()->can('view-task'))
-                        <a href="{{ route('tasks.show', $item->id) }}"><i class="fa fa-eye mr-2"></i> </a>
-                        @endif
-                        @if(request()->user()->can('delete-task'))
-                        <a href="#" onclick="form_alert('task-{{ $item->id }}','Want to delete this task')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                        @endif
-                        @if(request()->user()->can('edit-task'))
-                        <a href="{{ route('tasks.edit', $item->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                        @endif
-                        <form action="{{ route('tasks.delete', $item->id) }}"
-                            method="post" id="task-{{ $item->id }}">
-                            @csrf @method('delete')
-                        </form> 
+                        <div class="dropdown">
+                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                          <div class="dropdown-menu">
+                            <a href="{{ route('tasks.show', $item->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
+                            <a href="{{ route('tasks.edit', $item->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
+                            <a href="#" data-task_id="{{  $item->id }}" class="dropdown-item has-icon assign_task"><i class="fas fa-user-shield"></i> Assign Task</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" onclick="form_alert('task-{{ $item->id }}','Want to delete this task')" class="dropdown-item has-icon text-danger"><i class="far fa-trash-alt"></i>
+                              Delete</a>
+                            <form action="{{ route('tasks.delete', $item->id) }}"
+                                method="post" id="task-{{ $item->id }}">
+                                @csrf @method('delete')
+                            </form>
+                          </div>
+                        </div>
                       </td>
                     </tr>
                     @endforeach
@@ -127,13 +160,12 @@
                     $tasks = \App\Models\Task::where('assignee_id', Auth::user()->id)->where('task_status_code', 1)->orderBy('id','desc')->get();
                   @endphp
                   @foreach($tasks as $key => $item)
-                  <tr>
+                  <tr style="cursor: pointer">
                     <th>{{ $key+1 }}</th>
                     <td>{{ $item->title }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ \Carbon\Carbon::parse($item->assign_time)->format('g:i A') }}</td>
                     <td></td>
                     <td>
-                     
                       <span class="badge badge-warning" style="border-radius: 0px !important">{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</span>
                     </td>
                     <td>
@@ -195,6 +227,81 @@
     </div>
   </div>
 
+  <div class="modal" id="assignTaskModal" >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="formModal">Assign Task</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="card-body">
+          <form action="{{ route('tasks.assign_task') }}" method="POST" id="assignTaskForm">
+            @csrf
+            <div class="row">
+              <div class="col-6">
+                <input type="hidden" name="task_id" id="assignTaskModalHiddenInput">
+                <div class="form-group">
+                  <label for="">Select Employee</label>
+                  <select name="employee_id" class="form-control" id="">
+                    <option value="">--- Select ---</option>
+                    @foreach ($employee_list as $employee)
+                        <option value="{{ $employee->id }}">{{ $employee->name }}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label>Assign Date</label>
+                  <input type="text" name="assign_date" class="form-control datepicker">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label>Assign Time</label>
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <div class="input-group-text">
+                              <i class="fas fa-clock"></i>
+                          </div>
+                      </div>
+                      <input type="text"  name="assign_time" class="form-control timepicker">
+                  </div>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label>Deadline Date</label>
+                  <input type="text" name="deadline_date" class="form-control datepicker">
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-group">
+                  <label>Deadline Time</label>
+                  <div class="input-group">
+                      <div class="input-group-prepend">
+                          <div class="input-group-text">
+                              <i class="fas fa-clock"></i>
+                          </div>
+                      </div>
+                      <input type="text" name="deadline_time" class="form-control timepicker">
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-group">
+                  <label>Comment</label>
+                  <textarea name="comment" id="" class="form-control" cols="30" rows="10"></textarea>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary m-t-15 waves-effect">Assign</button>
+          </form>
+        </div>
+    </div>
+  </div>
 
 
 
@@ -211,6 +318,8 @@
 <script src="{{asset('public/admin/assets/bundles/datatables/export-tables/vfs_fonts.js')}}"></script>
 <script src="{{asset('public/admin/assets/bundles/datatables/export-tables/buttons.print.min.js')}}"></script>
 <script src="{{asset('public/admin/assets/js/page/datatables.js')}}"></script>
+<script src="{{ asset('public/admin/assets/') }}/bundles/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script>
   $('#tableExport2').DataTable({
     dom: 'Bfrtip',
@@ -239,5 +348,16 @@
     });
   }
 
+</script>
+<script>
+  $("tr td:not(:last-child)").click(function() {
+      window.location = $(this).data("href");
+  });
+
+  $(".assign_task").on("click", function(){
+    let task_id = $(this).attr('data-task_id')
+    $("#assignTaskModalHiddenInput").val(task_id)
+    $("#assignTaskModal").modal("show")
+  })
 </script>
 @stop

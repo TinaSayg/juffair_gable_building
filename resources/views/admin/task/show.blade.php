@@ -7,7 +7,10 @@
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
 
 <style>
-   
+   .task_heading
+   {
+       font-weight: 700;
+   }
 </style>
 @stop
 @section('content')
@@ -25,61 +28,83 @@
     </ul> --}}
     <div class="section-body">
     <div class="row">
-    <div class="col-12" >
-        <div class="card">
-            <div class="card-header">
-              <h4>Task Detail</h4>
-            </div>
-            <div class="card-body">
-            <form method="get" action="" enctype="multipart/form-data">
-              @csrf
-                <div class="row">
-                    <div class="form-group col-md-4">
-                        <label>Title</label>
-                        <input type="text" value="{{ isset($task) ? $task->title : '' }}" readonly name="title" class="form-control">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label>Date</label>
-                        <input type="text" readonly value="{{ isset($task) ? $task->assign_date : '' }}" name="assign_date" class="form-control datepicker">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label>Time</label>
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <div class="input-group-text">
-                              <i class="fas fa-clock"></i>
-                            </div>
-                          </div>
-                          <input type="text"  name="assign_time"  value="{{ isset($task) ? $task->assign_time : '' }}" class="form-control" readonly>
-                        </div>
-                    </div>
+        <div class="col-12" >
+            <div class="card">
+                <div class="card-header">
+                <h4>Task Detail</h4>
                 </div>
-                <div class="row">
-                    <div class="form-group col-md-4">
-                        <label>Status</label>
-                        <input type="text" value="{{ isset($task->task_status) ? $task->task_status->task_status_name : '' }}" name="task_status_code" class="form-control" readonly>
-                    </div>
+                <div class="card-body">
+                    <div class="row">
+                        
+                        <div class="col-md-6">
+                            <p class="mb-0"><span class="task_heading">Title: </span> {{ isset($task) ? $task->title : '' }}</p>
+                            <p class="mb-0">
+                            @if($task->location_id == 1)
+                            @php
+                                $floor_number = \App\Models\FloorDetail::where('id', $task->floor_id)->first()->number;
+                                $apartment_number = \App\Models\Unit::where('id', $task->unit_id)->first()->unit_number;
+                            @endphp
+                            
+                            <span class="task_heading">Location: </span> Floor {{ $floor_number }}, Apartment {{ $apartment_number }}
+                            @endif
 
-                    <div class="form-group col-md-4">
-                        <label>Assign to</label>
-                        <input type="text" value="{{ isset($task->assignee) ? $task->assignee->name : '' }}" class="form-control" readonly>
+                            @if($task->location_id == 2)
+                            @php
+                                $location_area = \App\Models\CommonArea::where('id', $task->common_area_id)->first()->area_name;
+                            @endphp
+                            
+                            <span class="task_heading">Location: </span> {{ $location_area }}
+
+                            @endif
+
+                            @if($task->location_id == 3)
+                            @php
+                            $floor_number = \App\Models\FloorDetail::where('id', $task->floor_id)->first()->number;
+                            @endphp
+                            
+                            <span class="task_heading">Location: </span> Floor {{ $floor_number }}
+
+                            @endif
+
+                            @if($task->location_id == 4)
+                            @php
+                                $location_area = \App\Models\ServiceArea::where('id', $task->service_area_id)->first()->service_area_name;
+                            @endphp
+                            <span class="task_heading">Location: </span> {{ $location_area }}
+
+                            @endif   
+                            </p>
+                            <p style="text-align: justify;"><span class="task_heading">Comment: </span> {{ isset($task->comments)? $task->comments : '' }}</p>
+                            <p style="text-align: justify;"><span class="task_heading">Description: </span> {{$task->description }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-0"><span class="task_heading">Date Assigned: </span> {{ isset($task->assign_date)? \Carbon\Carbon::parse($task->assign_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($task->assign_time)->format('g:i A') : '' }}</p>
+                            <p class="mb-0"><span class="task_heading">Deadline Date: </span> {{ isset($task->deadline_date)? \Carbon\Carbon::parse($task->deadline_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($task->deadline_time)->format('g:i A') : '' }}</p>
+                            <p class="mb-0"><span class="task_heading">Completed Date: </span> {{ isset($task->complete_date)? \Carbon\Carbon::parse($task->complete_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($task->complete_time)->format('g:i A') : '' }}</p>
+                            <p class="mb-0">
+                                @php
+                                $class = '';
+                                switch ($task->task_status_code) {
+                                    case 1:
+                                    $class = 'badge-warning';
+                                    break;
+                                    default:
+                                    $class = 'badge-success';
+                                    break;
+                                }
+                                @endphp
+                                
+                                <span class="task_heading">Status: </span> <span class="badge {{ $class }}">{{ isset($task->task_status) ? $task->task_status->task_status_name : ''}}</span></p>
+                            
+                        </div>
+                        
                     </div>
                     
                 </div>
-                <div class="row">
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label>description</label>
-                            <textarea name="description" readonly class="form-control">{{ isset($task)? $task->description : '' }}</textarea>
-                        </div>
-                    </div>
-                </div>
-               
-                
-                <a href="{{ url()->previous() }}" class="btn btn-primary mr-1">Back</a>
-                </div>
-            </from>
-          </div>
+            </div>
+        </div>
+    </div>
+    
 </section>    
 @stop
 @section('footer_scripts')
