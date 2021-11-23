@@ -26,8 +26,9 @@ class TaskController extends Controller
     public function index(Request $request)
     {
         $tasks = Task::orderBy('id', 'desc')->get();
+        $employee_list = User::where('userType', 'employee')->get();
 
-        return view('admin.task.index', compact('tasks'));
+        return view('admin.task.index', compact('tasks','employee_list'));
     }
 
     /**
@@ -50,31 +51,44 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        
+      
         $request->validate([
+            'location_id' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'assign_date' => 'required|string',
-            'assign_time' => 'required',
+        ],[
+            'location_id.required' => 'Select the task location',
         ]);
 
+        $location_id = $request->input('location_id');
+        $floor_id = $request->input('floor_id',null);
+        $unit_id = $request->input('unit_id',null);
+        $common_area_id = $request->input('common_area_id',null);
+        $service_area_id = $request->input('service_area_id',null);
+
+       
         $task = new Task();
         $task->title = $request['title'];
         $task->description = $request['description'];
-        $task->assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
-        $task->assign_time = Carbon::parse($request['assign_time'])->format("H:i");
-        $task->assignor_id = Auth::user()->id;
-        if(Auth::user()->userType != 'employee')
-        {
-            $task->assignee_id = $request['assignee_id'];
-        }
-        else
-        {
-            $task->assignee_id = Auth::user()->id;
-        }
-
-        $task->task_status_code = 1;
+        $task->location_id = $location_id;
+        $task->floor_id = $floor_id;
+        $task->unit_id = $unit_id;
+        $task->common_area_id = $common_area_id;
+        $task->service_area_id = $service_area_id;
         
+        // $task->assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
+        // $task->assign_time = Carbon::parse($request['assign_time'])->format("H:i");
+        // $task->assign_date = Carbon::parse($request['deadline_date'])->format('Y-m-d');
+        // $task->assign_time = Carbon::parse($request['deadline_time'])->format("H:i");
+        // $task->assignor_id = Auth::user()->id;
+        // if(Auth::user()->userType != 'employee')
+        // {
+        //     $task->assignee_id = $request['assignee_id'];
+        // }
+        // else
+        // {
+        //     $task->assignee_id = Auth::user()->id;
+        // }
 
         if($task->save()){
             Toastr::success('Task added successfully.');
@@ -123,22 +137,42 @@ class TaskController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'location_id' => 'required',
             'title' => 'required',
             'description' => 'required',
-            'assign_date' => 'required|string',
-            'assign_time' => 'required',
-            'assignee_id' => 'required',
+        ],[
+            'location_id.required' => 'Select the task location',
         ]);
 
+        $location_id = $request->input('location_id');
+        $floor_id = $request->input('floor_id',null);
+        $unit_id = $request->input('unit_id',null);
+        $common_area_id = $request->input('common_area_id',null);
+        $service_area_id = $request->input('service_area_id',null);
+
+       
         $task = Task::find($id);
         $task->title = $request['title'];
         $task->description = $request['description'];
-        $task->assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
-        $task->assign_time = Carbon::parse($request['assign_time'])->format("H:i");
-        $task->assignor_id = Auth::user()->id;
-        $task->assignee_id = $request['assignee_id'];
-        $task->task_status_code = 1;
+        $task->location_id = $location_id;
+        $task->floor_id = $floor_id;
+        $task->unit_id = $unit_id;
+        $task->common_area_id = $common_area_id;
+        $task->service_area_id = $service_area_id;
         
+        // $task->assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
+        // $task->assign_time = Carbon::parse($request['assign_time'])->format("H:i");
+        // $task->assign_date = Carbon::parse($request['deadline_date'])->format('Y-m-d');
+        // $task->assign_time = Carbon::parse($request['deadline_time'])->format("H:i");
+        // $task->assignor_id = Auth::user()->id;
+        // if(Auth::user()->userType != 'employee')
+        // {
+        //     $task->assignee_id = $request['assignee_id'];
+        // }
+        // else
+        // {
+        //     $task->assignee_id = Auth::user()->id;
+        // }
 
         if($task->save()){
             Toastr::success('Task updated successfully.');
@@ -147,7 +181,7 @@ class TaskController extends Controller
         else
         {
             Toastr::success('Something went wrong.');
-            return redirect()->route('tasks.edit');
+            return redirect()->route('tasks.update', $id);
         }
     }
 
@@ -273,6 +307,41 @@ class TaskController extends Controller
             return response()->json([
                 'service_areas_select' => $res,
             ]);
+        }
+    }
+
+    public function assign_task(Request $request)
+    {
+        $request->validate([
+            'employee_id' => 'required',
+            'assign_date' => 'required',
+            'assign_time' => 'required|string',
+            'deadline_date' => 'required',
+            'deadline_time' => 'required',
+        ],[
+            'employee_id.required' => 'Please select the Employee before proceeding.'
+        ]);
+
+        $id = $request->input('task_id');
+        $task = Task::find($id);
+        $task->assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
+        $task->assign_time = Carbon::parse($request['assign_time'])->format("H:i");
+        $task->deadline_date = Carbon::parse($request['deadline_date'])->format('Y-m-d');
+        $task->deadline_time = Carbon::parse($request['deadline_time'])->format("H:i");
+        $task->assignor_id = Auth::user()->id;
+        $task->assignee_id = $request['employee_id'];
+        $task->comments = $request['comment'];
+        $task->task_status_code = 1;
+
+        if($task->save())
+        {
+            Toastr::success('Task assigned to employee successfully.');
+            return back();
+        }
+        else
+        {
+            Toastr::success('Something went wrong.');
+            return back();
         }
     }
 }

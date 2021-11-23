@@ -265,6 +265,7 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::post('/task/complete/{id}', [TaskController::class, 'complete_task']);
         Route::get('/completed_task/list', [TaskController::class, 'complete_task_list'])->name('completed_task.list');
         Route::get('/locations/{id}', [TaskController::class, 'get_task_location'])->name('get_task_location');
+        Route::post('/assign_task', [TaskController::class, 'assign_task'])->name('assign_task');
 
     });
 
