@@ -18,7 +18,7 @@ class DashboardController extends Controller
         if(Auth::user()->userType == 'employee'){
 
             $login_user_id = Auth::user()->id;
-            $tasks = Task::where('assignee_id', $login_user_id)->where('task_status_code', 2)->get();
+            $tasks = Task::where('assignee_id', $login_user_id)->where('task_status_code', 3)->get();
             $number = $tasks->count();
             
             if($number > 0)

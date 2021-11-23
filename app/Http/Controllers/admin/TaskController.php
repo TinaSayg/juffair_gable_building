@@ -201,17 +201,20 @@ class TaskController extends Controller
 
     }
 
-    public function complete_task($id)
+    public function change_task_task(Request $request)
     {
-        $task = Task::find($id);
+        
+        $task_id = $request->input('task_id');
+        $task_status_code = $request->input('task_status_code');
+        $task = Task::find($task_id);
 
         $current_date_time = Carbon::now();
-        $task->task_status_code = '2'; //completed
+        $task->task_status_code = $task_status_code; 
         $task->complete_date = Carbon::parse($current_date_time)->format('Y-m-d');
         $task->complete_time = Carbon::parse($current_date_time)->format('H:i');
 
         if($task->save()){
-            Toastr::success('Your task is completed.');
+            Toastr::success('Your task status has been changed.');
             return back();
         }
         else

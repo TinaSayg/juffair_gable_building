@@ -157,14 +157,14 @@
                 </thead>
                 <tbody>
                   @php
-                    $tasks = \App\Models\Task::where('assignee_id', Auth::user()->id)->where('task_status_code', 1)->orderBy('id','desc')->get();
+                    $tasks = \App\Models\Task::where('assignee_id', Auth::user()->id)->whereIn('task_status_code', [1,2])->orderBy('id','desc')->get();
                   @endphp
                   @foreach($tasks as $key => $item)
                   <tr style="cursor: pointer">
                     <th>{{ $key+1 }}</th>
                     <td>{{ $item->title }}</td>
                     <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ \Carbon\Carbon::parse($item->assign_time)->format('g:i A') }}</td>
-                    <td></td>
+                    <td>{{ \Carbon\Carbon::parse($item->deadling_date)->toFormattedDateString() }} {{ \Carbon\Carbon::parse($item->deadline_time)->format('g:i A') }}</td>
                     <td>
                       <span class="badge badge-warning" style="border-radius: 0px !important">{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</span>
                     </td>

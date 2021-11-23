@@ -15,7 +15,10 @@ Juffair Gable
    }
    .small-box-footer
    {
-     color:#fff !important;
+      color:#fff !important;
+   }
+   tr:hover {
+      background: #a3a3a3 !important;
    }
 </style>
 @stop
@@ -41,8 +44,7 @@ Juffair Gable
         <p class="mb-0">Welcome <span style="font-size: 17px;font-weight:800">{{ ucwords($user->name) }},</span></p>
         <p class="mb-0"><span style="font-weight: 600">Email</span> : {{ $user->email }}</p>
         <p class="mb-0"><span style="font-weight: 600">Phone Number</span> : {{ $user->number }}</p>
-        @if(Auth::user()->userType != 'Admin')
-        
+        @if((Auth::user()->userType == 'employee') || (Auth::user()->userType == 'officer'))
           <p class="mb-0"><span style="font-weight: 600">Date Of Joining</span> : {{ \Carbon\Carbon::parse($employee_detail->employee_start_datetime)->toFormattedDateString() }}</p>
         @endif
       </div>
@@ -168,7 +170,7 @@ Juffair Gable
       @if(\Auth::user()->userType == 'employee')
       @php
        
-        $tasks = \App\Models\Task::where('task_status_code', 1)->where('assignee_id', Auth::user()->id)->get();
+        $tasks = \App\Models\Task::whereIn('task_status_code', [1,2])->where('assignee_id', Auth::user()->id)->get();
         if($average_time)
         {
           $average_time = explode(":", $average_time);
@@ -255,26 +257,29 @@ Juffair Gable
                         <th>Date Assigned</th>
                         <th>Deadline Date</th>
                         <th>Status</th>
-                        <th>Actions</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       @foreach($tasks as $key => $item)
-                      <tr>
-                        <td>{{ $key+1 }}</td>
-                        <td>{{ $item->title }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ $item->assign_time }}</td>
-                        <td></td>
-                        <td>{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</td>
+                      <tr style="cursor: pointer;">
+                        <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $key+1 }}</td>
+                        <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $item->title }}</td>
+                        <td data-href='{{ route('tasks.show', $item->id) }}'>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ $item->assign_time }}</td>
+                        <td data-href='{{ route('tasks.show', $item->id) }}'>{{ \Carbon\Carbon::parse($item->deadline_date)->toFormattedDateString() }} {{ $item->deadline_time }}</td>
+                        <td>@if(isset($item->task_status))<button class="btn btn-warning task-status-button" data-task_id="{{ $item->id }}" data-task_status_code="{{ $item->task_status_code }}">{{$item->task_status->task_status_name}}</button>@endif</td>
                         <td>
-                          <a href="{{ route('tasks.show', $item->id) }}" type="button" class="btn btn-primary">View Task</a>
-                          <a href="#" data-task_id="{{ $item->id }}" data-target="#confirmModal" data-toggle="modal" type="button" class="btn btn-success complete-task-button">Complete Task</a>
-                          {{-- <a href="#" onclick="form_alert('task-{{ $item->id }}','Want to delete this task')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                          <a href="{{ route('tasks.edit', $item->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                          <form action="{{ route('tasks.delete', $item->id) }}"
-                              method="post" id="task-{{ $item->id }}">
-                              @csrf @method('delete')
-                          </form>  --}}
+                          
+                          <div class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
+                            <div class="dropdown-menu">
+                              <a href="{{ route('tasks.show', $item->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
+                              <div class="dropdown-divider"></div>
+                              <a href="#" data-task_id="{{ $item->id }}" data-target="#confirmModal" data-toggle="modal" class="dropdown-item has-icon text-danger complete-task-button"><i class="far fa-trash-alt"></i>
+                                Complete Task</a>
+                            </div>
+                          </div>
+
                         </td>
                       </tr>
                       @endforeach
@@ -289,7 +294,7 @@ Juffair Gable
       @endif
   </div>
 {{-- Confirm modal --}}
-<div class="modal" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="formModal"  aria-modal="true">
+<div class="modal" id="taskConfirmModal" tabindex="-1" role="dialog" aria-labelledby="formModal"  aria-modal="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -299,10 +304,12 @@ Juffair Gable
         </button>
       </div>
       <div class="card-body">
-        <form action="{{ url('') }}" method="POST" id="completeTaskForm">
+        <form action="{{ route('tasks.change_task_status') }}" method="POST" id="completeTaskForm">
           @csrf
+          <input type="hidden" name="task_id" id="confirmTaskId">
+          <input type="hidden" name="task_status_code" id="confirmTaskStatusCode">
           <div>
-            <p>Do you confirm the task has been completed?</p>
+            <p class="task-confirm-message">Do you confirm the task has been completed?</p>
           </div>
           <button type="submit" class="btn btn-primary m-t-15 waves-effect">Confirm</button>
         </form>
@@ -318,6 +325,35 @@ Juffair Gable
 <!-- Page Specific JS File -->
 <script src="{{ asset('public/admin/assets/') }}/js/page/datatables.js"></script>
 <script>
+  $("tr td:not(:nth-last-child(2),:nth-last-child(1))").click(function() {
+      window.location = $(this).data("href");
+  });
+</script>
+<script>
+  $(".task-status-button").click(function(){
+    let task_id = $(this).attr('data-task_id')
+    let task_status_code = $(this).attr('data-task_status_code')
+    
+    if(task_status_code == 1)
+    {
+      $(".task-confirm-message").html("Do you confirm the task has been in progress?")
+      $("#confirmTaskId").val(task_id)
+      $("#confirmTaskStatusCode").val(2)
+    }
+    else
+    {
+      $("#confirmTaskId").val(task_id)
+      $("#confirmTaskStatusCode").val(3)
+      $(".task-confirm-message").html("Do you confirm the task has been completed?")
+    }
+
+
+    $("#taskConfirmModal").modal("show")
+
+   
+  })
+</script>
+<script>
   $(".complete-task-button").click(function(){
     let task_id = $(this).attr('data-task_id')
    
@@ -326,4 +362,5 @@ Juffair Gable
     $("#completeTaskForm").attr("action", action)
   })
 </script>
+
 @stop
