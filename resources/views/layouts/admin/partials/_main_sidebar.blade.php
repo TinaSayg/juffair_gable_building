@@ -170,6 +170,11 @@
           <a href="{{ route('approveleave.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Approve Leaves</span></a>
         </li>
         @endif  
+        @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
+        <li class="dropdown {!! (Request::is('testimonials/*') ? "active" : "") !!}">
+          <a href="{{ route('testimonials.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Testimonials</span></a>
+        </li>
+        @endif  
          
         @if(request()->user()->can('view-maintenance-cost'))
         <li class="dropdown {!! (Request::is('maintenancecost/*') ? "active" : "") !!}">

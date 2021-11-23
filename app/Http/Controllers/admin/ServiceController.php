@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\ServiceContract;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
+use Intervention\Image\Facades\Image;
 
 class ServiceController extends Controller
 {
@@ -39,18 +40,29 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
+        
         $request->validate([
             'contract_description' => 'required',
             'contract_cost' =>  'required' ,
             'frequency_of_pay' => 'required',
             'renew_date' => 'required',  
+            'image' => 'required|max:20480|mimes:pdf',
         ]);
+        $filename ='';
+        if($request->file('image'))
+        {
+            $file_name = time().'_'.trim($request->file('image')->getClientOriginalName());
+            
+            $request->file('image')->move(public_path('admin/assets/img/invoices/'). $file_name);
+            $filename= $file_name;  
+        }
 
         $store = new ServiceContract();
         $store->description = $request->input("contract_description");
         $store->amount = $request->input("contract_cost");
         $store->frequency_of_pay = $request->input("frequency_of_pay");
         $store->contract_renew_date = $request->input("renew_date");
+        $store->image = $filename;
 
         if($store->save())
         {
@@ -115,6 +127,18 @@ class ServiceController extends Controller
         $update->amount = $request->input("contract_cost");
         $update->frequency_of_pay = $request->input("frequency_of_pay");
         $update->contract_renew_date = $request->input("renew_date");
+
+        if($request->file('image'))
+        {
+            unlink(public_path('admin/assets/img/servicecontract/'). $update->image);
+            $file_name = time().'_'.trim($request->file('image')->getClientOriginalName());
+            
+             $image = Image::make($request->file('image')->getRealPath());
+            $image->resize(300,200);
+            $image->save(public_path('admin/assets/img/servicecontract/'). $file_name);
+            $filename= $file_name;  
+            $update->image = $filename;
+        }
 
         if($update->save())
         {

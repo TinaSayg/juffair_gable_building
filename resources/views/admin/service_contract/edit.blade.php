@@ -44,6 +44,13 @@
                         <label>Frequency of pay</label>
                         <input type="text" name="frequency_of_pay" value="{{ isset($service_contract) ? $service_contract->frequency_of_pay : ''}}" id="frequencyOFPay" class="form-control">
                     </div>
+                    <div class="form-group col-md-4">
+                        <label>Upload File</label>
+                        <input type="file" name=""  class="form-control">
+                        @if(isset($employeeleave->leave_document) && !empty($employeeleave->leave_document))
+                            <img src="{{asset('public/admin/assets/img/documents/'.$employeeleave->leave_document)}}" height="150" width="150">
+                        @endif 
+                     </div>
                     </div>
                     <div class="row">
                     <div class="form-group col-md-4">

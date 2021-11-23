@@ -31,6 +31,7 @@ use App\Http\Controllers\admin\ComplaintsController;
 use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\admin\RentreportController;
 use App\Http\Controllers\admin\ReservationController;
+use App\Http\Controllers\admin\TestimonialController;
 use App\Http\Controllers\admin\UtilitybillController;
 use App\Http\Controllers\admin\VisitorsreportController;
 use App\Http\Controllers\admin\ComplaintreportController;
@@ -54,6 +55,7 @@ Auth::routes();
 Route::view('/', 'index');
 Route::view('/terms', 'termsofservice');
 Route::view('/jobs', 'job');
+Route::view('/testimonials', 'testimonials');
 Route::view('/contact', 'contact');
 Route::post('/save_job_info', [PagesController::class, 'save_job_info'])->name('save_job_info');
 Route::get('/login', [LoginController::class, 'showLoginForm']);
@@ -330,6 +332,17 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::post('/leave/update/{id}', [LeavesController::class, 'update'])->name('update');
     Route::delete('/leave/delete/{id}', [LeavesController::class, 'destroy'])->name('delete');
     Route::get('/leave/show/{id}', [LeavesController::class, 'show'])->name('show');
+
+   });
+   //Testimonials routes
+   Route::group(['prefix' => 'testimonials', 'as' => 'testimonials.'], function () {
+    Route::get('/testimonials_list', [TestimonialController::class, 'index'])->name('list');
+    Route::get('/testimonials/create', [TestimonialController::class, 'create'])->name('create');
+    Route::post('/testimonials/store', [TestimonialController::class, 'store'])->name('store');
+    Route::get('/testimonials/edit/{id}', [TestimonialController::class, 'edit'])->name('edit');
+    Route::post('/testimonials/update/{id}', [TestimonialController::class, 'update'])->name('update');
+    Route::delete('/testimonials/delete/{id}', [TestimonialController::class, 'destroy'])->name('delete');
+    Route::get('/testimonials/show/{id}', [TestimonialController::class, 'show'])->name('show');
 
    });
 
