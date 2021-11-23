@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateServiceContractsTable extends Migration
+class CreateTestimonialsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateServiceContractsTable extends Migration
      */
     public function up()
     {
-        Schema::create('service_contracts', function (Blueprint $table) {
+        Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
-            $table->longText('description');
-            $table->decimal('amount', 15, 3);
-            $table->integer('frequency_of_pay');
+            $table->string('name');
+            $table->string('review');
             $table->string('image');
-            $table->dateTime('contract_renew_date');
-            
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateServiceContractsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('service_contracts');
+        Schema::dropIfExists('testimonials');
     }
 }

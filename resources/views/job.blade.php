@@ -185,6 +185,19 @@
             {
                 display: block !important;
             }
+            @media (min-width: 576px) { 
+                .form {
+                margin-bottom: 50px;
+                    }
+             }
+             @media (min-width: 576px) { 
+                .gables {
+               width:100%;
+               height:cover;
+                    }
+             }
+             
+
          </style>
     </head>
    <body>
@@ -198,7 +211,9 @@
                         <div class="row align-items-center">
                             <!-- Logo -->
                             <div class="col-md-4">
-                                <h1 class="text-left heading">Juffair Gables</h1>
+                                <a href="index.html"><img
+                                    src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
+                                    width="160px" height="80px" alt=""></a>
                             </div>
                             <div class="col-md-4">
                                
@@ -221,20 +236,11 @@
     </header>
     <main>
         <div class="main-content">
-            <section class="section">
-              <ul class="breadcrumb breadcrumb-style ">
-                <li class="breadcrumb-item">
-                  <h4 class="page-title m-b-0">Form</h4>
-                </li>
-                <li class="breadcrumb-item">
-                  <a href="index.html">
-                    <i class="fas fa-home"></i></a>
-                </li>
-                
-              </ul>
+            <section class="section" style="margin-top:120px;">
+              
               <div class="section-body">
                 <div class="row">
-                  <div class="col-6 col-md-6 col-lg-6">
+                  <div class="col-12 col-md-6 col-lg-6 form">
                     <div class="card">
                     @if(session()->has('message'))
                         <div class="alert alert-success">
@@ -316,75 +322,62 @@
                     </div>
                 </div>
             </div>
-        <div class="col-6 col-md-6 col-lg-6">
+        <div class="col-12 col-md-6 col-lg-6 gables">
           
                 <div class="single-team mb-30">
                     <div class="team-img1">
                         <img src="{{ asset('public/assets/img/gallery/003.jpg') }}" width="100%" height="100%" alt="">
                     </div>
-        </div>   
-    </div>
+                </div>   
+        </div>
 </div>
-</div>
-</div>
-                    
-
     </main>
-
     <footer>
         <!-- Footer Start-->
         <div class="footer-area pt-5">
             <div class="container">
-               <div class="footer-top">
+                <div class="footer-top">
                     <div class="row justify-content-between">
-                        <div class="col-xl-3 col-lg-4 col-md-3 col-sm-6">
-                            <div class="single-footer-caption mb-50">
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                            <div class="single-footer-caption text-center mb-50">
                                 <div class="single-footer-caption mb-30">
-                                    <!-- logo -->
-                                    <div class="footer-logo">
-                                        <a href="index.html"><img src="{{ asset('public/assets/img/juffair_gables_logo.png') }}" width="236px" height="180px" alt=""></a>
+                                    <div class="single-footer-caption mb-50">
+                                        <div class="footer-tittle">
+                                            <h4><a href="{{ url('/terms') }}">Terms Of Service</a></h4>
+                                            <h4><a href="{{ url('/jobs') }}">Job Opportunities</a></h4>
+                                        </div>
                                     </div>
+                                    <!-- logo -->
+                                   
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6">
-                            <div class="single-footer-caption mb-50">
-                                <div class="footer-tittle">
-                                    <h4><a href="{{ url('/terms') }}">Terms Of Service</a></h4>
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                            <div class="single-footer-caption text-center mb-50">
+                                <div class="footer-logo">
+                                    <a href="index.html"><img
+                                            src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
+                                            width="236px" height="180px" alt=""></a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6">
-                            <div class="single-footer-caption mb-50">
-                                <div class="footer-tittle">
-                                    <h4><a href="{{ url('/jobs') }}">Job Opportunities</a></h4>
-                                    
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6">
-                            <div class="single-footer-caption mb-50">
+                        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
+                            <div class="single-footer-caption text-center mb-50">
                                 <div class="footer-tittle">
                                     <h4>Testimonials</h4>
-                                    
+                                    <h4><a href="{{ url('/contact') }}">Contact Us</a></h4>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6">
-                            <div class="single-footer-caption mb-50">
-                                <div class="footer-tittle">
-                                    <h4>Contact Us</h4>
-
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
-               </div>
+                </div>
                 <div class="footer-bottom">
                     <div class="row d-flex justify-content-between align-items-center">
                         <div class="col-xl-9 col-lg-8">
                             <div class="footer-copy-right">
-                                <p>Copyright  &copy; 2021 All rights reserved by SayG SPC,<a href="https://www.sayg.bh">www.sayg.bh </a></p>
+                                <p>Copyright &copy; 2021 All rights reserved by SayG SPC,<a
+                                        href="https://www.sayg.bh">www.sayg.bh </a></p>
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-4">
@@ -397,7 +390,7 @@
                             </div>
                         </div>
                     </div>
-               </div>
+                </div>
             </div>
         </div>
         <!-- Footer End-->

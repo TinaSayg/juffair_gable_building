@@ -44,6 +44,10 @@
                         <label>Frequency of pay</label>
                         <input type="text" name="frequency_of_pay" id="frequencyOFPay" class="form-control">
                     </div>
+                    <div class="form-group col-md-4 attachdocument">
+                        <label>Upload File</label>
+                        <input type="file" name="image" accept="application/pdf" class="form-control">
+                    </div>
                     </div>
                     <div class="row">
                     <div class="form-group col-md-4">

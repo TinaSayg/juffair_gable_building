@@ -264,156 +264,81 @@
         #bedroom{
             margin-bottom: 50px;
         }
-        *
-{
-  margin: 0;
-  padding: 0;
-  font-family: "montserrat", sans-serif;
-}
+        .testimonials
+        {
+        padding: 40px 0;
+        background: #f1f1f1;
+        color: #434343;
+        text-align: center;
+        }
 
-.testimonials
-{
-  padding: 40px 0;
-  background: #f1f1f1;
-  color: #434343;
-  text-align: center;
-}
+        .testimonial-inner
+        {
+        max-width: 1200px;
+        margin: auto;
+        overflow: hidden;
+        padding: 0 20px;
+        }
 
-.testimonial-inner
-{
-  max-width: 1200px;
-  margin: auto;
-  overflow: hidden;
-  padding: 0 20px;
-}
+        .border
+        {
+        width: 160px;
+        height: 5px;
+        background: #6ab04c;
+        margin: 26px auto;
+        }
 
-.border
-{
-  width: 160px;
-  height: 5px;
-  background: #6ab04c;
-  margin: 26px auto;
-}
+        .row
+        {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        }
 
-.row
-{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
+        .col
+        {
+        flex: 33.33%;
+        max-width: 33.33%;
+        box-sizing:  border-box;
+        padding: 15px;
+        }
 
-.col
-{
-  flex: 33.33%;
-  max-width: 33.33%;
-  box-sizing:  border-box;
-  padding: 15px;
-}
+        .testimonial
+        {
+        background: #fff;
+        padding: 30px;
+        }
 
-.testimonial
-{
-  background: #fff;
-  padding: 30px;
-}
+        .testimonial img
+        {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        }
 
-.testimonial img
-{
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-}
+        .name
+        {
+        font-size: 20px;
+        text-transform: uppercase;
+        margin: 20px 0;
+        }
 
-.name
-{
-  font-size: 20px;
-  text-transform: uppercase;
-  margin: 20px 0;
-}
+        .stars
+        {
+        color: #f0932b;
+        margin-bottom: 20px;
+        }
 
-.stars
-{
-  color: #f0932b;
-  margin-bottom: 20px;
-}
-
-@media screen and (max-width: 960px)
-{
-  .col
-  {
-    flex: 100%;
-    max-width: 80%;
-  }
-}
-.card{
-  
-  min-height:337px;
-  background:hsl(0, 0%, 10%);
-  color:hsl(0, 0%, 50%);
-  padding:2rem 3rem;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  background-image:linear-gradient(90deg, hsl(0, 0%, 10%), hsla(0, 0%, 10%, 0.9),   hsla(0, 0%, 10%, 0)), url("public/assets/img/gallery/section_bg08.png");
-  background-size:cover;
-  border-radius:10px;
-}
-
-.card > h2{
-  margin-bottom:2rem;
-  font-size:2.8rem;
-  color:hsl(30, 80%, 55%);
-  font-family:serif;
-}
-
-.card > p{
-  margin-bottom:2rem;
-  width:60%;
-  font-size:1.8rem;
-  letter-spacing:0px;
-  line-height:105%;
-  color: #d38711;
-}
-
-.learn-more{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  width:30%;
-}
-
-
-.line{
-  flex-basis:40%;
-  position:relative;
-  overflow:hidden;
-}
-
-.line::before{
-  content:"";
-  position:absolute;
-  inset:-10px;
-  width:30px;
-  background:hsl(0, 0%, 10%);
-  transform:translateX(-100%);
-  transition:0.65s ease;
-}
-
-
-.learn-more:hover .line::before{
-  transform:translateX(200%);
-}
-
-
-.line > hr{
-  border:1px solid hsl(30, 80%, 55%);
-}
-
-.learn-more > a{
-  text-decoration:none;
-  font-size:0.7rem;
-  color:hsl(30, 80%, 55%);
-}    
-        
+        @media screen and (max-width: 960px)
+        {
+        .col
+        {
+            flex: 100%;
+            max-width: 80%;
+        }
+        }
+            
+                
     </style>
 </head>
 
@@ -454,65 +379,57 @@
     <main>
         <div class="testimonials">
             <div class="testimonial-inner">
-              <h1>Contact Us</h1>
+              <h1>Testimonial</h1>
               <div class="border"></div>
               
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-6 col-12">
-                            <div class="text-center">
-                                <img src="{{ asset('public/assets/img/gallery/001.svg') }}" style="width:100%;height:400px;" alt="">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-12">
-                            <div class="card">
-                                <div class="row">
-                                    <div class="card">
-                                        <h2>Contact</h2>
-                                    <div class="col-lg-3 col-9"> 
-                                        Address:
-                                    </div>
-                                    <div class="col-lg-9 col-9 text-left"> 
-                                        Juffair Gables,Building No:1234,Way234,block789,
-                                        Kingdom Of Bahrain.
-                                   </div>   
-                                
-                                <div class="row">
-                                    <div class="col-lg-3 col-9 "> 
-                                        Phone:
-                                    </div>
-                                    <div class="col-lg-9 col-9 text-left"> 
-                                        12345678
-                                   </div>   
-                                </div>
-                        </div>
+              <div class="row">
+                <div class="col">
+                  <div class="testimonial">
+                    <img src="https://images.pexels.com/photos/3211476/pexels-photo-3211476.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
+                    <div class="name">John Waddrob</div>
+                    <div class="stars">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
                     </div>
-                </div>    
-            </div>  
-        </div> 
-    </div>
-
-                <div class="home-blog-area section-padding20" id="apartments">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <!-- Section Tittle -->
-                                <div class="section-tittle text-center mb-90">
-                                    <h2>Location</h2>
-                                </div>
-                            </div>
-                                    <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6286.548000140698!2d50.60031859985938!3d26.212137723275283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49a9f9d52f6ea7%3A0xa4635a2272c5c888!2sJuffair%20Gables!5e0!3m2!1sen!2sbh!4v1635933235184!5m2!1sen!2sbh"
-                                        style="width:100%;height:140%" allowfullscreen=""
-                                        loading="lazy"></iframe>
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque repellat aspernatur temporibus assumenda sint odio minima. Voluptate alias possimus aspernatur voluptates excepturi placeat iusto cupiditate.</p>
+                  </div>
                 </div>
-            
+                
+                <div class="col">
+                  <div class="testimonial">
+                    <img src="https://images.pexels.com/photos/3585325/pexels-photo-3585325.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
+                    <div class="name">John Waddrob</div>
+                    <div class="stars">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="far fa-star"></i>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque repellat aspernatur temporibus assumenda sint odio minima. Voluptate alias possimus aspernatur voluptates excepturi placeat iusto cupiditate.</p>
+                  </div>
+                </div>
+                
+                <div class="col">
+                  <div class="testimonial">
+                    <img src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
+                    <div class="name">John Waddrob</div>
+                    <div class="stars">
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                      <i class="fas fa-star"></i>
+                    </div>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque repellat aspernatur temporibus assumenda sint odio minima. Voluptate alias possimus aspernatur voluptates excepturi placeat iusto cupiditate!</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </body>
     </main>
     <footer>
@@ -579,44 +496,43 @@
         <!-- Footer End-->
     </footer>
     <!-- Scroll Up -->
-    <div id="back-top">
+    <div id="back-top" >
         <a title="Go to Top" href="#"> <i class="fas fa-level-up-alt"></i></a>
     </div>
 
 
     <!-- JS here -->
-    <!-- All JS Custom Plugins Link Here here -->
-    <script src="{{ asset('public/assets/js/vendor/modernizr-3.5.0.min.js') }}"></script>
-    <!-- Jquery, Popper, Bootstrap -->
-    <script src="{{ asset('public/assets/js/vendor/jquery-1.12.4.min.js') }}"></script>
-    <script src="{{ asset('public/assets/js/popper.min.js') }}"></script>
-    <script src="{{ asset('public/assets/js/bootstrap.min.js') }}"></script>
-    <!-- Jquery Mobile Menu -->
-    <script src="{{ asset('public/assets/js/jquery.slicknav.min.js') }}"></script>
+		<!-- All JS Custom Plugins Link Here here -->
+        <script src="{{ asset('public/assets/js/vendor/modernizr-3.5.0.min.js') }}"></script>
+		<!-- Jquery, Popper, Bootstrap -->
+		<script src="{{ asset('public/assets/js/vendor/jquery-1.12.4.min.js') }}"></script>
+        <script src="{{ asset('public/assets/js/popper.min.js') }}"></script>
+        <script src="{{ asset('public/assets/js/bootstrap.min.js') }}"></script>
+	    <!-- Jquery Mobile Menu -->
+        <script src="{{ asset('public/assets/js/jquery.slicknav.min.js') }}"></script>
 
-    <!-- Jquery Slick , Owl-Carousel Plugins -->
-    <script src="{{ asset('public/assets/js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('public/assets/js/slick.min.js') }}"></script>
-    <!-- One Page, Animated-HeadLin -->
-    <script src="{{ asset('public/assets/js/wow.min.js') }}"></script>
-    <script src="{{ asset('public/assets/js/animated.headline.js') }}"></script>
-    <script src="{{ asset('public/assets/js/jquery.magnific-popup.js') }}"></script>
+		<!-- Jquery Slick , Owl-Carousel Plugins -->
+        <script src="{{ asset('public/assets/js/owl.carousel.min.js') }}"></script>
+        <script src="{{ asset('public/assets/js/slick.min.js') }}"></script>
+		<!-- One Page, Animated-HeadLin -->
+        <script src="{{ asset('public/assets/js/wow.min.js') }}"></script>
+		<script src="{{ asset('public/assets/js/animated.headline.js') }}"></script>
+        <script src="{{ asset('public/assets/js/jquery.magnific-popup.js') }}"></script>
 
-    <!-- Nice-select, sticky -->
-    <script src="{{ asset('public/assets/js/jquery.nice-select.min.js') }}"></script>
-    <script src="{{ asset('public/assets/js/jquery.sticky.js') }}"></script>
-
-    <!-- contact js -->
-    <script src="{{ asset('public/assets/js/contact.js') }}"></script>
-    <script src="{{ asset('public/assets/js/jquery.form.js') }}"></script>
-    <script src="{{ asset('public/assets/js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('public/assets/js/mail-script.js') }}"></script>
-    <script src="{{ asset('public/assets/js/jquery.ajaxchimp.min.js') }}"></script>
-
-    <!-- Jquery Plugins, main Jquery -->
-    <script src="{{ asset('public/assets/js/plugins.js') }}"></script>
-    <script src="{{ asset('public/assets/js/main.js') }}"></script>
-
-</body>
-
+		<!-- Nice-select, sticky -->
+        <script src="{{ asset('public/assets/js/jquery.nice-select.min.js') }}"></script>
+		<script src="{{ asset('public/assets/js/jquery.sticky.js') }}"></script>
+        
+        <!-- contact js -->
+        <script src="{{ asset('public/assets/js/contact.js') }}"></script>
+        <script src="{{ asset('public/assets/js/jquery.form.js') }}"></script>
+        <script src="{{ asset('public/assets/js/jquery.validate.min.js') }}"></script>
+        <script src="{{ asset('public/assets/js/mail-script.js') }}"></script>
+        <script src="{{ asset('public/assets/js/jquery.ajaxchimp.min.js') }}"></script>
+        
+		<!-- Jquery Plugins, main Jquery -->	
+        <script src="{{ asset('public/assets/js/plugins.js') }}"></script>
+        <script src="{{ asset('public/assets/js/main.js') }}"></script>
+        
+    </body>
 </html>

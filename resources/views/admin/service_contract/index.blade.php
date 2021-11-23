@@ -58,6 +58,7 @@
                       <td onclick="getServiceContractDetails({{ $item->id }})">{{ $item->description }}</td>
                       <td onclick="getServiceContractDetails({{ $item->id }})">{{ $item->amount }} BD</td>
                       <td onclick="getServiceContractDetails({{ $item->id }})">{{ $item->frequency_of_pay }}</td>
+                      
                       <td onclick="getServiceContractDetails({{ $item->id }})">{{ \Carbon\Carbon::parse($item->contract_renew_date)->toFormattedDateString() }}</td>
                       <td>
                         <div class="dropdown">
