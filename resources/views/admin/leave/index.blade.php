@@ -7,7 +7,9 @@
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.css') }}">
 <style>
-
+tr:hover {
+    background: #a3a3a3 !important;
+}
    
 </style>
 @stop
@@ -61,10 +63,10 @@
 
                     @endphp
                     @foreach($employeeleave as $key => $leave)
-                    <tr>
-                        <td>{{ $key+1 }}</td>
+                    <tr style="cursor: pointer" >
+                        <td onclick="getLeaveDetails({{ $leave->id }})">{{ $key+1 }}</td>
                         @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
-                        <td>
+                        <td onclick="getLeaveDetails({{ $leave->id }})">
                           @php
                             $staff_id = $leave->staff_id;
                             $employee_name = \App\Models\User::where('id', $staff_id)->first()->name;
@@ -72,11 +74,11 @@
                           {{ isset($employee_name)? $employee_name : '' }}
                         </td>
                         @endif
-                        <td>{{ \Carbon\Carbon::parse($leave->leave_start_date)->toFormattedDateString() }}</td>
-                        <td>{{ \Carbon\Carbon::parse($leave->leave_end_date)->toFormattedDateString() }}</td>
-                        <td>{{ \Carbon\Carbon::parse($leave->apply_date)->toFormattedDateString() }}</td>
-                        <td>{{ isset($leave->leave_types) ? $leave->leave_types->leave_type_name : '' }}</td>
-                        <td>
+                        <td onclick="getLeaveDetails({{ $leave->id }})">{{ \Carbon\Carbon::parse($leave->leave_start_date)->toFormattedDateString() }}</td>
+                        <td onclick="getLeaveDetails({{ $leave->id }})">{{ \Carbon\Carbon::parse($leave->leave_end_date)->toFormattedDateString() }}</td>
+                        <td onclick="getLeaveDetails({{ $leave->id }})">{{ \Carbon\Carbon::parse($leave->apply_date)->toFormattedDateString() }}</td>
+                        <td onclick="getLeaveDetails({{ $leave->id }})">{{ isset($leave->leave_types) ? $leave->leave_types->leave_type_name : '' }}</td>
+                        <td onclick="getLeaveDetails({{ $leave->id }})">
                           @php
                             $class = '';
                             switch ($leave->leave_status_code) {

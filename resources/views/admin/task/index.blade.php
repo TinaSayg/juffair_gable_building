@@ -29,6 +29,85 @@
     </ul> --}}
      <div class="row">
       <div class="col-12">
+        @if(\Auth::user()->userType != 'employee')
+        {{-- <div class="card">
+          <div class="card-header">
+           <h4>Tasks Under Review</h4>
+          </div>
+            
+            <div class="card-body">
+              <div class="table-responsive">
+                <table id="table-5" class="table table-striped display nowrap"  width="100%">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Title</th>
+                      <th>Location</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @php
+                      $tasks = \App\Models\Task::where('assign_date', '=', null)->orderBy('id','desc')->get();
+                    @endphp
+                    @foreach($tasks as $key => $item)
+                    <tr class="tasktable" style="cursor: pointer">
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $key+1 }}</td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $item->title }}</td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>
+                        @if($item->location_id == 1)
+                          @php
+                            $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                            $apartment_number = \App\Models\Unit::where('id', $item->unit_id)->first()->unit_number;
+                          @endphp
+                          Floor {{ $floor_number }}, Apartment {{ $apartment_number }}
+                        @endif
+
+                        @if($item->location_id == 2)
+                          @php
+                            $location_area = \App\Models\CommonArea::where('id', $item->common_area_id)->first()->area_name;
+                          @endphp
+                          {{ $location_area }}
+                        @endif
+
+                        @if($item->location_id == 3)
+                        @php
+                          $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                        @endphp
+                        Floor {{ $floor_number }}
+                        @endif
+
+                        @if($item->location_id == 4)
+                          @php
+                            $location_area = \App\Models\ServiceArea::where('id', $item->service_area_id)->first()->service_area_name;
+                          @endphp
+                          {{ $location_area }} Area
+                        @endif
+                      </td>
+                      <td>
+                        <div class="dropdown">
+                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                          <div class="dropdown-menu">
+                            <a href="{{ route('tasks.show', $item->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
+                            <a href="{{ route('tasks.edit', $item->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
+                            <a href="#" data-task_id="{{  $item->id }}" class="dropdown-item has-icon assign_task"><i class="fas fa-user-shield"></i> Assign Task</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" onclick="form_alert('task-{{ $item->id }}','Want to delete this task')" class="dropdown-item has-icon text-danger"><i class="far fa-trash-alt"></i>
+                              Delete</a>
+                            <form action="{{ route('tasks.delete', $item->id) }}"
+                                method="post" id="task-{{ $item->id }}">
+                                @csrf @method('delete')
+                            </form>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div> --}}
         <div class="card">
           <div class="card-header">
            <h4>All Tasks</h4>
@@ -112,86 +191,6 @@
               </div>
             </div>
         </div>
-        
-        @if(\Auth::user()->userType != 'employee')
-        {{-- <div class="card">
-          <div class="card-header">
-           <h4>Tasks Under Review</h4>
-          </div>
-            
-            <div class="card-body">
-              <div class="table-responsive">
-                <table id="table-5" class="table table-striped display nowrap"  width="100%">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Title</th>
-                      <th>Location</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @php
-                      $tasks = \App\Models\Task::where('assign_date', '=', null)->orderBy('id','desc')->get();
-                    @endphp
-                    @foreach($tasks as $key => $item)
-                    <tr class="tasktable" style="cursor: pointer">
-                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $key+1 }}</td>
-                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $item->title }}</td>
-                      <td data-href='{{ route('tasks.show', $item->id) }}'>
-                        @if($item->location_id == 1)
-                          @php
-                            $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
-                            $apartment_number = \App\Models\Unit::where('id', $item->unit_id)->first()->unit_number;
-                          @endphp
-                          Floor {{ $floor_number }}, Apartment {{ $apartment_number }}
-                        @endif
-
-                        @if($item->location_id == 2)
-                          @php
-                            $location_area = \App\Models\CommonArea::where('id', $item->common_area_id)->first()->area_name;
-                          @endphp
-                          {{ $location_area }}
-                        @endif
-
-                        @if($item->location_id == 3)
-                        @php
-                          $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
-                        @endphp
-                        Floor {{ $floor_number }}
-                        @endif
-
-                        @if($item->location_id == 4)
-                          @php
-                            $location_area = \App\Models\ServiceArea::where('id', $item->service_area_id)->first()->service_area_name;
-                          @endphp
-                          {{ $location_area }} Area
-                        @endif
-                      </td>
-                      <td>
-                        <div class="dropdown">
-                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
-                          <div class="dropdown-menu">
-                            <a href="{{ route('tasks.show', $item->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
-                            <a href="{{ route('tasks.edit', $item->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
-                            <a href="#" data-task_id="{{  $item->id }}" class="dropdown-item has-icon assign_task"><i class="fas fa-user-shield"></i> Assign Task</a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" onclick="form_alert('task-{{ $item->id }}','Want to delete this task')" class="dropdown-item has-icon text-danger"><i class="far fa-trash-alt"></i>
-                              Delete</a>
-                            <form action="{{ route('tasks.delete', $item->id) }}"
-                                method="post" id="task-{{ $item->id }}">
-                                @csrf @method('delete')
-                            </form>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    @endforeach
-                  </tbody>
-                </table>
-              </div>
-            </div>
-        </div> --}}
         <div class="card">
           <div class="card-header">
            <h4>Assigned Tasks</h4>
