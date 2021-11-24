@@ -358,7 +358,7 @@
                         <div class="row align-items-center">
                             <!-- Logo -->
                             <div class="col-md-4">
-                                <a href="index.html"><img
+                                <a href="{{ url('/') }}"><img
                                     src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
                                     width="160px" height="80px" alt=""></a>
                             </div>
@@ -431,7 +431,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                             <div class="single-footer-caption text-center mb-50">
                                 <div class="footer-logo">
-                                    <a href="index.html"><img
+                                    <a href="{{ url('/') }}"><img
                                             src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
                                             width="236px" height="180px" alt=""></a>
                                 </div>

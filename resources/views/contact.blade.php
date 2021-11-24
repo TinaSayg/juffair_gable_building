@@ -277,6 +277,7 @@
   background: #f1f1f1;
   color: #434343;
   text-align: center;
+ 
 }
 
 .testimonial-inner
@@ -407,7 +408,11 @@
   text-decoration:none;
   font-size:0.7rem;
   color:hsl(30, 80%, 55%);
-}    
+}   
+.building{
+    border-radius:12px;
+
+}
         
     </style>
 </head>
@@ -423,7 +428,7 @@
                         <div class="row align-items-center">
                             <!-- Logo -->
                             <div class="col-md-4">
-                                <a href="index.html"><img
+                                <a href="{{ url('/') }}"><img
                                     src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
                                     width="160px" height="80px" alt=""></a>
                             </div>
@@ -453,8 +458,8 @@
               <div class="border mb-5"></div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-6 col-12">
-                            <img src="{{ asset('public/assets/img/gallery/001.svg') }}" height="400" alt="">
+                        <div class="col-lg-6 col-12 ">
+                            <img src="{{ asset('public/assets/img/gallery/001.svg') }}" class="building" height="400" alt="">
                         </div>
                         <div class="col-lg-6">
                             <div class="card">
@@ -543,7 +548,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                             <div class="single-footer-caption text-center mb-50">
                                 <div class="footer-logo">
-                                    <a href="index.html"><img
+                                    <a href="{{ url('/') }}"><img
                                             src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
                                             width="236px" height="180px" alt=""></a>
                                 </div>

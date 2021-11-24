@@ -154,7 +154,7 @@
            }
            body{
             background-color: #b9b8bb;
-            margin:20px;
+           
            }
            .header-bottom {
                 background: #010E21;
@@ -196,6 +196,23 @@
                height:cover;
                     }
              }
+             .testimonial
+        {
+            background: #020122;
+             padding: 30px;
+             border-radius: 15px;
+            
+        }
+        p {
+            font-family: "Sulphur Point",sans-serif;
+            color: #88980d;
+            font-size: 16px;
+            line-height: 30px;
+            margin-bottom: 15px;
+            font-weight: normal;
+         }
+       
+
              
 
          </style>
@@ -211,7 +228,7 @@
                         <div class="row align-items-center">
                             <!-- Logo -->
                             <div class="col-md-4">
-                                <a href="index.html"><img
+                                <a href="{{ url('/') }}"><img
                                     src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
                                     width="160px" height="80px" alt=""></a>
                             </div>
@@ -235,7 +252,8 @@
         <!-- Header End -->
     </header>
     <main>
-        <div class="main-content">
+        <div class="container">
+        
             <section class="section" style="margin-top:120px;">
               
               <div class="section-body">
@@ -322,6 +340,7 @@
                     </div>
                 </div>
             </div>
+        
         <div class="col-12 col-md-6 col-lg-6 gables">
           
                 <div class="single-team mb-30">
@@ -330,6 +349,7 @@
                     </div>
                 </div>   
         </div>
+</div>
 </div>
     </main>
     <footer>
@@ -355,7 +375,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                             <div class="single-footer-caption text-center mb-50">
                                 <div class="footer-logo">
-                                    <a href="index.html"><img
+                                    <a href="{{ url('/') }}"><img
                                             src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
                                             width="236px" height="180px" alt=""></a>
                                 </div>

@@ -185,13 +185,13 @@ Juffair Gable
          
         @endphp
         <div class="col-lg-4 col-sm-6">
-          <div class="card card-box">
+          <div class="card card-box" style="height:154px;">
             <div class="card-statistic-4">
               <div class="info-box7-block">
                 <h6 class="m-b-20 text-right">Average time to resolve an assigned tasks</h6>
                 <h4 class="text-right"><i class="fas fa-clock pull-left bg-cyan c-icon mt-4"></i><span>{{ isset($hours)? $hours.' '.'hours': '0' }}  {{ isset($minutes) ? $minutes.' '. 'minutes' : ''}} </span>
                 </h4>
-                <a href="{{ route('tasks.completed_task.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('tasks.completed_task.list') }}" style="position:relative;top:17px;" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
           </div>
@@ -217,7 +217,7 @@ Juffair Gable
            
         @endphp
         <div class="col-lg-4 col-sm-6">
-          <div class="card card-box" style="padding-bottom:19px">
+          <div class="card card-box" style="padding-bottom:19px;height:154px;">
             <div class="card-statistic-4">
               <div class="info-box7-block">
                 <div class="row">

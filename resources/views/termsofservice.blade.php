@@ -169,6 +169,85 @@
                 padding-left: 0px;
                 padding-right: 0px;
             }
+        .testimonials
+        {
+        padding: 40px 0;
+        background: #f1f1f1;
+        color: #434343;
+        text-align: center;
+        }
+
+        .testimonial-inner
+        {
+        max-width: 1200px;
+        margin: auto;
+        overflow: hidden;
+        padding: 0 20px;
+        }
+
+        .border
+        {
+        width: 160px;
+        height: 5px;
+        background: #6ab04c;
+        margin: 26px auto;
+        }
+
+        .col
+        {
+        flex: 33.33%;
+        max-width: 33.33%;
+        box-sizing:  border-box;
+        padding: 15px;
+        }
+
+        .testimonial
+        {
+            background: #020122;
+             padding: 30px;
+             border-radius: 15px;
+            
+        }
+        p {
+            font-family: "Sulphur Point",sans-serif;
+            color: #88980d;
+            font-size: 16px;
+            line-height: 30px;
+            margin-bottom: 15px;
+            font-weight: normal;
+         }
+       
+        .testimonial img
+        {
+        width: 105px;
+        height: 102px;
+        border-radius: 50%;
+        }
+
+        .name
+        {
+        font-size: 20px;
+        text-transform: uppercase;
+        margin: 20px 0;
+        color: #b9b8bb;
+        font-weight:700;
+        }
+
+        .stars
+        {
+        color: #f0932b;
+        margin-bottom: 20px;
+        }
+
+        @media screen and (max-width: 960px)
+        {
+        .col
+        {
+            flex: 100%;
+            max-width: 80%;
+        }
+        }
+            
 
          </style>
     </head>
@@ -183,7 +262,7 @@
                         <div class="row align-items-center">
                             <!-- Logo -->
                             <div class="col-md-4">
-                                <a href="index.html"><img
+                                <a href="{{ url('/') }}"><img
                                     src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
                                     width="160px" height="80px" alt=""></a>
                             </div>
@@ -207,23 +286,16 @@
         <!-- Header End -->
     </header>
     <main>
-        <div class="popular-location section-padding30" id="gallery">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <!-- Section Tittle -->
-                        <div class="section-tittle text-center mb-80">
-                            <h2>Terms Of Service</h2>
-                        </div>
-                    </div>
-                </div>
-                
-                    <div class="section-body">
-                        <div class="row">
+        <div class="testimonials">
+            <div class="testimonial-inner">
+              <h1>Contact Us</h1>
+              
+                <div class="container">
+                    <div class="row">
                           <div class="col-12 col-md-6 col-lg-12">
                             <div class="card">
                               <div class="card-header">
-                                <h4>Terms</h4>
+                                <h4>Terms And Conditions</h4>
                               </div>
                               <div class="card-body">
                                <p>Terms and conditions
@@ -273,6 +345,8 @@
                           </div>
                         </div>
                     </div>
+                </div>
+            </div>
        </main>
        <footer>
         <!-- Footer Start-->
@@ -297,7 +371,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                             <div class="single-footer-caption text-center mb-50">
                                 <div class="footer-logo">
-                                    <a href="index.html"><img
+                                    <a href="{{ url('/') }}"><img
                                             src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
                                             width="236px" height="180px" alt=""></a>
                                 </div>

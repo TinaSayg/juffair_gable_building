@@ -262,8 +262,6 @@
         #bedroom{
             margin-bottom: 50px;
         }
-        
-        
     </style>
 </head>
 
@@ -336,7 +334,7 @@
             </div>
         </div>
 
-s
+
 
 
 
@@ -948,7 +946,7 @@ s
                                     <div class="col-lg-12">
                                         <ul class="orderedlist check" >
                                             <li><a href="https://g.page/petgardenbh?share" class="list"  target="_blank">Pet Garden</a></li>
-                                            <li><a href="https://g.page/pet-spa-bahrain?share" class="list"  target="_blank">Pet Spa Bahrain</li>
+                                            <li><a href="https://g.page/pet-spa-bahrain?share" class="list"  target="_blank">Pet Spa Bahrain</a></li>
                                             
                                         </ul>
                                     </div>
@@ -1168,7 +1166,7 @@ s
                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                             <div class="single-footer-caption text-center mb-50">
                                 <div class="footer-logo">
-                                    <a href="index.html"><img
+                                    <a href="{{ url('/') }}"><img
                                             src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
                                             width="236px" height="180px" alt=""></a>
                                 </div>
