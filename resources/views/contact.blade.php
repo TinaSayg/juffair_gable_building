@@ -281,10 +281,8 @@
 
 .testimonial-inner
 {
-  max-width: 1200px;
   margin: auto;
   overflow: hidden;
-  padding: 0 20px;
 }
 
 .border
@@ -346,13 +344,10 @@
 }
 .card{
   
-  min-height:337px;
-  background:hsl(0, 0%, 10%);
-  color:hsl(0, 0%, 50%);
-  padding:2rem 3rem;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  min-height:400px;
+  background:hsl(25.3, 80.5%, 65.9%);
+  color:hsl(25.3, 80.5%, 65.9%);
+  padding:2rem 2rem;
   background-image:linear-gradient(90deg, hsl(0, 0%, 10%), hsla(0, 0%, 10%, 0.9),   hsla(0, 0%, 10%, 0)), url("public/assets/img/gallery/section_bg08.png");
   background-size:cover;
   border-radius:10px;
@@ -455,63 +450,73 @@
         <div class="testimonials">
             <div class="testimonial-inner">
               <h1>Contact Us</h1>
-              <div class="border"></div>
-              
+              <div class="border mb-5"></div>
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 col-12">
-                            <div class="text-center">
-                                <img src="{{ asset('public/assets/img/gallery/001.svg') }}" style="width:100%;height:400px;" alt="">
-                            </div>
+                            <img src="{{ asset('public/assets/img/gallery/001.svg') }}" height="400" alt="">
                         </div>
-                        <div class="col-lg-6 col-12">
+                        <div class="col-lg-6">
                             <div class="card">
+                                <div class="card-title">
+                                    <h1 class="mb-3" style="color:hsl(25.3, 80.5%, 65.9%); ">Contact Details</h1>
+                                </div>
                                 <div class="row">
-                                        <h2>Contact Us</h2>
-                                        <h5>Address:<span> Juffair Gables,Building No:1234,Way234,block789,
-                                            Kingdom Of Bahrain.</p>
-                                            <p> Phone: 12345678</h5>
-                                    <div class="col-lg-3 col-9"> 
-                                        Address:
+                                    <div class="col-lg-3 col-4 text-left">Address:</div>
+                                    <div class="col-lg-8 col-8 pl-0  text-left">Juffair Gables,Building No:1234,Way234,block789,
+                                        Kingdom Of Bahrain.</div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-lg-3 col-4 text-left">Phone:</div>
+                                    <div class="col-lg-8 col-8 pl-0">
+                                        <div class="text-left">17255577</div>
                                     </div>
-                                    <div class="col-lg-9 col-9 text-left"> 
-                                       
-                                   </div>   
-                                
-                                <div class="row">
-                                    <div class="col-lg-3 col-9 "> 
-                                        Phone:
+                                </div>
+
+                                <div class="row mt-4">
+                                    <div class="col-lg-3 col-4 text-left">Email Us:</div>
+                                    <div class="col-lg-8 col-8 pl-0">
+                                        <div class="text-left">
+                                            <a style="text-decoration:underline;color:hsl(25.3, 80.5%, 65.9%);" href="mailto:mrshaheen@juffairgables.com?cc=other@domain.com&bcc=hidden@domain.com&subject=Enquiry%20regarding%20product%20#0022&body=I%20would%20like%20more%20information%20on%20product%20#0022">click here to email us</a>
+                                        </div>
                                     </div>
-                                    <div class="col-lg-9 col-9 text-left"> 
-                                        12345678
-                                   </div>
+                                </div>
+                            </div>
+                            {{-- <h5>Address:<span> Juffair Gables,Building No:1234,Way234,block789,
+                                Kingdom Of Bahrain.</p>
+                                <p> Phone: 12345678</h5> --}}
                         </div>
-                    </div>
-                </div>    
-            </div>  
+                    </div>    
+
+                </div>
+            </div>
+
         </div> 
     </div>
 
-                <div class="home-blog-area section-padding20" id="apartments">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <!-- Section Tittle -->
-                                <div class="section-tittle text-center mb-90">
-                                    <h2>Location</h2>
-                                </div>
-                            </div>
-                                    <iframe
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6286.548000140698!2d50.60031859985938!3d26.212137723275283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49a9f9d52f6ea7%3A0xa4635a2272c5c888!2sJuffair%20Gables!5e0!3m2!1sen!2sbh!4v1635933235184!5m2!1sen!2sbh"
-                                        style="width:100%;height:140%" allowfullscreen=""
-                                        loading="lazy"></iframe>
-
-                                </div>
-                            </div>
+    <div class="container">
+        <div class="home-blog-area section-padding20" id="apartments">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <!-- Section Tittle -->
+                        <div class="section-tittle text-center mb-90">
+                            <h2 class="mb-5 mt-5">Location</h2>
+                            <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6286.548000140698!2d50.60031859985938!3d26.212137723275283!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e49a9f9d52f6ea7%3A0xa4635a2272c5c888!2sJuffair%20Gables!5e0!3m2!1sen!2sbh!4v1635933235184!5m2!1sen!2sbh"
+                                style="width:100%;height:140%" allowfullscreen=""
+                                loading="lazy"></iframe>
                         </div>
-
                     </div>
-                </div>
+    
+                    </div>
+            </div>
+        </div>
+    
+    </div>
+        </div>
+    </div>
+
             
         </body>
     </main>

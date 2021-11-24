@@ -32,7 +32,23 @@ $employee_name = \App\Models\User::where('id', $staff_id)->first()->name;
 
 <tr>
     <td>Leave Status</td>
-    <td>{{ isset($employeeleave->leaveStatus) ? $employeeleave->leaveStatus->leave_status_name : '' }}</td>
+    <td>
+        @php
+        $class = '';
+        switch ($employeeleave->leave_status_code) {
+          case 1:
+            $class = 'badge-success';
+            break;
+          case 2:
+            $class = 'badge-warning';
+            break;
+          default:
+            $class = 'badge-danger';
+            break;
+        }
+      @endphp
+        <span class="badge {{ $class }}">{{ isset($employeeleave->leaveStatus) ? $employeeleave->leaveStatus->leave_status_name : '' }}</span>
+    </td>
 </tr>
 
     
