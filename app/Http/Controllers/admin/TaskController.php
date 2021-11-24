@@ -12,6 +12,7 @@ use App\Models\TaskStatus;
 use App\Models\FloorDetail;
 use App\Models\ServiceArea;
 use Illuminate\Http\Request;
+use App\Models\MaintenanceRequest;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
@@ -201,7 +202,7 @@ class TaskController extends Controller
 
     }
 
-    public function change_task_task(Request $request)
+    public function change_task_status(Request $request)
     {
         
         $task_id = $request->input('task_id');
@@ -214,6 +215,15 @@ class TaskController extends Controller
         $task->complete_time = Carbon::parse($current_date_time)->format('H:i');
 
         if($task->save()){
+            if($task->task_status_code == 3)
+            {
+                if($task->maintenance_request_id)
+                {
+                    $maintenance_request = MaintenanceRequest::find($task->maintenance_request_id);
+                    $maintenance_request->maintenance_request_status_code = 4;
+                    $maintenance_request->save();
+                }
+            }
             Toastr::success('Your task status has been changed.');
             return back();
         }
@@ -338,6 +348,54 @@ class TaskController extends Controller
 
         if($task->save())
         {
+            Toastr::success('Task assigned to employee successfully.');
+            return back();
+        }
+        else
+        {
+            Toastr::success('Something went wrong.');
+            return back();
+        }
+    }
+
+    public function assign_task_for_maintenance(Request $request)
+    {
+        $request->validate([
+            'employee_id' => 'required',
+            'assign_date' => 'required',
+            'assign_time' => 'required|string',
+            'deadline_date' => 'required',
+            'deadline_time' => 'required',
+        ],[
+            'employee_id.required' => 'Please select the Employee before proceeding.'
+        ]);
+
+        $maintenance_request = MaintenanceRequest::find($request->input('maintenance_request_id'));
+
+        $task = new Task();
+        $task->title = $maintenance_request->title;
+        $task->description = $maintenance_request->description;
+        $task->location_id = $maintenance_request->location_id;
+        $task->floor_id = $maintenance_request->floor_id;
+        $task->unit_id = $maintenance_request->unit_id;
+        $task->common_area_id = $maintenance_request->common_area_id;
+        $task->service_area_id = $maintenance_request->service_area_id;
+        $task->assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
+        $task->assign_time = Carbon::parse($request['assign_time'])->format("H:i");
+        $task->deadline_date = Carbon::parse($request['deadline_date'])->format('Y-m-d');
+        $task->deadline_time = Carbon::parse($request['deadline_time'])->format("H:i");
+        $task->assignor_id = Auth::user()->id;
+        $task->assignee_id = $request['employee_id'];
+        $task->comments = $request['comment'];
+        $task->task_status_code = 1;
+        $task->maintenance_request_id = $request->input('maintenance_request_id');
+
+        if($task->save())
+        {
+            $maintenance_request->maintenance_request_status_code = 3;
+
+            $maintenance_request->save();
+
             Toastr::success('Task assigned to employee successfully.');
             return back();
         }

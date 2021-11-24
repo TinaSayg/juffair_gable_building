@@ -266,10 +266,11 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::post('/task/update/{id}', [TaskController::class, 'update'])->name('update');
         Route::delete('/task/delete/{id}', [TaskController::class, 'destroy'])->name('delete');
         Route::get('/task/show/{id}', [TaskController::class, 'show'])->name('show');
-        Route::post('/change_task_status', [TaskController::class, 'change_task_task'])->name('change_task_status');
+        Route::post('/change_task_status', [TaskController::class, 'change_task_status'])->name('change_task_status');
         Route::get('/completed_task/list', [TaskController::class, 'complete_task_list'])->name('completed_task.list');
         Route::get('/locations/{id}', [TaskController::class, 'get_task_location'])->name('get_task_location');
         Route::post('/assign_task', [TaskController::class, 'assign_task'])->name('assign_task');
+        Route::post('/assign_task_for_maintenance', [TaskController::class, 'assign_task_for_maintenance'])->name('assign_task_for_maintenance');
 
     });
 
@@ -281,7 +282,8 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::get('/request/edit/{id}', [RequestController::class, 'edit'])->name('edit');
         Route::post('/request/update/{id}', [RequestController::class, 'update'])->name('update');
         Route::delete('/request/delete/{id}', [RequestController::class, 'destroy'])->name('delete');
-        Route::get('/request/show/{id}', [RequestController::class, 'show'])->name('show');
+        Route::get('/request/show/{id}', [MaintenanceRequestController::class, 'show'])->name('show');
+        Route::get('/request/under_review/{id}', [MaintenanceRequestController::class, 'maintenance_request_under_review'])->name('under_review');
         Route::post('/request/action/{id}', [RequestController::class, 'request_action']);
     });
      //Visitors routes

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Http\Controllers\Controller;
-use App\Models\MaintenanceRequest;
 use Illuminate\Http\Request;
+use App\Models\MaintenanceRequest;
+use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
+
 class MaintenanceRequestController extends Controller
 {
     /**
@@ -60,8 +62,8 @@ class MaintenanceRequestController extends Controller
         $maintenancerequest->unit_id = $unit_id;
         $maintenancerequest->common_area_id = $common_area_id;
         $maintenancerequest->service_area_id = $service_area_id;
-        
         $maintenancerequest->maintenance_request_status_code = 1;
+        $maintenancerequest->user_id = Auth::user()->id;
         
 
         if($maintenancerequest->save()){
@@ -83,7 +85,14 @@ class MaintenanceRequestController extends Controller
      */
     public function show($id)
     {
-        //
+        $maintenance_request = MaintenanceRequest::find($id);
+        
+        $html_response = view('admin.request.partials.maintenance_request_view_modal', compact('maintenance_request'))->render();
+
+        return response()->json([
+            'success' => true,
+            'html_response' => $html_response
+        ]);
     }
 
     /**
@@ -118,5 +127,23 @@ class MaintenanceRequestController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function maintenance_request_under_review($id)
+    {
+        $maintenance_request = MaintenanceRequest::find($id);
+
+        $maintenance_request->maintenance_request_status_code = 2;
+
+        if($maintenance_request->save()){
+            return response()->json([
+                'success' => true,
+            ]);
+        }
+        else
+        {
+            Toastr::success('Something went wrong.');
+            return redirect()->route('request.create');
+        }
     }
 }
