@@ -364,7 +364,7 @@
                         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
                             <div class="single-footer-caption text-center mb-50">
                                 <div class="footer-tittle">
-                                    <h4>Testimonials</h4>
+                                    <h4><a href="{{ url('/testimonials') }}">Testimonials</h4>
                                     <h4><a href="{{ url('/contact') }}">Contact Us</a></h4>
                                 </div>
                             </div>

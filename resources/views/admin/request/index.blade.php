@@ -39,23 +39,55 @@
                     <tr>
                       <th>#</th>
                       <th>Title</th>
+                      <th>Location</th>
                       <th>Date</th>
                       <th>Status</th>
-                      <th>Assigned Request</th>
-                      <th>Actions</th>
+                      <th>Action</th>
+                     
                     </tr>
                   </thead>
                   <tbody>
                     
-                    @foreach($complaints as $key => $complain)
+                    @foreach($maintenancerequest as $key => $item)
                     <tr>
                       <th>{{ $key+1 }}</th>
-                      <td>{{ $complain->complain_title }}</td>
-                      <td>{{ \Carbon\Carbon::parse($complain->compaint_date)->toFormattedDateString() }}</td>
+                      <td>{{ $item->title }}</td>
+                      <td>
+                        @if($item->location_id == 1)
+                        @php
+                          $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                          $apartment_number = \App\Models\Unit::where('id', $item->unit_id)->first()->unit_number;
+                        @endphp
+                        Floor {{ $floor_number }}, Apartment {{ $apartment_number }}
+                      @endif
+
+                      @if($item->location_id == 2)
+                        @php
+                          $location_area = \App\Models\CommonArea::where('id', $item->common_area_id)->first()->area_name;
+                        @endphp
+                        {{ $location_area }}
+                      @endif
+
+                      @if($item->location_id == 3)
+                      @php
+                        $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                      @endphp
+                      Floor {{ $floor_number }}
+                      @endif
+
+                      @if($item->location_id == 4)
+                        @php
+                          $location_area = \App\Models\ServiceArea::where('id', $item->service_area_id)->first()->service_area_name;
+                        @endphp
+                        {{ $location_area }} Area
+                      @endif
+                      </td>
+
+                      <td>{{ \Carbon\Carbon::parse($item->date)->toFormattedDateString() }}</td>
                       <td>
                       @php
                         $class = '';
-                        switch ($complain->complain_status_code) {
+                        switch ($item->maintenance_request_status_code) {
                           case 1:
                             $class = 'badge-warning';
                             break;
@@ -71,27 +103,15 @@
                         }
                       @endphp
                       <span class="badge {{ $class }}">
-                        {{ isset($complain->complain_status) ? $complain->complain_status->complain_status_name : '' }}
+                        {{ isset($item->maintenance_request_status) ? $item->maintenance_request_status->maintenance_request_status_name : '' }}
                       </span>
                       </td>
                       <td>
-                        @php
-                          $user = \App\Models\User::where('id', $complain->assigneed_id)->first();
-                        @endphp
-                        <span class="badge-outline col-indigo">{{ $user->name }} ({{ $user->userType }})</span>
-                      </td>
-                     
-                      <td>
                         <div class="dropdown">
-                          <a href="#" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">Options</a>
+                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                           <div class="dropdown-menu">
-                            <a href="#" class="dropdown-item has-icon" onclick="getComplainDetails({{ $complain->id }})"><i class="fas fa-eye"></i> View</a>
-                            <a href="#" class="dropdown-item has-icon add-solution"><i class="fas fa-thumbs-up"></i> Add Solutin</a>
-                            <div class="dropdown-divider"></div>
-                            @if(Auth::user()->userType != 'employee' && Auth::user()->userType != 'tenant')
-                            <a href="#" class="dropdown-item has-icon text-danger" onclick="form_alert('complain-{{ $complain->id }}','Want to delete this Complaint')"><i class="far fa-trash-alt"></i>
-                              Delete</a>
-                            @endif
+                            <a href="{{ route('tasks.show', $item->id) }}" class="dropdown-item has-icon"><i class="
+                              fas fa-book"></i>Resubmit</a>
                           </div>
                         </div>
                       </td>

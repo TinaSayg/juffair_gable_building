@@ -15,6 +15,16 @@ class CreateMaintenanceRequestTable extends Migration
     {
         Schema::create('maintenance_request', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->longText('description');
+            $table->dateTime('date')->nullable();
+    	    $table->integer('location_id');
+            $table->integer('floor_id')->nullable();
+            $table->integer('unit_id')->nullable();
+            $table->integer('common_area_id')->nullable();
+            $table->integer('service_area_id')->nullable();
+            $table->integer('maintenance_request_status_code');
+
             $table->timestamps();
         });
     }

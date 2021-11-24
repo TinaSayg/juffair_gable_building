@@ -384,7 +384,7 @@
     <main>
         <div class="testimonials">
             <div class="testimonial-inner">
-              <h1>Testimonial</h1>
+              <h1>Testimonials</h1>
               <div class="border"></div>
               <div class="row">
                   @foreach ($testimonial as $item)

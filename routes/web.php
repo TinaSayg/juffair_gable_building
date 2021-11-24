@@ -36,8 +36,10 @@ use App\Http\Controllers\admin\UtilitybillController;
 use App\Http\Controllers\admin\VisitorsreportController;
 use App\Http\Controllers\admin\ComplaintreportController;
 use App\Http\Controllers\admin\MaintenanceCostController;
+use App\Http\Controllers\admin\MaintenanceRequestController;
 use App\Http\Controllers\admin\SecuritydepositController;
 use App\Http\Controllers\admin\UnitstatusreportController;
+use App\Models\MaintenanceRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -275,7 +277,7 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::group(['prefix' => 'request', 'as' => 'request.'], function () {
         Route::get('/request/list', [RequestController::class, 'index'])->name('list');
         Route::get('/request/create', [RequestController::class, 'create'])->name('create');
-        Route::post('/request/store', [RequestController::class, 'store'])->name('store');
+        Route::post('/request/store', [MaintenanceRequestController::class, 'store'])->name('store');
         Route::get('/request/edit/{id}', [RequestController::class, 'edit'])->name('edit');
         Route::post('/request/update/{id}', [RequestController::class, 'update'])->name('update');
         Route::delete('/request/delete/{id}', [RequestController::class, 'destroy'])->name('delete');

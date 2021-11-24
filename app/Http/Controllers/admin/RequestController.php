@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use App\Models\Complain;
 use Illuminate\Http\Request;
+use App\Models\MaintenanceRequest;
 use App\Models\RequestStatus;
 use App\Models\ComplainStatus;
 use App\Http\Controllers\Controller;
@@ -20,9 +21,9 @@ class RequestController extends Controller
      */
     public function index()
     {
-        $complaints =Complain::where('complain_person_id', Auth::user()->id)->orWhere('assigneed_id', Auth::user()->id)->orderBy('id','desc')->get();
+        $maintenancerequest = MaintenanceRequest::all();
         $complaint_status_list = ComplainStatus::all();
-        return view('admin.request.index', compact('complaints','complaint_status_list'));
+        return view('admin.request.index', compact('maintenancerequest','complaint_status_list'));
     }
 
     /**
@@ -145,6 +146,5 @@ class RequestController extends Controller
 
        Toastr::success('Something went wrong.');
        return back();
-
     }
 }

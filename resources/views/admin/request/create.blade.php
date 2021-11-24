@@ -49,7 +49,7 @@
                     </div>
                     <div class="form-group col-md-4">
                         <label>Date</label>
-                        <input type="text" name="posted_date" class="form-control datepicker">
+                        <input type="text" name="date" class="form-control datepicker">
                     </div>
                 </div>
                 
