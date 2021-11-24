@@ -140,10 +140,10 @@
        
         --}}
         @if(Auth::user()->userType == 'general-manager' OR Auth::user()->userType == 'Admin')
-        <li class="dropdown {!! (Request::is('complains/*') ? "active" : "") !!}">
-          <a href="{{ route('complains.list')}}" class="nav-link">
+        <li class="dropdown {!! (Request::is('request/*') ? "active" : "") !!}">
+          <a href="{{ route('request.list')}}" class="nav-link">
             <i class="fas fa-comment-dots"></i>
-            <span>General Request</span>
+            <span>Incoming Request</span>
           </a>
         </li>
         @endif

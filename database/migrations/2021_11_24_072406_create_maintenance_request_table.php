@@ -24,6 +24,7 @@ class CreateMaintenanceRequestTable extends Migration
             $table->integer('common_area_id')->nullable();
             $table->integer('service_area_id')->nullable();
             $table->integer('maintenance_request_status_code');
+            $table->integer('user_id');
 
             $table->timestamps();
         });

@@ -169,7 +169,7 @@ Juffair Gable
       @endif
       @if(\Auth::user()->userType == 'employee')
       @php
-        $tasks = \App\Models\Task::whereIn('task_status_code', [1,2])->where('assignee_id', Auth::user()->id)->get();
+        $tasks = \App\Models\Task::whereIn('task_status_code', [1,2])->where('assignee_id', Auth::user()->id)->orderBy('id','desc')->get();
         if($average_time)
         {
           $average_time = explode(":", $average_time);

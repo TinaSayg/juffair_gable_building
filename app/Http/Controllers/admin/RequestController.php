@@ -22,8 +22,8 @@ class RequestController extends Controller
     public function index()
     {
         $maintenancerequest = MaintenanceRequest::all();
-        $complaint_status_list = ComplainStatus::all();
-        return view('admin.request.index', compact('maintenancerequest','complaint_status_list'));
+        $employee_list = User::where('userType', 'employee')->get();
+        return view('admin.request.index', compact('maintenancerequest','employee_list'));
     }
 
     /**

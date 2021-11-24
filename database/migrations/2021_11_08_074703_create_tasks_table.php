@@ -32,9 +32,9 @@ class CreateTasksTable extends Migration
             $table->integer('common_area_id')->nullable();
             $table->integer('service_area_id')->nullable();
             $table->integer('task_status_code')->nullable();
-            $table->integer('task_status_code')->nullable();
 
             $table->integer('user_id')->nullable();
+            $table->integer('maintenance_request_id')->nullable();
             $table->timestamps();
         });
     }

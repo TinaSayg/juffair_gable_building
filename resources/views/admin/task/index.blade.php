@@ -207,6 +207,7 @@
                       <th>Location</th>
                       <th>Assigned Date</th>
                       <th>Deadline Date</th>
+                      <th>Assign To</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
@@ -252,6 +253,12 @@
                       <td data-href='{{ route('tasks.show', $item->id) }}'>{{ isset($item->assign_date)? \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->assign_time)->format('g:i A') : '' }} </td>
                       <td data-href='{{ route('tasks.show', $item->id) }}'>{{ isset($item->deadline_date)? \Carbon\Carbon::parse($item->deadline_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->deadline_time)->format('g:i A') : '' }} </td>
                       {{-- <td>{{ isset($item->complete_date)? \Carbon\Carbon::parse($item->complete_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->complete_time)->format('g:i A') : '' }}</td> --}}
+                      <td>
+                        @php
+                          $assign_to = \App\Models\User::where('id', $item->assignee_id)->first()->name;
+                        @endphp
+                        {{ $assign_to }}
+                      </td>
                       <td data-href='{{ route('tasks.show', $item->id) }}'>
                         @php
                           $class = '';
