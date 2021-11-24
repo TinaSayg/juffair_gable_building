@@ -27,12 +27,9 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-           <h4>All Requests</h4>
-            
-            
+           <h4> Maintenance Requests You Reported</h4>
             <div class="card-header-form">
               <a href="{{ route('request.create') }}" class="btn btn-primary" role="button">Add Request</a>
-             
             </div>
           </div>
             <div class="card-body">

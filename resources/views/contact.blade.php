@@ -467,14 +467,15 @@
                         <div class="col-lg-6 col-12">
                             <div class="card">
                                 <div class="row">
-                                    <div class="card">
-                                        <h2>Contact</h2>
+                                        <h2>Contact Us</h2>
+                                        <h5>Address:<span> Juffair Gables,Building No:1234,Way234,block789,
+                                            Kingdom Of Bahrain.</p>
+                                            <p> Phone: 12345678</h5>
                                     <div class="col-lg-3 col-9"> 
                                         Address:
                                     </div>
                                     <div class="col-lg-9 col-9 text-left"> 
-                                        Juffair Gables,Building No:1234,Way234,block789,
-                                        Kingdom Of Bahrain.
+                                       
                                    </div>   
                                 
                                 <div class="row">
@@ -483,8 +484,7 @@
                                     </div>
                                     <div class="col-lg-9 col-9 text-left"> 
                                         12345678
-                                   </div>   
-                                </div>
+                                   </div>
                         </div>
                     </div>
                 </div>    

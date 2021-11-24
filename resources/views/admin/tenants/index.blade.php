@@ -47,7 +47,7 @@ Juffair Gable
                       <th>Tenant Name</th>
                       <th>Contact No.</th>
                       <th>Tenant Email</th>
-                      <th>RentApartmentNo</th>
+                      <th>Rent Apartment No</th>
                       @if(request()->user()->userType != 'employee')
                       <th>Actions</th>
                       @endif

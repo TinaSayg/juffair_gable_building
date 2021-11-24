@@ -53,13 +53,11 @@ class LeavesController extends Controller
         $request->validate([
             'leave_start_date' => 'required',
             'leave_end_date' =>  'required' ,
-            'apply_date' => 'required',
             'leave_reason' => 'required',
             'leave_type_code' => 'required',
         ], [
             'leave_start_date.required' => 'Leave start date is required!',
             'leave_end_date.required'  => 'Leave end date is required!',
-            'apply_date.required' => 'Apply date is required!',
             'leave_reason.required' => 'Leave reason is required!',
             'leave_type_code.required' => 'Apply date is required!',
         ]);
@@ -88,7 +86,7 @@ class LeavesController extends Controller
         $employeeleave = EmployeeLeaves::create([
             'leave_start_date' => $request['leave_start_date'],
             'leave_end_date' => $request['leave_end_date'],
-            'apply_date' => $request['apply_date'],
+            'apply_date'   => Carbon::now(),
             'leave_reason' => $request['leave_reason'],
             'leave_type_code' => $request['leave_type_code'],
             'leave_status_code' => 2,
@@ -143,14 +141,12 @@ class LeavesController extends Controller
         $request->validate([
             'leave_start_date' => 'required',
             'leave_end_date' =>  'required' ,
-            'apply_date' => 'required',
             'leave_reason' => 'required',
             'leave_type_code' => 'required',
         ], [
             'leave_start_date.required' => 'Leave start date is required!',
             'leave_end_date.required'  => 'Leave end date is required!',
-            'apply_date.required' => 'Apply date is required!',
-            'leave_reason.required' => 'Leave reason is required!',
+             'leave_reason.required' => 'Leave reason is required!',
             'leave_type_code.required' => 'Apply date is required!',
         ]);
 
@@ -158,7 +154,7 @@ class LeavesController extends Controller
 
         $employeeleave->leave_start_date = $request['leave_start_date'];
         $employeeleave->leave_end_date = $request['leave_end_date'];
-        $employeeleave->apply_date = $request['apply_date'];
+        $employeeleave->apply_date = Carbon::now();
         $employeeleave->leave_reason = $request['leave_reason'];
         $employeeleave->leave_type_code = $request['leave_type_code'];
         if($request->file('leave_document'))

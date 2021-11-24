@@ -34,6 +34,15 @@
             <form method="POSt" action="{{ route('request.store') }}" enctype="multipart/form-data">
               @csrf
                 <div class="row">
+                    <div class="form-group col-md-4" id="locationDropdown">
+                        <label>Select Location</label>
+                        <select class="form-control" onchange="get_locations(this)" name="location_id" id="">
+                            <option value="">--- Select ---</option>
+                            @foreach (\App\Models\Location::all() as $location)
+                                <option value="{{ $location->id }}">{{ $location->location_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="form-group col-md-4">
                         <label>Title</label>
                         <input type="text" name="title" class="form-control">
@@ -47,7 +56,7 @@
                 <div class="row">
                     <div class="col-md-8">
                         <div class="form-group">
-                            <label>description</label>
+                            <label>Description</label>
                             <textarea name="description"  class="form-control"></textarea>
                         </div>
                     </div>
@@ -75,4 +84,64 @@
         }
     });
 </script>
+<script>
+    function get_locations(location)
+    {
+        let id = location.value
+        
+        if(id == 2 || id == 3 || id == 4)
+        {
+            $(".floor-dropdown").remove()
+            $(".unit-dropdown").remove()
+        }
+
+        if(id == 1 || id == 3 || id == 4)
+        {
+            $(".common_area_select").remove()
+        }
+
+        if(id == 1 || id == 2 || id == 4)
+        {
+            $(".parking_floor_select").remove()
+        }
+
+        if(id == 1 || id == 2 || id == 3)
+        {
+            $(".service_area_select").remove()
+        }
+
+        $.get({
+            url: '{{route('tasks.get_task_location', '')}}' + "/"+ id,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.options)
+
+                if(id == 1)
+                {
+                    $('#locationDropdown').after(data.floor_select)
+                    $('.floor-dropdown').after(data.unit_select)
+                }
+
+                if(id == 2)
+                {
+                    
+                    $('#locationDropdown').after(data.common_area_select)
+                } 
+
+                if(id == 3)
+                {
+                    
+                    $('#locationDropdown').after(data.parking_floors)
+                } 
+
+                if(id == 4)
+                {
+                    
+                    $('#locationDropdown').after(data.service_areas_select)
+                } 
+
+            }
+        });
+    }
+</script> 
 @stop

@@ -33,24 +33,24 @@
               @csrf
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label>Contract description</label>
+                        <label>Contract Description</label>
                         <textarea name="contract_description" class="form-control" id="" cols="30" rows="10">{{ isset($service_contract) ? $service_contract->description : ''}}</textarea>
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Contract cost</label>
+                        <label>Contract Cost</label>
                         <input type="text" name="contract_cost" value="{{ isset($service_contract) ? $service_contract->amount : ''}}" id="contractCost" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Frequency of pay</label>
+                        <label>Frequency Of Pay</label>
                         <input type="text" name="frequency_of_pay" value="{{ isset($service_contract) ? $service_contract->frequency_of_pay : ''}}" id="frequencyOFPay" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Upload File</label>
-                        <input type="file" name=""  class="form-control">
-                        @if(isset($employeeleave->leave_document) && !empty($employeeleave->leave_document))
-                            <img src="{{asset('public/admin/assets/img/documents/'.$employeeleave->leave_document)}}" height="150" width="150">
+                        <label>Upload Invoice</label>
+                        <input type="file" name="image" class="form-control">
+                        @if(isset($service_contract->image) && !empty($service_contract->image))
+                            <a class="mt-3"  href="{{asset('public/admin/assets/img/servicecontract/'.$service_contract->image)}}" target="_blank">View Invoice</a>
                         @endif 
-                     </div>
+                    </div>
                     </div>
                     <div class="row">
                     <div class="form-group col-md-4">

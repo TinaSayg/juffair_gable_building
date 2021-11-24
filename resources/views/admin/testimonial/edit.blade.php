@@ -21,21 +21,22 @@
                   </div>
                   <div class="card-body">
                      <div class="row">
-                         <div class="form-group col-md-4">
+                         <div class="form-group col-md-6">
                             <label>Name</label>
                             <input type="text" name="name" value="@if(isset($testimonial)) {{ $testimonial->name }} @endif" class="form-control">
                          </div>
-                         <div class="form-group col-md-4">
-                            <label>Review</label>
-                            <textarea name="review"  class="form-control">{{ isset($testimonial->review)? $testimonial->review : '' }}</textarea>
+                         <div class="form-group col-md-6">
+                           <label>Image</label>
+                           <input type="file" name="image"  class="form-control">
+                           @if(isset($testimonial->image) && !empty($testimonial->image))
+                               <img src="{{asset('public/admin/assets/img/testimonial/'.$testimonial->image)}}" height="150" width="150">
+                           @endif 
+                            
                         </div>
 
-                        <div class="form-group col-md-4">
-                            <label>Image</label>
-                            <input type="file" name="image"  class="form-control">
-                            @if(isset($testimonial->image) && !empty($testimonial->image))
-                                <img src="{{asset('public/admin/assets/img/testimonial/'.$testimonial->image)}}" height="150" width="150">
-                            @endif 
+                        <div class="form-group col-md-8">
+                           <label>Review</label>
+                           <textarea name="review"  class="form-control">{{ isset($testimonial->review)? $testimonial->review : '' }}</textarea>
                          </div>
                          </div>
                      <button  class="btn btn-primary mr-1" type="submit">update</a>

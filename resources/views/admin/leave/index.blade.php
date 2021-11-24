@@ -44,12 +44,12 @@
                       <th>Employee Name
                       @endif
                     </th>
-                      <th>start date</th>
-                      <th>end date</th>
-                      <th>apply date</th>
-                      <th>leaves type</th>
-                      <th>leave status</th>
-                      <th>Actions</th>
+                      <th>Start Date</th>
+                      <th>End Date</th>
+                      <th>Apply Date</th>
+                      <th>Leaves Type</th>
+                      <th>Leave Status</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -94,17 +94,31 @@
                           <span class="badge {{ $class }}">{{ isset($leave->leaveStatus) ? $leave->leaveStatus->leave_status_name : '' }}</span>
                         </td>
                         <td class="d-flex">
+                          
                           @if(Auth::user()->userType == 'Admin' OR Auth::user()->userType == 'general-manager' )
-                          <button class="btn btn-info mr-2" onclick="getLeaveDetails({{ $leave->id }})">View</button>
-                          @if($leave->leave_status_code ==2)
-                          <button class="btn btn-success mr-2 approve_leave" data-leave_id="{{ $leave->id }}" data-approve_leave="1">Approve</button>
-                          <button class="btn btn-danger disapprove_leave" data-leave_id="{{ $leave->id }}" data-disapprove_leave="3">Disapprove</button>
-                          @endif
-                          @endif
+                          <div class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
+                            <div class="dropdown-menu">
+                              <a href="#" class="dropdown-item has-icon" onclick="getLeaveDetails({{ $leave->id }})"><i class="fas fa-eye"></i> View</a>
+                              @if($leave->leave_status_code ==2)
+                              <a href="{{ route('leave.edit', $leave->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
+                              @endif
+                              @if($leave->leave_status_code ==2)
+                              <div class="dropdown-divider"></div>
+                              <a href="#" class="dropdown-item has-icon approve_leave" data-leave_id="{{ $leave->id }}" data-approve_leave="1"><i style="color:green" class="fas fa-check-circle"></i>
+                                Approve</a>
+                              <a href="#" class="dropdown-item has-icon disapprove_leave" data-leave_id="{{ $leave->id }}" data-disapprove_leave="3"><i style="color:red" class="fas fa-times-circle"></i>
+                                Disapprove</a>
+                              @endif
+                              @endif
+                            </div>
+                            
+                          </div>
+                          
                           @if(Auth::user()->userType == 'employee' )
                           {{-- <a href="#" onclick="getLeaveDetails({{ $leave->id }})"><i class="fa fa-eye mr-2"></i> </a> --}}
                           <div class="dropdown">
-                            <a href="#" data-toggle="dropdown" class="btn btn-warning dropdown-toggle">Options</a>
+                            <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                             <div class="dropdown-menu">
                               <a href="#" class="dropdown-item has-icon" onclick="getLeaveDetails({{ $leave->id }})"><i class="fas fa-eye"></i> View</a>
                               @if($leave->leave_status_code ==2)
@@ -212,7 +226,7 @@
     $("#leaveModal .modal-title").text("Approve Leave")
     $("#leaveStatusInputField").val(leave_status_code)
     $("#leaveIdInputField").val(leave_id)
-    $("#leaveModal .leave_modal_message").html('Do you want to approve ?')
+    $("#leaveModal .leave_modal_message").html('Do you want to approve the leave request ?')
     $("#leaveForm button").removeClass("btn-danger")
     $("#leaveForm button").addClass("btn-success")
     $("#leaveForm button").text("Approve")
@@ -226,7 +240,7 @@
     $("#leaveModal .modal-title").text("Disapprove Leave")
     $("#leaveStatusInputField").val(leave_status_code)
     $("#leaveIdInputField").val(leave_id)
-    $("#leaveModal .leave_modal_message").html('Do you want to Disapprove ?')
+    $("#leaveModal .leave_modal_message").html('Are you sure you want to disapprove the leave request?')
     $("#leaveForm button").removeClass("btn-success")
     $("#leaveForm button").addClass("btn-danger")
     $("#leaveForm button").text("Dispprove")

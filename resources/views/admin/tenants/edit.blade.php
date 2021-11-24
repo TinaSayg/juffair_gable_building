@@ -74,7 +74,7 @@
                                 <textarea name="tenant_permanent_address"  class="form-control">{{ isset($tenant->tenant_permanent_address)? $tenant->tenant_permanent_address : '' }}</textarea>
                             </div>
                             <div class="form-group col-md-4">
-                                <label>Homecountry Address</label>
+                                <label>Home Country Address</label>
                                 <textarea name="home_country_address"  class="form-control">{{ isset($tenant->home_country_address)? $tenant->home_country_address : '' }}</textarea>
                             </div>
                             <div class="form-group col-md-4">
@@ -82,11 +82,11 @@
                                 <input type="text" name="tenant_cpr_no" value="{{ isset($tenant->tenant_cpr_no)? $tenant->tenant_cpr_no : '' }}" id="cprNumber" class="form-control">
                             </div>
                             <div class="form-group col-md-4">
-                                <label>LeasePeriodStartDate</label>
+                                <label>Lease Period Start Date</label>
                                 <input type="text" name="lease_period_start_datetime" value="{{ isset($tenant->lease_period_start_datetime)? $tenant->lease_period_start_datetime : '' }}" class="form-control datepicker">
                             </div>
                             <div class="form-group col-md-4">
-                                <label>LeasePeriodEndDate</label>
+                                <label>Lease Period End Date</label>
                                 <input type="text" name="lease_period_end_datetime" value="{{ isset($tenant->lease_period_end_datetime)? $tenant->lease_period_end_datetime : '' }}" class="form-control datepicker">
                             </div>
                             <div class="form-group col-md-4">
@@ -153,7 +153,7 @@
             
                             </div>
                             <div class="form-group col-md-4" >
-                                <label>Select Appartment</label>
+                                <label>Select Apartment</label>
                                 <select class="form-control" name="unit_id"  id="unitSelect">
                                     @foreach ($units as $unit)
                                         <option value="{{ $unit->id }}" {{ (isset($tenant) && ($tenant->unit_id == $unit->id)) ? 'selected' :'' }}>{{ $unit->unit_number}}</option>
