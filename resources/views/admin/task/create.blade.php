@@ -94,7 +94,7 @@
                 
                 <button class="btn btn-primary mr-1" type="submit">Save</button>
                 </div>
-            </from>
+            </form>
           </div>
 </section>    
 @stop

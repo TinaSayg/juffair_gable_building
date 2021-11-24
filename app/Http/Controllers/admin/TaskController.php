@@ -227,7 +227,7 @@ class TaskController extends Controller
     public function complete_task_list(Request $request)
     {
         $login_user_id = Auth::user()->id;
-        $tasks = Task::where('assignee_id', $login_user_id)->where('task_status_code', 2)->get();
+        $tasks = Task::where('assignee_id', $login_user_id)->where('task_status_code', 3)->get();
        
         return view('admin.task.completed_task', compact('tasks'));
     }

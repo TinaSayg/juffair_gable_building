@@ -169,7 +169,6 @@ Juffair Gable
       @endif
       @if(\Auth::user()->userType == 'employee')
       @php
-       
         $tasks = \App\Models\Task::whereIn('task_status_code', [1,2])->where('assignee_id', Auth::user()->id)->get();
         if($average_time)
         {
@@ -244,7 +243,7 @@ Juffair Gable
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-            <h4>Assigned Task</h4>
+            <h4>Active Task</h4>
             </div>
               
               <div class="card-body">
@@ -267,16 +266,28 @@ Juffair Gable
                         <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $item->title }}</td>
                         <td data-href='{{ route('tasks.show', $item->id) }}'>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ $item->assign_time }}</td>
                         <td data-href='{{ route('tasks.show', $item->id) }}'>{{ \Carbon\Carbon::parse($item->deadline_date)->toFormattedDateString() }} {{ $item->deadline_time }}</td>
-                        <td>@if(isset($item->task_status))<button class="btn btn-warning task-status-button" data-task_id="{{ $item->id }}" data-task_status_code="{{ $item->task_status_code }}">{{$item->task_status->task_status_name}}</button>@endif</td>
+                        <td>
+                          @php
+                            $class = '';
+                            switch ( $item->task_status_code) {
+                            case 1:
+                                $class = 'badge-warning';
+                                break;
+                            default:
+                                $class = 'badge-success';
+                                break;
+                            }
+                          @endphp
+                          @if(isset($item->task_status))
+                          <button class="btn {{ $class }} task-status-button" data-task_id="{{ $item->id }}" data-task_status_code="{{ $item->task_status_code }}">{{$item->task_status->task_status_name}}</button>
+                          @endif
+                        </td>
                         <td>
                           
                           <div class="dropdown">
                             <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                             <div class="dropdown-menu">
                               <a href="{{ route('tasks.show', $item->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
-                              <div class="dropdown-divider"></div>
-                              <a href="#" data-task_id="{{ $item->id }}" data-target="#confirmModal" data-toggle="modal" class="dropdown-item has-icon text-danger complete-task-button"><i class="far fa-trash-alt"></i>
-                                Complete Task</a>
                             </div>
                           </div>
 

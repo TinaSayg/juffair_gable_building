@@ -43,26 +43,54 @@
                     <tr>
                       <th>#</th>
                       <th>Title</th>
-                      <th>Date</th>
-                      <th>time</th>
-                      <th>Assign to</th>
+                      <th>Location</th>
+                      <th>Assigned Date</th>
+                      <th>Deadline Date</th>
+                      <th>Completed Date</th>
                       <th>Status</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($tasks as $key => $item)
                     
-                    <tr>
-                      <th>{{ $key+1 }}</th>
-                      <td>{{ $item->title }}</td>
-                      <td>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }}</td>
-                      <td>{{ \Carbon\Carbon::parse($item->assign_time)->format('g:i A') }}</td>
-                      <td>
-                        
-                        {{ \App\Models\User::where('id' , $item->assignee_id)->first()->name }}
-                        
+                    <tr class="tasktable" style="cursor: pointer">
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $key+1 }}</td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $item->title }}</td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>
+                        @if($item->location_id == 1)
+                          @php
+                            $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                            $apartment_number = \App\Models\Unit::where('id', $item->unit_id)->first()->unit_number;
+                          @endphp
+                          Floor {{ $floor_number }}, Apartment {{ $apartment_number }}
+                        @endif
+
+                        @if($item->location_id == 2)
+                          @php
+                            $location_area = \App\Models\CommonArea::where('id', $item->common_area_id)->first()->area_name;
+                          @endphp
+                          {{ $location_area }}
+                        @endif
+
+                        @if($item->location_id == 3)
+                        @php
+                          $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                        @endphp
+                        Floor {{ $floor_number }}
+                        @endif
+
+                        @if($item->location_id == 4)
+                          @php
+                            $location_area = \App\Models\ServiceArea::where('id', $item->service_area_id)->first()->service_area_name;
+                          @endphp
+                          {{ $location_area }} Area
+                        @endif
                       </td>
-                      <td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ isset($item->assign_date)? \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->assign_time)->format('g:i A') : '' }} </td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ isset($item->deadline_date)? \Carbon\Carbon::parse($item->deadline_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->deadline_time)->format('g:i A') : '' }} </td>
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>{{ isset($item->complete_date)? \Carbon\Carbon::parse($item->complete_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->complete_time)->format('g:i A') : '' }} </td>
+                      {{-- <td>{{ isset($item->complete_date)? \Carbon\Carbon::parse($item->complete_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($item->complete_time)->format('g:i A') : '' }}</td> --}}
+                      <td data-href='{{ route('tasks.show', $item->id) }}'>
                         @php
                           $class = '';
                           switch ($item->task_status_code) {
@@ -76,14 +104,13 @@
                         @endphp
                         <span class="badge {{ $class }}">{{ isset($item->task_status) ? $item->task_status->task_status_name : ''}}</span>
                       </td>
-
                     </tr>
                     @endforeach
                   </tbody>
                 </table>
               </div>
             </div>
-          </div>
+        </div>
         </div>
     </div>
 </div>

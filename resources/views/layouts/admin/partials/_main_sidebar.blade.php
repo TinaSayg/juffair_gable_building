@@ -53,9 +53,7 @@
         </li>
         <li class="dropdown {!! (Request::is('tasks/task/*') ? "active" : "") !!}"><a href="{{ route('tasks.list') }}" class="nav-link">@if(\Auth::user()->userType != 'employee')<i class="fas fa-book"></i><span>Tasks </span>@else <i class="fas fa-book"></i><span>Active Tasks</span> @endif</a>
         </li>
-        <li class="dropdown {!! (Request::is('tasks/completed_task/list') ? "active" : "") !!}">
-          <a href="{{ route('tasks.completed_task.list') }}" class="nav-link"><i class="fas fa-check-circle"></i><span>Completed Task</span></a>
-        </li>
+       
         
         <li class="dropdown {!! (Request::is('leave/*') ? "active" : "") !!}">
           <a href="{{ route('leave.list') }}" class="nav-link"><i class="
@@ -226,7 +224,6 @@
              <li><a class="nav-link" href="{{ route('visitorsreport') }}">Visitors Report</a></li>
               <li><a class="nav-link" href="{{ route('complaintreport') }}">Complaint Report</a></li>
              <li><a class="nav-link" href="{{ route('unitstatusreport') }}">Unit Status Report</a></li>
-
           </ul>
         </li> --}}
         @if(request()->user()->can('view-role-and-permission'))
