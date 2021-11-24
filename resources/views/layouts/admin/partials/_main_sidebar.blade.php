@@ -63,7 +63,7 @@
         </li>
 
         <li class="dropdown {!! (Request::is('request/request/*') ? "active" : "") !!}">
-          <a href="{{ route('request.list') }}" class="nav-link"><i class="fas fa-user-edit"></i><span>Report Request</span></a>
+          <a href="{{ route('request.list') }}" class="nav-link"><i class="fas fa-user-edit"></i><span>Report Maintenance Request</span></a>
         </li>
         @endif
 

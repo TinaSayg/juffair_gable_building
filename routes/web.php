@@ -55,7 +55,7 @@ Auth::routes();
 Route::view('/', 'index');
 Route::view('/terms', 'termsofservice');
 Route::view('/jobs', 'job');
-Route::view('/testimonials', 'testimonials');
+Route::get('/testimonials',  [PagesController::class, 'testimonials_info']);
 Route::view('/contact', 'contact');
 Route::post('/save_job_info', [PagesController::class, 'save_job_info'])->name('save_job_info');
 Route::get('/login', [LoginController::class, 'showLoginForm']);

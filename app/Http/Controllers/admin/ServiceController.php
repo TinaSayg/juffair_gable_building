@@ -49,15 +49,18 @@ class ServiceController extends Controller
             'image' => 'required|max:20480|mimes:pdf',
         ]);
         $filename ='';
+        $store = new ServiceContract();
+       
         if($request->file('image'))
         {
+          
             $file_name = time().'_'.trim($request->file('image')->getClientOriginalName());
-            
-            $request->file('image')->move(public_path('admin/assets/img/invoices/'). $file_name);
+            //print_r(public_path('admin/assets/img/servicecontract/').$file_name); exit;
+            $request->file('image')->move(public_path('admin/assets/img/servicecontract/'), $file_name);
             $filename= $file_name;  
+            $store->image = $filename;
         }
 
-        $store = new ServiceContract();
         $store->description = $request->input("contract_description");
         $store->amount = $request->input("contract_cost");
         $store->frequency_of_pay = $request->input("frequency_of_pay");
@@ -119,26 +122,31 @@ class ServiceController extends Controller
             'contract_description' => 'required',
             'contract_cost' =>  'required' ,
             'frequency_of_pay' => 'required',
-            'renew_date' => 'required',  
+            'renew_date' => 'required',
+            'image' => 'required|max:20480|mimes:pdf',
+              
         ]);
 
         $update = ServiceContract::find($id);
+        $filename = $update->image;
+       
+        if($request->file('image'))
+        {
+            unlink(public_path('admin/assets/img/servicecontract/'). $update->image);
+            
+            $file_name = time().'_'.trim($request->file('image')->getClientOriginalName());
+            //print_r(public_path('admin/assets/img/servicecontract/').$file_name); exit;
+            $request->file('image')->move(public_path('admin/assets/img/servicecontract/'), $file_name);
+            $filename= $file_name;  
+            $update->image = $filename;
+        }
+
+        
         $update->description = $request->input("contract_description");
         $update->amount = $request->input("contract_cost");
         $update->frequency_of_pay = $request->input("frequency_of_pay");
         $update->contract_renew_date = $request->input("renew_date");
-
-        if($request->file('image'))
-        {
-            unlink(public_path('admin/assets/img/servicecontract/'). $update->image);
-            $file_name = time().'_'.trim($request->file('image')->getClientOriginalName());
-            
-             $image = Image::make($request->file('image')->getRealPath());
-            $image->resize(300,200);
-            $image->save(public_path('admin/assets/img/servicecontract/'). $file_name);
-            $filename= $file_name;  
-            $update->image = $filename;
-        }
+        $update->image = $file_name;
 
         if($update->save())
         {

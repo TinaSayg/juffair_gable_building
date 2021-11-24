@@ -11,8 +11,13 @@
     <td>{{ isset($service_contract->frequency_of_pay) ? $service_contract->frequency_of_pay: '' }}</td>
 </tr>
 <tr>
+    <td>Invoice</td>
+    <td><a href="{{ url('public/admin/assets/img/servicecontract') }}/{{ isset($service_contract->image)? $service_contract->image : '' }}" target="blank">view</a></td>
+</tr>
+<tr>
     <td>Renew Date</td>
     <td>{{ isset($service_contract->contract_renew_date) ? \Carbon\Carbon::parse($service_contract->contract_renew_date)->toFormattedDateString() : '' }}</td>
 </tr>
+
 
     

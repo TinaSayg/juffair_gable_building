@@ -16,7 +16,7 @@
           <div class="card-header">
            <h4>Testimonial details</h4>
             <div class="card-header-form">
-              <a href="{{ route('testimonials.create') }}" type="button"  class="btn btn-primary">Add testimonial</a>
+              <a href="{{ route('testimonials.create') }}" type="button"  class="btn btn-primary">Add Testimonial</a>
              </a>
             </div>
           </div>

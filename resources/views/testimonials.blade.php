@@ -288,13 +288,6 @@
         margin: 26px auto;
         }
 
-        .row
-        {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        }
-
         .col
         {
         flex: 33.33%;
@@ -305,14 +298,24 @@
 
         .testimonial
         {
-        background: #fff;
-        padding: 30px;
+            background: #020122;
+             padding: 30px;
+             border-radius: 15px;
+            
         }
-
+        p {
+            font-family: "Sulphur Point",sans-serif;
+            color: #88980d;
+            font-size: 16px;
+            line-height: 30px;
+            margin-bottom: 15px;
+            font-weight: normal;
+         }
+       
         .testimonial img
         {
-        width: 100px;
-        height: 100px;
+        width: 105px;
+        height: 102px;
         border-radius: 50%;
         }
 
@@ -321,6 +324,8 @@
         font-size: 20px;
         text-transform: uppercase;
         margin: 20px 0;
+        color: #b9b8bb;
+        font-weight:700;
         }
 
         .stars
@@ -381,52 +386,23 @@
             <div class="testimonial-inner">
               <h1>Testimonial</h1>
               <div class="border"></div>
-              
               <div class="row">
-                <div class="col">
-                  <div class="testimonial">
-                    <img src="https://images.pexels.com/photos/3211476/pexels-photo-3211476.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-                    <div class="name">John Waddrob</div>
-                    <div class="stars">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
+                  @foreach ($testimonial as $item)
+                  <div class="col-lg-4 mt-3">
+                    <div class="testimonial">
+                        <img src="{{ asset('public/admin/assets/img/testimonial') }}/{{ isset($item->image)? $item->image : '' }}" alt="">
+                        <div class="name">{{ $item->name }}</div>
+                        <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        </div>
+                        <p>{{ $item->review }}</p>
                     </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque repellat aspernatur temporibus assumenda sint odio minima. Voluptate alias possimus aspernatur voluptates excepturi placeat iusto cupiditate.</p>
-                  </div>
                 </div>
-                
-                <div class="col">
-                  <div class="testimonial">
-                    <img src="https://images.pexels.com/photos/3585325/pexels-photo-3585325.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-                    <div class="name">John Waddrob</div>
-                    <div class="stars">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="far fa-star"></i>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque repellat aspernatur temporibus assumenda sint odio minima. Voluptate alias possimus aspernatur voluptates excepturi placeat iusto cupiditate.</p>
-                  </div>
-                </div>
-                
-                <div class="col">
-                  <div class="testimonial">
-                    <img src="https://images.pexels.com/photos/2690323/pexels-photo-2690323.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="">
-                    <div class="name">John Waddrob</div>
-                    <div class="stars">
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                      <i class="fas fa-star"></i>
-                    </div>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque repellat aspernatur temporibus assumenda sint odio minima. Voluptate alias possimus aspernatur voluptates excepturi placeat iusto cupiditate!</p>
-                  </div>
-                </div>
+                @endforeach
               </div>
             </div>
           </div>

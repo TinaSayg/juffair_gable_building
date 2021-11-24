@@ -8,6 +8,7 @@ use App\Models\JobOpportunities;
 use App\Models\FloorType;
 use App\Models\FloorDetail;
 use Illuminate\Http\Request;
+use App\Models\Testimonials;
 use Brian2694\Toastr\Facades\Toastr;
 
 
@@ -153,5 +154,13 @@ class PagesController extends Controller
         return response()->json([
             'options' => $res,
         ]);
+    }
+
+    public function testimonials_info()
+    {
+        $testimonial = Testimonials::all();
+        
+        return view('/testimonials' , compact('testimonial'));
+     
     }
 }

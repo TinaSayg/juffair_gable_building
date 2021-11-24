@@ -33,25 +33,26 @@
               @csrf
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <label>Contract description</label>
+                        <label>Contract Description</label>
                         <textarea name="contract_description" class="form-control" id="" cols="30" rows="10"></textarea>
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Contract cost</label>
+                        <label>Contract Cost</label>
                         <input type="text" name="contract_cost" id="contractCost" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Frequency of pay</label>
+                        <label>Frequency Of Pay</label>
                         <input type="text" name="frequency_of_pay" id="frequencyOFPay" class="form-control">
                     </div>
                     <div class="form-group col-md-4 attachdocument">
-                        <label>Upload File</label>
+                        <label>Upload Invoice</label>
                         <input type="file" name="image" accept="application/pdf" class="form-control">
+                        
                     </div>
                     </div>
                     <div class="row">
                     <div class="form-group col-md-4">
-                        <label>Renew date</label>
+                        <label>Renew Date</label>
                         <input type="text" name="renew_date" class="form-control datepicker">
                     </div>
                 </div>

@@ -33,7 +33,7 @@
             
             
              <div class="card-header-form">
-            <a href="{{ route('service_contract.create') }}" class="btn btn-primary" role="button">Add new contract</a>
+            <a href="{{ route('service_contract.create') }}" class="btn btn-primary" role="button">Add New Contract</a>
              
             </div>
           </div>

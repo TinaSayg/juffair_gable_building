@@ -6,6 +6,10 @@
 <link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.css') }}">
 
 <style>
+   .custom-file, .custom-file-label, .custom-select, .custom-file-label:after, .form-control[type="color"], select.form-control:not([size]):not([multiple])
+    {
+      height: calc(1.85rem + 6px) !important;
+    }
 </style>
 @stop
 @section('content')
@@ -29,24 +33,18 @@
                            <label>Leave End Date</label>
                            <input type="text" value="{{ isset($employeeleave) ? \Carbon\Carbon::parse($employeeleave->leave_end_date)->format('Y-m-d') : ''}}"  name="leave_end_date" class="form-control datepicker">
                         </div>
-                        <div class="form-group col-md-4">
-                           <label>Apply Date</label>
-                           <input type="text" value="{{ isset($employeeleave) ? \Carbon\Carbon::parse($employeeleave->apply_date)->format('Y-m-d') : ''}}"  name="apply_date" class="form-control datepicker">
-                        </div>
-                        <div class="form-group col-md-4">
-                           <label>Leave reason</label>
-                           <textarea name="leave_reason" class="form-control">{{ isset($employeeleave->leave_reason) ? $employeeleave->leave_reason : ''}}</textarea>
-                          
-                        </div>
+                        
                            <div class="form-group col-md-4">
                             <label>Leave Type</label>
-                            <select class="form-control" name="leave_type_code">
+                            <select class="form-control"  onchange="checkLeaveType(this);" name="leave_type_code">
                                 @foreach ($leave_types as $leaveType)
                                 <option value="{{ $leaveType->leave_type_code }}" {{ (isset($employeeleave) && ($employeeleave->leave_type_code == $leaveType->leave_type_code)) ? 'selected' :'' }}>{{ $leaveType->leave_type_name }}</option>
                                 @endforeach
                             </select>
                            </div>
-                        <div class="form-group col-md-4">
+                        </div>
+                           <div class="row">
+                           <div class="form-group col-md-4 attachdocument" style="display: none">
                            <label>Attach Medical Certificate</label>
                            <input type="file" name="leave_document"  class="form-control">
                            @if(isset($employeeleave->leave_document) && !empty($employeeleave->leave_document))
@@ -54,7 +52,12 @@
                            @endif 
                         </div>
                         </div>
-                    
+                        <div class="row">
+                        <div class="form-group col-md-8">
+                           <label>Leave Reason</label>
+                           <textarea name="leave_reason" class="form-control">{{ isset($employeeleave->leave_reason) ? $employeeleave->leave_reason : ''}}</textarea>
+                        </div>
+                     </div>
                      <button  class="btn btn-primary mr-1" type="submit">update</a>
                      </div>
                   </div>
@@ -68,7 +71,18 @@
 @stop
 @section('footer_scripts')
 <script src="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script>
+   function checkLeaveType(type) {
+     if(type.value==1)
+     {
+         $('.attachdocument').show()
+     }
+     else
+     {
+         $('.attachdocument').hide()
+     }
+    }
+ </script>
 
-<script></script>
 @stop
 

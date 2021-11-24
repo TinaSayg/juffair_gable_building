@@ -76,7 +76,7 @@
                         <textarea name="tenant_permanent_address" class="form-control"></textarea>
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Homecountry Address</label>
+                        <label>Home Country Address</label>
                         <textarea name="home_country_address" class="form-control"></textarea>
                     </div>
                     <div class="form-group col-md-4">
@@ -84,15 +84,15 @@
                         <input type="text" maxlength="9" name="tenant_cpr_no" class="form-control" id="cprNumber">
                     </div>
                     <div class="form-group col-md-4">
-                        <label>LeasePeriodStartDate</label>
+                        <label>Lease Period Start Date</label>
                         <input type="date" name="lease_period_start_datetime" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
-                        <label>LeasePeriodEndDate</label>
+                        <label>Lease Period End Date</label>
                         <input type="date" name="lease_period_end_datetime" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Emergency ContactNo.</label>
+                        <label>Emergency Contact No.</label>
                         <input type="text" maxLength="12" name="emergancy_contact_number" id="emergencyNumber" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
@@ -143,7 +143,7 @@
     
                     </div>
                     <div class="form-group col-md-4" >
-                        <label>Select Appartment</label>
+                        <label>Select Apartment</label>
                         <select class="form-control" name="unit_id" id="unitSelect"></select>
                     </div>
                     <div class="form-group col-md-4" >
