@@ -19,6 +19,9 @@ Juffair Gable
     padding: 20px 10px !important;
     outline: none;
      }
+    tr:hover {
+        background: #a3a3a3 !important;
+    }
 </style>
 @stop
 @section('content')
@@ -101,7 +104,7 @@ Juffair Gable
                             <th>No. of bedrooms</th>
                             <th>Apartment Area</th>
                             <th>Status</th>
-                            <th>Colour Code</th>
+                            <th>Colour</th>
                             @if(request()->user()->userType == 'general-manager')
                                 <th>Action</th>
                             @endif
@@ -134,7 +137,7 @@ Juffair Gable
                                     @endphp
                                     <span class="badge {{ $class }}">{{ isset($unit->unit_status) ? $unit->unit_status->unit_status_name : '' }}</span>
                                 </td>
-                                <td>{{ $unit->color_code }}</td>
+                                <td><span style="padding:5px 25px;background-color: {{$unit->color_code}};box-shadow: 0 1px 2px;"></span></td>
                                 @if(request()->user()->userType == 'general-manager')
                                 <td>
                                     <a href="{{ route('units.show',$unit->id) }}"><i class="fa fa-eye mr-2" data-toggle="modal" data-target="#exampleModal1"></i> </a>

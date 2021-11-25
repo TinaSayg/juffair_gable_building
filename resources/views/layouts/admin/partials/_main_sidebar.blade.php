@@ -13,11 +13,11 @@
       </div>
       <ul class="sidebar-menu">
         <li class="menu-header">Main</li>
-        @if(request()->user()->can('view-dashboard'))
+        
         <li class="dropdown  {!! (Request::is('dashboard') ? "active" : "") !!}">
             <a href="{{ route('dashboard')}}" class="nav-link"><i class="fas fa-desktop"></i><span>Dashboard</span></a>
         </li>
-        @endif
+        
         {{-- <li class="dropdown">
           <a href="/" class="menu-toggle nav-link has-dropdown"><i class="fas fa-building"
              ></i><span>Building Information</span></a>
@@ -67,13 +67,13 @@
 
        
 
-        @if(request()->user()->can('view-tenant'))
+        @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
         <li class="dropdown {!! (Request::is('tenants/*') ? "active" : "") !!}">
           <a href="{{ route('tenants.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Tenants </span></a>
         </li>
         @endif
 
-        @if(request()->user()->can('view-staff'))
+        @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
         <li class="dropdown {!! (Request::is('staff/*') ? "active" : "") !!} ">
           <a href="{{ route('staff.list') }}" class="nav-link"><i class="fas fa-user"></i><span>Staff </span></a>
         </li>
@@ -120,7 +120,7 @@
         </li>
         @endif --}}
         
-        @if(request()->user()->can('view-task'))
+        @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
         <li class="dropdown {!! (Request::is('tasks/*') ? "active" : "") !!}">
           <a href="{{ route('tasks.list') }}" class="nav-link">
             <span>
@@ -174,13 +174,13 @@
         </li>
         @endif  
          
-        @if(request()->user()->can('view-maintenance-cost'))
+        @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
         <li class="dropdown {!! (Request::is('maintenancecost/*') ? "active" : "") !!}">
           <a href="{{ route('maintenancecosts.list') }}" class="nav-link"><i class="fas fas fa-toolbox"></i><span>Maintenance Costs</span></a>
         </li>
         @endif
 
-        @if(request()->user()->can('view-floor') OR request()->user()->can('view-unit'))
+        @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
         <li  class="dropdown {!! (Request::is('floors/*') ? "active" : "") !!} {!! (Request::is('units*') ? "active" : "") !!} {!! (Request::is('role/edit/*') ? "active" : "") !!} {!! (Request::is('module/list') ? "active" : "") !!} {!! (Request::is('module/create') ? "active" : "") !!} {!! (Request::is('module/edit/*') ? "active" : "") !!} {!! (Request::is('permission/list') ? "active" : "") !!} {!! (Request::is('permission/create') ? "active" : "") !!} {!! (Request::is('permission/edit/*') ? "active" : "") !!} {!! (Request::is('role/assign-permission/*') ? "active" : "") !!}" >
           <a href="#" class="menu-toggle nav-link has-dropdown role-permission-dropdown"><i class="
               fas fa-cogs"></i><span>Building Setting</span></a>

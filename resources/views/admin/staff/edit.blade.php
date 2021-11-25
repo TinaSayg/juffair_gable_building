@@ -135,7 +135,7 @@ Juffair Gable
                      </div>
                      <div class="form-group col-md-4">
                         <label>Passport Number</label>
-                        <input type="text" value="{{ isset($staffData['passport_number']) ? $staffData['passport_number'] : '' }}" maxlength="9" name="staff_cpr_no" class="form-control" id="cprNumber">
+                        <input type="text" value="{{ isset($staffData['passport_number']) ? $staffData['passport_number'] : '' }}" maxlength="9" name="passport_number" class="form-control" id="cprNumber">
                      </div>
                      <div class="form-group col-md-4">
                         <label>LeasePeriodStartDate</label>

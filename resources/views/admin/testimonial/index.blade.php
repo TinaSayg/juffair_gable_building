@@ -40,13 +40,20 @@
                         <td>{{ $testimonial->review}}</td>
                         
                         <td>
-                          <a href="#" onclick="getTestimonialDetails({{ $testimonial->id }})"><i class="fa fa-eye mr-2"></i> </a>
-                          <a href="#" onclick="form_alert('testimonial-{{ $testimonial->id }}','Want to delete this testimonial')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
-                          <a href="{{ route('testimonials.edit', $testimonial->id) }}"><i class="fa fa-pencil-alt" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>
+                          <div class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
+                            <div class="dropdown-menu">
+                            <a href="#" onclick="getTestimonialDetails({{ $testimonial->id }})" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
+                            <a href="{{ route('testimonials.edit', $testimonial->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" onclick="form_alert('testimonial-{{ $testimonial->id }}','Want to delete this testimonial')" class="dropdown-item has-icon text-danger"><i class="far fa-trash-alt"></i>
+                                Delete</a>
+                            </div>
+                          </div>
                           <form action="{{ route('testimonials.delete', $testimonial->id) }}"
                             method="post" id="testimonial-{{ $testimonial->id }}">
                             @csrf @method('delete')
-                          </form> 
+                          </form>
                       </td>
                     </tr>
                     @endforeach

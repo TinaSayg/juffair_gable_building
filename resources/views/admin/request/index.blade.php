@@ -129,13 +129,15 @@
                             {{-- <a href="" class="dropdown-item has-icon"><i class="
                               fas fa-book"></i>Resubmit</a> --}}
                               @if(Auth::user()->userType == 'general-manager' &&  $item->maintenance_request_status_code != 3)
-                              @if($item->maintenance_request_status_code ==1)
-                              <a href="#" data-request_id="{{ $item->id }}" class="dropdown-item has-icon under-review" ><i class="
-                                fas fa-pen-square" style="color:green;"></i>Under Review</a>
+                                @if($item->maintenance_request_status_code ==1)
+                                <a href="#" data-request_id="{{ $item->id }}" class="dropdown-item has-icon under-review" ><i class="
+                                  fas fa-pen-square" style="color:green;"></i>Under Review</a>
+                                @endif
+                                @if($item->maintenance_request_status_code ==1 || $item->maintenance_request_status_code ==2)
+                                  <div class="dropdown-divider"></div>
+                                  <a href="#" data-request_id="{{ $item->id }}" class="dropdown-item has-icon assign_task"><i class="fas fa-user-shield"></i>Assign Task</a>
+                                @endif
                               @endif
-                            <div class="dropdown-divider"></div>
-                            <a href="#" data-request_id="{{ $item->id }}" class="dropdown-item has-icon assign_task"><i class="fas fa-user-shield"></i>Assign Task</a>
-                            @endif
                           </div>
                         </div>
                       </td>
