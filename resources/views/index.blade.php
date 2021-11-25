@@ -262,6 +262,12 @@
         #bedroom{
             margin-bottom: 50px;
         }
+
+        @media (max-width: 575px){
+            .peoples-visit .visit-caption {
+                padding: 57px 30px 65px 30px !important;
+            }
+        }
     </style>
 </head>
 
