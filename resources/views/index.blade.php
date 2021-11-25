@@ -537,7 +537,7 @@
                             <div class="section-body">
                                 <div class="row">
                                     <div class=" col-sm-12 col-md-6 col-lg-6 mt-3">
-                                        <div class="card" style="margin: 0 15px 0 0">
+                                        <div class="card" >
                                             <div class="card-header">
                                                 <h4>Apartment & Building Features</h4>
                                             </div>
