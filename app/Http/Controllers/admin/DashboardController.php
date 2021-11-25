@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use Session;
 use Carbon\Carbon;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        $employee_list = User::where('userType', 'employee')->get();
         $total_minutes = 0;
         $average_time = 0;
         if(Auth::user()->userType == 'employee'){
@@ -39,6 +41,6 @@ class DashboardController extends Controller
             }
         }
         
-        return view('admin.index', compact('average_time'));
+        return view('admin.index', compact('average_time','employee_list'));
     }
 }
