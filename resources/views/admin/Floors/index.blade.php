@@ -43,7 +43,9 @@ Juffair Gable
                       <th>Floor No</th>
                       <th>Floor Type</th>
                        {{-- @if(request()->user()->userType == 'Admin') --}}
+                       @if(Auth::user()->userType == 'Admin')
                        <th>Action</th>
+                       @endif
                        {{-- @endif --}}
                     </tr>
                   </thead>
@@ -54,18 +56,15 @@ Juffair Gable
                             <td> {{ $floor->from }} - {{ $floor->to }}</td>
                             <td>{{ isset($floor->floor_type) ? $floor->floor_type->floor_type_name : '' }}</td>
                             {{-- @if(request()->user()->userType == 'Admin') --}}
-                            <td>
-                              @if(request()->user()->can('edit-floor'))
-                                  {{-- <a title="Edit Floor"  id="editFloor" onclick="getfloorDetails({{ $floor['id'] }})"><i class="fas fa-edit"></i></a>&nbsp;&nbsp; --}}
-                              @endif
-                              @if(request()->user()->can('delete-floor'))
-                                  <a title="delete Floor" href="#" onclick="form_alert('floor-{{ $floor['id'] }}','Want to delete this floor')" class="confirmDelete"><i class="fas fa-trash text-danger"></i></a>
-                                  <form action="{{ route('floors.delete', $floor['id']) }}"
-                                      method="post" id="floor-{{ $floor['id'] }}">
-                                      @csrf @method('delete')
-                                  </form>
-                              @endif
-                          </td>
+                            @if(Auth::user()->userType == 'Admin')
+                              <td>
+                                    <a title="delete Floor" href="#" onclick="form_alert('floor-{{ $floor['id'] }}','Want to delete this floor')" class="confirmDelete"><i class="fas fa-trash text-danger"></i></a>
+                                    <form action="{{ route('floors.delete', $floor['id']) }}"
+                                        method="post" id="floor-{{ $floor['id'] }}">
+                                        @csrf @method('delete')
+                                    </form>
+                              </td>
+                            @endif
                           {{-- @endif --}}
                           </tr>  
                     @endforeach

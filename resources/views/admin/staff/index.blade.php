@@ -83,7 +83,7 @@ Juffair Gable
                         </td> --}}
                         <td>
                             <div class="dropdown">
-                                <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                                <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                                 <div class="dropdown-menu">
                                 <a href="{{ route('staff.show',$staff['id']) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
                                 @if(request()->user()->can('edit-staff'))
