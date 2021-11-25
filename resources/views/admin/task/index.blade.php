@@ -86,7 +86,7 @@
                       </td>
                       <td>
                         <div class="dropdown">
-                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                           <div class="dropdown-menu">
                             <a href="{{ route('tasks.show', $item->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
                             <a href="{{ route('tasks.edit', $item->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
@@ -169,7 +169,7 @@
                       </td>
                       <td>
                         <div class="dropdown">
-                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                           <div class="dropdown-menu">
                             <a href="{{ route('tasks.show', $item->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
                             <a href="{{ route('tasks.edit', $item->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
@@ -209,7 +209,7 @@
                       <th>Deadline Date</th>
                       <th>Assign To</th>
                       <th>Status</th>
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -275,7 +275,7 @@
                       </td>
                       <td>
                         <div class="dropdown">
-                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                           <div class="dropdown-menu">
                             <a href="{{ route('tasks.show', $item->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
                             @if($item->task_status_code == 1 OR $item->task_status_code == 2)

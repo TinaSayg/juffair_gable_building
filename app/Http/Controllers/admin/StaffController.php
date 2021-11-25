@@ -24,7 +24,16 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $staffs=User::with('StaffDetail')->whereIn('userType',['employee','officer'])->get()->except(Auth::id())->toArray();
+        if(Auth::user()->userType == 'Admin')
+        {
+            $staffs=User::with('StaffDetail')->whereIn('userType',['employee','officer','general-manager'])->get()->except(Auth::id())->toArray();
+
+        }
+        else
+        {
+            $staffs=User::with('StaffDetail')->whereIn('userType',['employee','officer','general-manager'])->get()->except(Auth::id())->toArray();
+
+        }
         
         return view('admin.staff.index', compact('staffs'));
     }

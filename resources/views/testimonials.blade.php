@@ -359,8 +359,8 @@
                             <!-- Logo -->
                             <div class="col-md-4">
                                 <a href="{{ url('/') }}"><img
-                                    src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
-                                    width="160px" height="80px" alt=""></a>
+                                    src="{{ asset('public/assets/img/logo.png') }}"
+                                    width="160px" height="90px" alt=""></a>
                             </div>
                             <div class="col-md-4">
 
@@ -432,7 +432,7 @@
                             <div class="single-footer-caption text-center mb-50">
                                 <div class="footer-logo">
                                     <a href="{{ url('/') }}"><img
-                                            src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
+                                            src="{{ asset('public/assets/img/logo.png') }}"
                                             width="236px" height="180px" alt=""></a>
                                 </div>
                             </div>
@@ -448,7 +448,7 @@
                         
                     </div>
                 </div>
-                <div class="footer-bottom">
+                <div class="footer-bottom" style="border: none;">
                     <div class="row d-flex justify-content-between align-items-center">
                         <div class="col-xl-9 col-lg-8">
                             <div class="footer-copy-right">

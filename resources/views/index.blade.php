@@ -283,8 +283,8 @@
                             <!-- Logo -->
                             <div class="col-md-4">
                                 <a href="{{ url('/') }}"><img
-                                    src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
-                                    width="160px" height="80px" alt=""></a>
+                                    src="{{ asset('public/assets/img/logo.png') }}"
+                                    width="160px" height="90px" alt=""></a>
                             </div>
                             <div class="col-md-4">
 
@@ -543,7 +543,7 @@
                             <div class="section-body">
                                 <div class="row">
                                     <div class=" col-sm-12 col-md-6 col-lg-6 mt-3">
-                                        <div class="card" style="margin: 0 15px 0 0">
+                                        <div class="card" >
                                             <div class="card-header">
                                                 <h4>Apartment & Building Features</h4>
                                             </div>
@@ -979,7 +979,7 @@
                                             <!-- Section Tittle -->
                                             <div class="section-tittle section-tittle2  mb-40" id="contactus">
                                                 <div class="image">
-                                                    <img class="d-block w-100" src="public/assets/img/gallery/104.jpg"
+                                                    <img class="d-block w-100" src="public/assets/img/gallery/key.jpg"
                                                         alt="First slide" height="500" width="250">
                                                 </div>
         
@@ -1023,13 +1023,13 @@
                                                         <th scope="row">Unit 04</th>
                                                         <td>2 Beds/3 Baths</td>
                                                         <td>117.00 SQ.M.</td>
-                                                        <td><a href="public/assets/img/gallery/FLA1 04.pdf">view</a></td>
+                                                        <td><a href="public/assets/img/gallery/FLA1 04.pdf" target="_blank">view</a></td>
                                                     </tr>
                                                     <tr>
                                                         <th scope="row">Unit 05</th>
                                                         <td>2 Bed/4 Bath</td>
                                                         <td>93.00 SQ.M.</td>
-                                                        <td><a href="public/assets/img/gallery/FLA1 05.pdf">view</a></td>
+                                                        <td><a href="public/assets/img/gallery/FLA1 05.pdf" target="_blank">view</a></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -1048,11 +1048,12 @@
                     </div>
                     <!-- Subscribe Area End -->
 
+                   <div class="">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-6 col-12">
                                 <div class="text-center">
-                                    <img src="{{ asset('public/assets/img/gallery/001.svg') }}" style="width:100%;height:400px;" alt="">
+                                    <img src="{{ asset('public/assets/img/gallery/gable.jpg') }}" style="width:100%;height:400px;" alt="">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-12">
@@ -1066,7 +1067,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>     
+                    </div> 
+                   </div>    
                     
 
 
@@ -1173,7 +1175,7 @@
                             <div class="single-footer-caption text-center mb-50">
                                 <div class="footer-logo">
                                     <a href="{{ url('/') }}"><img
-                                            src="{{ asset('public/assets/img/juffair_gables_logo (1).png') }}"
+                                            src="{{ asset('public/assets/img/logo.png') }}"
                                             width="236px" height="180px" alt=""></a>
                                 </div>
                             </div>
@@ -1189,7 +1191,7 @@
                         
                     </div>
                 </div>
-                <div class="footer-bottom">
+                <div class="footer-bottom" style="border: none;">
                     <div class="row d-flex justify-content-between align-items-center">
                         <div class="col-xl-9 col-lg-8">
                             <div class="footer-copy-right">

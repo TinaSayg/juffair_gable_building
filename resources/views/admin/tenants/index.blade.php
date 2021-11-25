@@ -49,7 +49,7 @@ Juffair Gable
                       <th>Tenant Email</th>
                       <th>Rent Apartment No</th>
                       @if(request()->user()->userType != 'employee')
-                      <th>Actions</th>
+                      <th>Action</th>
                       @endif
                     </tr>
                   </thead>
@@ -63,7 +63,7 @@ Juffair Gable
                         <td data-href='{{ route('tenants.show',$tenant->id) }}'>{{ isset($tenant->unit) ? $tenant->unit->unit_number : '' }}</td>
                         <td>
                           <div class="dropdown">
-                            <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                            <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                             <div class="dropdown-menu">
                               <a href="{{ route('tenants.show',$tenant->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
                               @if(request()->user()->can('edit-tenant'))
