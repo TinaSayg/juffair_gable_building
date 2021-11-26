@@ -350,4 +350,9 @@ class StaffController extends Controller
         Toastr::success('Staff deleted successfully!');
         return redirect()->route('staff.list');
     }
+
+    public function profile(Request $request)
+    {
+        return view('admin.staff.profile');
+    }
 }

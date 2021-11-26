@@ -201,7 +201,8 @@ Juffair Gable
                     @php
                       
                       $maintenancerequest = \App\Models\MaintenanceRequest::where('maintenance_request_status_code', 1)->get();
-                    @endphp
+                     
+                   @endphp
                     @foreach($maintenancerequest as $key => $item)
                     <tr style="cursor: pointer">
                       <th onclick="getRequestMentenanceDetails({{ $item->id }})">{{ $key+1 }}</th>

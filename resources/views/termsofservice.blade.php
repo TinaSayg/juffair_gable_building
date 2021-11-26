@@ -22,8 +22,14 @@
         <link rel="stylesheet" href="{{ asset('public/assets/css/nice-select.css') }}">
         <link rel="stylesheet" href="{{ asset('public/assets/css/style.css') }}">
         <style>
+            @media (min-width: 1200px)
+            {
+                .terms {
+                    max-width: 720px;
+                }
 
-.popular-location img
+            }
+            .popular-location img
             {
                 height: 400px !important;
             }
@@ -274,7 +280,8 @@
             margin-top:70px;
         }
         }
-         </style>
+        
+    </style>
     </head>
    <body>
     <!-- Preloader Start -->
@@ -311,10 +318,8 @@
         <!-- Header End -->
     </header>
     <main>
-        <div class="testimonials">
-            <div class="testimonial-inner">
-              <h1>Contact Us</h1>
-              
+        <div class="testimonials" >
+            <div class="testimonial-inner" style="margin-top: 100px;">
                 <div class="container terms">
                     <div class="row st">
                        <h1>Terms and conditions</h1>

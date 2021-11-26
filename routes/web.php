@@ -178,6 +178,7 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::delete('/delete/{id}', [StaffController::class, 'destroy'])->name('delete');
         Route::get('/edit/{id}', [StaffController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [StaffController::class, 'update'])->name('update');
+        Route::get('/profile', [StaffController::class, 'profile'])->name('profile');
         
     });
  

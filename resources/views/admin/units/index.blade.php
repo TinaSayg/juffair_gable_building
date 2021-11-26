@@ -97,7 +97,7 @@ Juffair Gable
             <div class="card-header">
                 <h4>Apartment List</h4>
                 <div class="card-header-form">
-                    @if(request()->user()->can('create-unit'))
+                    @if(Auth::user()->userType == 'Admin')
                         <a href="{{ route('units.create') }}" type="button" class="btn btn-primary">Add Apartment
                         </a>
                     @endif
@@ -153,11 +153,11 @@ Juffair Gable
                                 @if(request()->user()->userType == 'general-manager' OR request()->user()->userType == 'Admin')
                                 <td>
                                     <div class="dropdown">
-                                        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                                        <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                                         <div class="dropdown-menu">
                                           <a href="{{ route('units.show',$unit->id) }}" class="dropdown-item has-icon" ><i class="fas fa-eye"></i> View</a>
                                           <div class="dropdown-divider"></div>
-                                          @if(Auth::user()->userType != 'Admin' OR Auth::user()->userType != 'general-manager')
+                                          @if(Auth::user()->userType == 'Admin')
                                           <a href="{{ route('units.edit',$unit->id) }}" class="dropdown-item has-icon"><i class="fa fa-pencil-alt"></i> Edit</a>
                                           <a href="#" class="dropdown-item has-icon text-danger" onclick="form_alert('unit-{{ $unit->id }}','Want to delete this apartment')"><i class="far fa-trash-alt"></i>
                                             Delete</a>

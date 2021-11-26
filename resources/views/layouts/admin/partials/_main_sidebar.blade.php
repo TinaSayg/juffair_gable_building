@@ -7,7 +7,7 @@
       </div>
       <div class="sidebar-user">
         {{-- <div class="sidebar-user-picture">
-          <img alt="image" src="{{ asset('public/admin/assets/img/user.png') }}">
+          <img alt="image" src="{{ asset('public/admin/assets/img/staff/') }}/{{Auth::user()->image}}">
         </div> --}}
         <div class="text-white">{{ Auth::user()->userType}}</div>
       </div>
