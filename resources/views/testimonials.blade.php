@@ -298,14 +298,14 @@
 
         .testimonial
         {
-            background: #020122;
+            background: #554e5c;
              padding: 30px;
              border-radius: 15px;
             
         }
         p {
             font-family: "Sulphur Point",sans-serif;
-            color: #88980d;
+            color: #f1f1f1;
             font-size: 16px;
             line-height: 30px;
             margin-bottom: 15px;
