@@ -382,8 +382,64 @@ class StaffController extends Controller
         }
         else
         {
-            Toastr::success('Something went wrong');
-            return redirect()->route('staff.list');
+            Toastr::error('Something went wrong');
+            return redirect()->back();
         }
+    }
+
+    public function edit_profile(Request $request,$id)
+    {
+        $request->validate([
+            'number'=>'required|size:8|unique:users,number,' . $id,
+            'present_address' => 'required',
+            'permanent_address' => 'required',
+        ]);
+
+        
+
+        $staff = User::find($id);
+
+        $staff->number = $request->input('number');
+
+        if($staff->save())
+        {
+            $employee = Employee::where('employee_email_address', $staff->email)->first();
+            $employee->employee_mobile_phone = $request->input('number');
+            $employee->employee_present_address = $request->input('present_address');
+            $employee->employee_permanent_address = $request->input('permanent_address');
+            $employee->save();
+            Toastr::success('Profile information updated successfully.');
+            return redirect()->back();
+        }
+        else
+        {
+            Toastr::error('Something went wrong');
+            return redirect()->back();
+        }
+    }
+
+    public function change_password(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password'
+        ],[
+            'confirm_password.same' => 'Confirm password field does not match.'
+        ]);
+
+        $staff = User::find($id);
+        $staff->password = Hash::make($request->input('password'));
+
+        if($staff->save())
+        {
+            Toastr::success('Your password is changed.');
+            return redirect()->back();
+        }
+        else
+        {
+            Toastr::error('Something went wrong');
+            return redirect()->back();
+        }
+
     }
 }

@@ -159,7 +159,8 @@ Juffair Gable
               </ul>
               <div class="tab-content tab-bordered" id="myTab3Content">
                 <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="home-tab2">
-                  <form method="post" class="needs-validation">
+                  <form action="{{ route('staff.edit_profile', $user->id) }}" method="post">
+                    @csrf
                     <div class="card-header">
                       <h4>Edit Profile</h4>
                     </div>
@@ -174,19 +175,19 @@ Juffair Gable
                         </div>
                         <div class="form-group col-md-6 col-12">
                           <label>Contact Number (Without Country Code)</label>
-                          <input type="tel" class="form-control" value="{{isset($user_details->employee_mobile_phone) ? $user_details->employee_mobile_phone : '' }}">
+                          <input type="tel" name="number" maxlength="8" id="contactNumber" class="form-control" value="{{isset($user_details->employee_mobile_phone) ? $user_details->employee_mobile_phone : '' }}">
                         </div>
                       </div>
                       <div class="row">
                         <div class="form-group col-6">
                           <label>Present Address</label>
                           <textarea
-                            class="form-control">{{isset($user_details->employee_present_address) ? $user_details->employee_present_address : '' }}</textarea>
+                            name="present_address" class="form-control">{{isset($user_details->employee_present_address) ? $user_details->employee_present_address : '' }}</textarea>
                         </div>
                         <div class="form-group col-6">
                           <label>Permanent Address</label>
                           <textarea
-                            class="form-control">{{isset($user_details->employee_permanent_address) ? $user_details->employee_permanent_address : '' }}</textarea>
+                            name="permanent_address" class="form-control">{{isset($user_details->employee_permanent_address) ? $user_details->employee_permanent_address : '' }}</textarea>
                         </div>
                       </div>
                     </div>
@@ -196,7 +197,8 @@ Juffair Gable
                   </form>
                 </div>
                 <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="profile-tab2">
-                  <form method="post" autocomplete="off" >
+                  <form action="{{ route('staff.change_password', $user->id) }}" method="post" autocomplete="off" >
+                    @csrf
                     <div class="card-header">
                       <h4>Change Password</h4>
                     </div>
@@ -295,5 +297,27 @@ $(".img-input").change(function(){
     readURL(this);
     document.getElementById("profileImageForm").submit();
 });
+</script>
+<script>
+  (function($) {
+          $.fn.inputFilter = function(inputFilter) {
+              return this.on("input keydown keyup mousedown mouseup select contextmenu drop", function() {
+              if (inputFilter(this.value)) {
+                  this.oldValue = this.value;
+                  this.oldSelectionStart = this.selectionStart;
+                  this.oldSelectionEnd = this.selectionEnd;
+              } else if (this.hasOwnProperty("oldValue")) {
+                  this.value = this.oldValue;
+                  this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+              } else {
+                  this.value = "";
+              }
+              });
+          };
+      }(jQuery));
+  
+     
+    $("#contactNumber").inputFilter(function(value) {
+    return /^-?\d*$/.test(value); });
 </script>
 @stop

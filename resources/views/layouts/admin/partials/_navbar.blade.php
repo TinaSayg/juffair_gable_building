@@ -19,7 +19,7 @@
       </ul>
     </div>
     <ul class="navbar-nav navbar-right">
-      <a href="{{ route('staff.profile') }}" class="dropdown-item has-icon"> <i class="far
+      <a href="{{ route('staff.profile') }}" {!! (Request::is('staff/profile') ? "style='background-color:#f8f9fa'" : "") !!} class="dropdown-item has-icon"> <i class="far
             fa-user"></i> Profile
       </a> 
       <a href="{{ route('logout') }}" class="dropdown-item has-icon text-danger" onclick="event.preventDefault();
