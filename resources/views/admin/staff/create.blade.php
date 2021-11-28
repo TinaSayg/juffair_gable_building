@@ -51,8 +51,8 @@ Juffair Gable
                         </div>
                      </div>
                      <div class="form-group col-md-4">
-                        <label for="number">Contact Number</label>
-                        <input type="tel" maxlength="12" class="form-control" autocomplete="off" name="number" id="number" required="" 
+                        <label for="number">Contact Number (Without Country Code)</label>
+                        <input type="tel" maxlength="8" class="form-control" autocomplete="off" name="number" id="number" required="" 
                            value="{{ old('number')}}" 
                            placeholder="Staff contact number">
                         <div class="invalid-feedback">

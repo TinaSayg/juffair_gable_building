@@ -22,6 +22,58 @@ Juffair Gable
     tr:hover {
     background: #a3a3a3 !important;
    }
+
+   .pwd-input
+   {
+     border-right: 0 !important;
+   }
+
+   .input-group-text
+   {
+     border-left: 0 !important;
+   }
+   .form-control, .input-group-text, .custom-select, .custom-file-label
+   {
+      border-color: #6777ef !important;
+   }
+  .overlay {
+    position: absolute;
+    top: 20px;
+    bottom: 0;
+    left: 116px;
+    right: 0;
+    opacity: 1;
+    transition: .3s ease;
+    border-radius: 50%;
+    width: 100px;
+    box-shadow: 0 4px 25px 0 rgba(0,0,0,0.1);
+    height: 100px;
+    cursor: pointer;
+}
+
+.author-box-center:hover .overlay {
+  opacity: 1;
+}
+
+.icon {
+  color: white;
+  font-size: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.fa-user:hover {
+  color: #eee;
+}
+
+.profile-image
+{
+  height: 100px;
+}
 </style>
 @stop
 @section('content')
@@ -35,7 +87,16 @@ Juffair Gable
           <div class="card author-box">
             <div class="card-body">
               <div class="author-box-center">
-                <img alt="image" src="{{asset('public/admin/assets/img/staff/')}}/{{ $user->image }}" class="rounded-circle author-box-picture">
+                <img alt="image" src="{{asset('public/admin/assets/img/staff/')}}/{{ $user->image }}"  id="OpenImgUpload" class="rounded-circle profile-image imgupload author-box-picture">
+                <form action="{{ route('staff.change_profile_image', $user->id) }}" id="profileImageForm" method="POST" enctype="multipart/form-data">
+                  @csrf
+                  <input type="file" name="profile_image" id="imgupload" class="img-input" style="display:none"/>
+                </form>
+                <div class="overlay">
+                  <a href="#" class="icon" title="Edit Profile Image">
+                    <i class="fas fa-pen"></i>
+                  </a>
+                </div> 
                 <div class="clearfix"></div>
                 <div class="author-box-name mt-1">
                   <a href="#">{{ $user->name }}</a>
@@ -89,85 +150,15 @@ Juffair Gable
               <ul class="nav nav-tabs" id="myTab2" role="tablist">
                 <li class="nav-item">
                   <a class="nav-link active" id="home-tab2" data-toggle="tab" href="#about" role="tab"
-                    aria-selected="true">About</a>
+                    aria-selected="true">Profile Information</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" id="profile-tab2" data-toggle="tab" href="#settings" role="tab"
-                    aria-selected="false">Setting</a>
+                    aria-selected="false">Change Password</a>
                 </li>
               </ul>
               <div class="tab-content tab-bordered" id="myTab3Content">
                 <div class="tab-pane fade show active" id="about" role="tabpanel" aria-labelledby="home-tab2">
-                  <div class="row">
-                    <div class="col-md-3 col-6 b-r">
-                      <strong>Full Name</strong>
-                      <br>
-                      <p class="text-muted">Emily Smith</p>
-                    </div>
-                    <div class="col-md-3 col-6 b-r">
-                      <strong>Mobile</strong>
-                      <br>
-                      <p class="text-muted">(123) 456 7890</p>
-                    </div>
-                    <div class="col-md-3 col-6 b-r">
-                      <strong>Email</strong>
-                      <br>
-                      <p class="text-muted">johndeo@example.com</p>
-                    </div>
-                    <div class="col-md-3 col-6">
-                      <strong>Location</strong>
-                      <br>
-                      <p class="text-muted">India</p>
-                    </div>
-                  </div>
-                  <p class="m-t-30">Completed my graduation in Arts from the well known and
-                    renowned institution
-                    of India – SARDAR PATEL ARTS COLLEGE, BARODA in 2000-01, which was
-                    affiliated
-                    to M.S. University. I ranker in University exams from the same
-                    university
-                    from 1996-01.</p>
-                  <p>Worked as Professor and Head of the department at Sarda Collage, Rajkot,
-                    Gujarat
-                    from 2003-2015 </p>
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting
-                    industry. Lorem
-                    Ipsum has been the industry's standard dummy text ever since the 1500s,
-                    when
-                    an unknown printer took a galley of type and scrambled it to make a
-                    type
-                    specimen book. It has survived not only five centuries, but also the
-                    leap
-                    into electronic typesetting, remaining essentially unchanged.</p>
-                  <div class="section-title">Education</div>
-                  <ul>
-                    <li>B.A.,Gujarat University, Ahmedabad,India.</li>
-                    <li>M.A.,Gujarat University, Ahmedabad, India.</li>
-                    <li>P.H.D., Shaurashtra University, Rajkot</li>
-                  </ul>
-                  <div class="section-title">Experience</div>
-                  <ul>
-                    <li>One year experience as Jr. Professor from April-2009 to march-2010
-                      at B.
-                      J. Arts College, Ahmedabad.</li>
-                    <li>Three year experience as Jr. Professor at V.S. Arts &amp; Commerse
-                      Collage
-                      from April - 2008 to April - 2011.</li>
-                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                      industry.
-                    </li>
-                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                      industry.
-                    </li>
-                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                      industry.
-                    </li>
-                    <li>Lorem Ipsum is simply dummy text of the printing and typesetting
-                      industry.
-                    </li>
-                  </ul>
-                </div>
-                <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="profile-tab2">
                   <form method="post" class="needs-validation">
                     <div class="card-header">
                       <h4>Edit Profile</h4>
@@ -175,54 +166,68 @@ Juffair Gable
                     <div class="card-body">
                       <div class="row">
                         <div class="form-group col-md-6 col-12">
-                          <label>First Name</label>
-                          <input type="text" class="form-control" value="John">
-                          <div class="invalid-feedback">
-                            Please fill in the first name
-                          </div>
-                        </div>
-                        <div class="form-group col-md-6 col-12">
-                          <label>Last Name</label>
-                          <input type="text" class="form-control" value="Deo">
-                          <div class="invalid-feedback">
-                            Please fill in the last name
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="form-group col-md-7 col-12">
                           <label>Email</label>
-                          <input type="email" class="form-control" value="test@example.com">
+                          <input type="email" class="form-control" readonly value="{{isset($user_details->employee_email_address) ? $user_details->employee_email_address : '' }}">
                           <div class="invalid-feedback">
                             Please fill in the email
                           </div>
                         </div>
-                        <div class="form-group col-md-5 col-12">
-                          <label>Phone</label>
-                          <input type="tel" class="form-control" value="">
+                        <div class="form-group col-md-6 col-12">
+                          <label>Contact Number (Without Country Code)</label>
+                          <input type="tel" class="form-control" value="{{isset($user_details->employee_mobile_phone) ? $user_details->employee_mobile_phone : '' }}">
                         </div>
                       </div>
                       <div class="row">
-                        <div class="form-group col-12">
-                          <label>Bio</label>
+                        <div class="form-group col-6">
+                          <label>Present Address</label>
                           <textarea
-                            class="form-control summernote-simple">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur voluptatum alias molestias minus quod dignissimos.</textarea>
+                            class="form-control">{{isset($user_details->employee_present_address) ? $user_details->employee_present_address : '' }}</textarea>
+                        </div>
+                        <div class="form-group col-6">
+                          <label>Permanent Address</label>
+                          <textarea
+                            class="form-control">{{isset($user_details->employee_permanent_address) ? $user_details->employee_permanent_address : '' }}</textarea>
                         </div>
                       </div>
+                    </div>
+                    <div class="card-footer text-right">
+                      <button class="btn btn-primary">Save Changes</button>
+                    </div>
+                  </form>
+                </div>
+                <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="profile-tab2">
+                  <form method="post" autocomplete="off" >
+                    <div class="card-header">
+                      <h4>Change Password</h4>
+                    </div>
+                    <div class="card-body">
                       <div class="row">
-                        <div class="form-group mb-0 col-12">
-                          <div class="custom-control custom-checkbox">
-                            <input type="checkbox" name="remember" class="custom-control-input" id="newsletter">
-                            <label class="custom-control-label" for="newsletter">Subscribe to newsletter</label>
-                            <div class="text-muted form-text">
-                              You will get new information about products, offers and promotions
+                        <div class="form-group col-md-6 col-12">
+                          <label>Password</label>
+                          <div class="input-group">
+                            <input type="password" name="password" autocomplete="off" id="pass_log_id" class="form-control  pwd-input">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <i class="fas fa-eye-slash toggle-password"></i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group col-md-6 col-12">
+                          <label>Confirm Password</label>
+                          <div class="input-group">
+                            <input type="password" name="confirm_password" autocomplete="off" id="confrim_pass_log_id" class="form-control  pwd-input">
+                            <div class="input-group-prepend">
+                              <div class="input-group-text">
+                                <i class="fas fa-eye-slash toggle-confirm-password"></i>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div class="card-footer text-right">
-                      <button class="btn btn-primary">Save Changes</button>
+                      <button class="btn btn-primary">Change Password</button>
                     </div>
                   </form>
                 </div>
@@ -246,5 +251,49 @@ Juffair Gable
 <script src="{{asset('public/admin/assets/bundles/datatables/export-tables/vfs_fonts.js')}}"></script>
 <script src="{{asset('public/admin/assets/bundles/datatables/export-tables/buttons.print.min.js')}}"></script>
 <script src="{{asset('public/admin/assets/js/page/datatables.js')}}"></script>
+<script>
+  $("body").on('click', '.toggle-password', function() {
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    var input = $("#pass_log_id");
+    if (input.attr("type") === "password") {
+      input.attr("type", "text");
+    } else {
+      input.attr("type", "password");
+    }
+});
+</script>
+<script>
+  $("body").on('click', '.toggle-confirm-password', function() {
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    var input = $("#confrim_pass_log_id");
+    if (input.attr("type") === "password") {
+      input.attr("type", "text");
+    } else {
+      input.attr("type", "password");
+    }
+});
+</script>
+<script>
+  $('.overlay').click(function(){
+    $('#imgupload').trigger('click');
+  });
+</script>
+<script>
+  function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
+        reader.onload = function (e) {
+            $('.profile-image').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$(".img-input").change(function(){
+    readURL(this);
+    document.getElementById("profileImageForm").submit();
+});
+</script>
 @stop

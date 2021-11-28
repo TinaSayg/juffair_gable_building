@@ -355,4 +355,35 @@ class StaffController extends Controller
     {
         return view('admin.staff.profile');
     }
+
+    public function change_profile_image(Request $request, $id)
+    {
+        $staff = User::find($id);
+       
+        //save owner image
+        if($request->file('profile_image'))
+        {
+            
+            unlink(public_path('admin/assets/img/staff/'). $staff->image);
+            $file_name = time().'_'.trim($request->file('profile_image')->getClientOriginalName());
+            $image = Image::make($request->file('profile_image')->getRealPath());
+            $image->resize(300,300);
+            $image->save(public_path('admin/assets/img/staff/'). $file_name);
+            $staff->image = $file_name;
+        }
+
+        if($staff->save())
+        {
+            $employee = Employee::where('employee_email_address', $staff->email)->first();
+            $employee->employee_image = $file_name;
+            $employee->save();
+            Toastr::success('Profile image changed.');
+            return redirect()->back();
+        }
+        else
+        {
+            Toastr::success('Something went wrong');
+            return redirect()->route('staff.list');
+        }
+    }
 }

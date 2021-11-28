@@ -179,6 +179,7 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::get('/edit/{id}', [StaffController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [StaffController::class, 'update'])->name('update');
         Route::get('/profile', [StaffController::class, 'profile'])->name('profile');
+        Route::post('/profile/change_image/{id}', [StaffController::class, 'change_profile_image'])->name('change_profile_image');
         
     });
  
