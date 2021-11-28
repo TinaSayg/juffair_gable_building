@@ -707,7 +707,6 @@
                                         <li><a href="https://g.page/Franksalot?share" class="list"  target="_blank">Franks A Lot</li>
                                         <li><a href="https://g.page/rodeo-bahrain?share" class="list"  target="_blank">Rodeo Bahrain </li>
                                         <li><a href="https://goo.gl/maps/QakULE5WycG2Df6m6" class="list"  target="_blank">Cucina Italiana </li>
-                                        <li><a href="https://g.page/hometowngrills?share" class="list"  target="_blank">Cucina Italiana </li>
                                         <li><a href="https://goo.gl/maps/VM6mEeY7iCzdYCbA6" class="list"  target="_blank">Nando's Juffair</li>
                                             <li><a href="https://goo.gl/maps/FYkZJA7H7MERfDr4A" class="list"  target="_blank">Juffair/American Alley-2</li>
                                     </ul>
