@@ -230,7 +230,7 @@
         }
 
         body {
-            background-color: #b9b8bb;
+            background-color: #e1dfe6;
         }
 
         .header-bottom {
@@ -1053,7 +1053,7 @@
                         <div class="row">
                             <div class="col-lg-6 col-12">
                                 <div class="text-center">
-                                    <img src="{{ asset('public/assets/img/gallery/gable.jpg') }}" style="width:100%;height:400px;" alt="">
+                                    <img src="{{ asset('public/assets/img/gallery/002.jpg') }}" style="width:100%;height:400px;" alt="">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-12">
@@ -1062,7 +1062,8 @@
                                         <span>Welcome,</span>
                                         <p>Welcome to Juffair Gables! We look forward to having you stay with us where comfort, entertainment and luxury come together to give you an excellent and joyful experience. 
                                             We hope that you will avail yourselves of the amenities that we provide.
-                                            Should you require any additional information or assistance, please do not hesitate to get in touch with our team who are always happy to help. Juffair Gables strives to provide friendly and meaningful customer service to our tenants.
+                                            Should you require any additional information or assistance, please do not hesitate to get in touch with our team who are always happy to help. Juffair Gables strives to provide friendly and meaningful customer service to our tenants.</p>
+                                            <p class="text-right"> General Manager</p>
                                     </div>
                                 </div>
                             </div>

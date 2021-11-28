@@ -403,6 +403,9 @@
 .line > hr{
   border:1px solid hsl(30, 80%, 55%);
 }
+#card1{
+    width:95%;
+}
 
 .learn-more > a{
   text-decoration:none;
@@ -413,6 +416,7 @@
     border-radius:12px;
 
 }
+
         
     </style>
 </head>
@@ -462,7 +466,7 @@
                             <img src="{{ asset('public/assets/img/gallery/001.svg') }}" class="building" height="400" alt="">
                         </div>
                         <div class="col-lg-6">
-                            <div class="card">
+                            <div class="card" id="card1">
                                 <div class="card-title">
                                     <h1 class="mb-3" style="color:hsl(25.3, 80.5%, 65.9%); ">Contact Details</h1>
                                 </div>
