@@ -7,6 +7,8 @@ Juffair Gable
 @section('header_styles')
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/datatables.min.css">
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
 <style>
    .card-box
    {
@@ -176,7 +178,7 @@ Juffair Gable
         <div class="card">
           <div class="card-header">
            <h4>
-             @if(Auth::user()->userType == 'general-manager')
+             @if(Auth::user()->userType == 'general-manager' OR Auth::user()->userType == 'Admin')
              Incoming Request
              @else
              Maintenance Requests You Reported
@@ -201,8 +203,7 @@ Juffair Gable
                     @php
                       
                       $maintenancerequest = \App\Models\MaintenanceRequest::where('maintenance_request_status_code', 1)->get();
-                     
-                   @endphp
+                    @endphp
                     @foreach($maintenancerequest as $key => $item)
                     <tr style="cursor: pointer">
                       <th onclick="getRequestMentenanceDetails({{ $item->id }})">{{ $key+1 }}</th>
@@ -268,13 +269,13 @@ Juffair Gable
                             <a href="#" class="dropdown-item has-icon" onclick="getRequestMentenanceDetails({{ $item->id }})"><i class="fas fa-eye"></i> View</a>
                             {{-- <a href="" class="dropdown-item has-icon"><i class="
                               fas fa-book"></i>Resubmit</a> --}}
-                              @if(Auth::user()->userType == 'general-manager' &&  $item->maintenance_request_status_code != 3)
-                              @if($item->maintenance_request_status_code ==1)
+                              @if((Auth::user()->userType == 'general-manager' OR Auth::user()->userType == 'Admin')  &&  $item->maintenance_request_status_code != 3)
+                              {{-- @if($item->maintenance_request_status_code ==1)
                               <a href="#" data-request_id="{{ $item->id }}" class="dropdown-item has-icon under-review" ><i class="
                                 fas fa-pen-square" style="color:green;"></i>Under Review</a>
-                              @endif
+                              @endif --}}
                             <div class="dropdown-divider"></div>
-                            <a href="#" data-request_id="{{ $item->id }}" class="dropdown-item has-icon assign_task"><i class="fas fa-user-shield"></i>Assign Task</a>
+                            <a href="#" data-request_id="{{ $item->id }}" data-task-assignee_id="{{ $item->user_id }}" class="dropdown-item has-icon assign_task"><i class="fas fa-user-shield"></i>Assign Task</a>
                             @endif
                           </div>
                         </div>
@@ -292,7 +293,7 @@ Juffair Gable
       @endif
       @if(\Auth::user()->userType == 'employee')
       @php
-        $tasks = \App\Models\Task::whereIn('task_status_code', [1,2])->where('assignee_id', Auth::user()->id)->orderBy('id','desc')->get();
+        $tasks = \App\Models\Task::whereIn('task_status_code', [1,2,3,4])->where('assignee_id', Auth::user()->id)->orderBy('id','desc')->get();
         if($average_time)
         {
           $average_time = explode(":", $average_time);
@@ -396,24 +397,39 @@ Juffair Gable
                             case 1:
                                 $class = 'badge-warning';
                                 break;
+                            case 4:
+                                $class = 'badge-warning';
+                                break;
                             default:
                                 $class = 'badge-success';
                                 break;
                             }
                           @endphp
                           @if(isset($item->task_status))
-                          <button class="btn {{ $class }} task-status-button" data-task_id="{{ $item->id }}" data-task_status_code="{{ $item->task_status_code }}">{{$item->task_status->task_status_name}}</button>
+                          <span class="badge {{ $class }}">{{$item->task_status->task_status_name}}</span>
                           @endif
                         </td>
                         <td>
-                          
                           <div class="dropdown">
                             <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                             <div class="dropdown-menu">
                               <a href="{{ route('tasks.show', $item->id) }}" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
+                              @if(in_array($item->task_status_code,[1,2,4]))
+                              <div class="dropdown-divider"></div>
+                              <a href="#" data-task_id="{{ $item->id }}" data-task_status_code="{{ $item->task_status_code }}" class="dropdown-item has-icon task-status-button">
+                                @if($item->task_status_code == 1)
+                                <i class="
+                                fas fa-check-circle" style="color:green"></i><span style="color: green"> In Progress
+                                @endif
+                                @if($item->task_status_code == 2 || $item->task_status_code == 4)
+                                <i class="
+                                fas fa-check-circle" style="color:green"></i><span style="color: green"> Completed
+                                @endif
+                                </span>
+                              </a>
+                              @endif
                             </div>
                           </div>
-
                         </td>
                       </tr>
                       @endforeach
@@ -514,12 +530,12 @@ Juffair Gable
                 </div>
               </div>
             </div>
-            <div class="col-12">
+            {{-- <div class="col-12">
               <div class="form-group">
                 <label>Comment</label>
                 <textarea name="comment" id="" class="form-control" cols="30" rows="10"></textarea>
               </div>
-            </div>
+            </div> --}}
           </div>
           <button type="submit" class="btn btn-primary m-t-15 waves-effect">Assign</button>
         </form>
@@ -555,6 +571,8 @@ Juffair Gable
 <script src="{{ asset('public/admin/assets/') }}/bundles/jquery-ui/jquery-ui.min.js"></script>
 <!-- Page Specific JS File -->
 <script src="{{ asset('public/admin/assets/') }}/js/page/datatables.js"></script>
+<script src="{{ asset('public/admin/assets/') }}/bundles/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 <script>
   $("tr.active-task-table td:not(:nth-last-child(2),:nth-last-child(1))").click(function() {
       window.location = $(this).data("href");

@@ -204,26 +204,22 @@ class TaskController extends Controller
 
     public function change_task_status(Request $request)
     {
-        
+       
         $task_id = $request->input('task_id');
         $task_status_code = $request->input('task_status_code');
         $task = Task::find($task_id);
 
-        $current_date_time = Carbon::now();
         $task->task_status_code = $task_status_code; 
-        $task->complete_date = Carbon::parse($current_date_time)->format('Y-m-d');
-        $task->complete_time = Carbon::parse($current_date_time)->format('H:i');
+        
+        if($task_status_code == 3)
+        {
+            $current_date_time = Carbon::now();
+            $task->complete_date = Carbon::parse($current_date_time)->format('Y-m-d');
+            $task->complete_time = Carbon::parse($current_date_time)->format('H:i');
+        }
 
         if($task->save()){
-            if($task->task_status_code == 3)
-            {
-                if($task->maintenance_request_id)
-                {
-                    $maintenance_request = MaintenanceRequest::find($task->maintenance_request_id);
-                    $maintenance_request->maintenance_request_status_code = 4;
-                    $maintenance_request->save();
-                }
-            }
+            
             Toastr::success('Your task status has been changed.');
             return back();
         }
@@ -232,6 +228,84 @@ class TaskController extends Controller
             Toastr::success('Something went wrong.');
             return back();
         }
+    }
+
+    public function task_closed($id)
+    {
+        $task = Task::find($id);
+
+        $task->task_status_code = 5;
+
+        if($task->save())
+        {
+            if($task->task_status_code == 5)
+            {
+                if($task->maintenance_request_id)
+                {
+                    $maintenance_request = MaintenanceRequest::find($task->maintenance_request_id);
+                    $maintenance_request->maintenance_request_status_code = 4;
+                    $maintenance_request->save();
+                }
+            }
+            Toastr::success('This Task is closed.');
+            return back();
+
+        }
+        else
+        {
+            Toastr::success('Something went wrong.');
+            return back();
+        }
+
+    }
+
+    public function task_cancelled($id)
+    {
+        $task = Task::find($id);
+
+        $task->task_status_code = 6;
+
+        if($task->save())
+        {
+            Toastr::success('This Task is cancelled.');
+            return back();
+
+        }
+        else
+        {
+            Toastr::success('Something went wrong.');
+            return back();
+        }
+
+    }
+
+    public function resubmit_task(Request $request)
+    {
+       
+        $request->validate([
+            'reason' => 'required',
+        ]);
+
+        $id = $request->input("task_id");
+        $task = Task::find($id);
+
+        $task->task_status_code = 4;
+        $task->complete_date = null;
+        $task->complete_time = null;
+        $task->comments = $request->input('reason');
+
+        if($task->save())
+        {
+            Toastr::success('This Task is resubmit again.');
+            return back();
+
+        }
+        else
+        {
+            Toastr::success('Something went wrong.');
+            return back();
+        }
+
     }
 
     public function complete_task_list(Request $request)
@@ -343,7 +417,7 @@ class TaskController extends Controller
         $task->deadline_time = Carbon::parse($request['deadline_time'])->format("H:i");
         $task->assignor_id = Auth::user()->id;
         $task->assignee_id = $request['employee_id'];
-        $task->comments = $request['comment'];
+        // $task->comments = $request['comment'];
         $task->task_status_code = 1;
 
         if($task->save())
@@ -386,7 +460,7 @@ class TaskController extends Controller
         $task->deadline_time = Carbon::parse($request['deadline_time'])->format("H:i");
         $task->assignor_id = Auth::user()->id;
         $task->assignee_id = $request['employee_id'];
-        $task->comments = $request['comment'];
+        // $task->comments = $request['comment'];
         $task->task_status_code = 1;
         $task->maintenance_request_id = $request->input('maintenance_request_id');
 
@@ -405,4 +479,6 @@ class TaskController extends Controller
             return back();
         }
     }
+
+   
 }

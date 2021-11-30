@@ -74,18 +74,32 @@
 
                             @endif   
                             </p>
-                            <p style="text-align: justify;"><span class="task_heading">Comment: </span> {{ isset($task->comments)? $task->comments : '' }}</p>
                             <p style="text-align: justify;"><span class="task_heading">Description: </span> {{$task->description }}</p>
+                            @if($task->task_status_code == 4 )
+                            <div style="color: red">
+                                <h4>Reason:</h4>
+                                <p>{{ $task->comments }}</p>
+                            </div>
+                            @endif
                         </div>
                         <div class="col-md-6">
+                            @if($task->assign_date)
                             <p class="mb-0"><span class="task_heading">Date Assigned: </span> {{ isset($task->assign_date)? \Carbon\Carbon::parse($task->assign_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($task->assign_time)->format('g:i A') : '' }}</p>
+                            @endif
+                            @if($task->deadline_date)
                             <p class="mb-0"><span class="task_heading">Deadline Date: </span> {{ isset($task->deadline_date)? \Carbon\Carbon::parse($task->deadline_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($task->deadline_time)->format('g:i A') : '' }}</p>
+                            @endif
+                            @if($task->complete_date)
                             <p class="mb-0"><span class="task_heading">Completed Date: </span> {{ isset($task->complete_date)? \Carbon\Carbon::parse($task->complete_date)->toFormattedDateString(). ' '. \Carbon\Carbon::parse($task->complete_time)->format('g:i A') : '' }}</p>
+                            @endif
                             <p class="mb-0">
                                 @php
                                 $class = '';
                                 switch ($task->task_status_code) {
                                     case 1:
+                                    $class = 'badge-warning';
+                                    break;
+                                    case 4:
                                     $class = 'badge-warning';
                                     break;
                                     default:

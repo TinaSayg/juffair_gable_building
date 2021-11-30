@@ -138,14 +138,14 @@
         @endif
        
         --}}
-        @if(Auth::user()->userType == 'general-manager' OR Auth::user()->userType == 'Admin')
+        {{-- @if(Auth::user()->userType == 'general-manager' OR Auth::user()->userType == 'Admin')
         <li class="dropdown {!! (Request::is('request/*') ? "active" : "") !!}">
           <a href="{{ route('request.list')}}" class="nav-link">
             <i class="fas fa-comment-dots"></i>
             <span>Incoming Request</span>
           </a>
         </li>
-        @endif
+        @endif --}}
         @if(request()->user()->can('view-visitor'))
         {{-- <li class="dropdown {!! (Request::is('visitor/*') ? "active" : "") !!}">
           <a href="{{ route('visitor.list') }}" class="nav-link"><i class="fas fa-user-friends"></i><span>Visitor List</span></a>
@@ -163,8 +163,8 @@
         
         
         @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
-        <li class="dropdown {!! (Request::is('approveleave/*') ? "active" : "") !!}">
-          <a href="{{ route('approveleave.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Approve Leaves</span></a>
+        <li class="dropdown {!! (Request::is('approveleave/*') ? "active" : "") !!} {!! (Request::is('leave/*') ? "active" : "") !!}">
+          <a href="{{ route('approveleave.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Leave Request</span></a>
         </li>
         @endif  
         @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')

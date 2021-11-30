@@ -47,10 +47,7 @@
                         <label>Title</label>
                         <input type="text" name="title" class="form-control">
                     </div>
-                    <div class="form-group col-md-4">
-                        <label>Date</label>
-                        <input type="text" name="date" class="form-control datepicker">
-                    </div>
+                    
                 </div>
                 
                 <div class="row">

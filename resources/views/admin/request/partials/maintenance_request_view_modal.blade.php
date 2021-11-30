@@ -65,7 +65,7 @@
         </span>
     </td>
 </tr>
-@if(Auth::user()->userType == 'general-manager')
+@if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
 <tr>
     <td colspan="2"><h5>Reported Request Person Details</h5></td>
 </tr>

@@ -84,8 +84,8 @@ class LeavesController extends Controller
         }
         
         $employeeleave = EmployeeLeaves::create([
-            'leave_start_date' => $request['leave_start_date'],
-            'leave_end_date' => $request['leave_end_date'],
+            'leave_start_date' => date('Y-m-d 00:00:00',strtotime($request['leave_start_date'])),
+            'leave_end_date' => date('Y-m-d 23:59:59',strtotime($request['leave_end_date'])),
             'apply_date'   => Carbon::now(),
             'leave_reason' => $request['leave_reason'],
             'leave_type_code' => $request['leave_type_code'],
@@ -283,5 +283,34 @@ class LeavesController extends Controller
             }
             
         }
+
     }
+
+    public function get_approved_leave_info()
+    {
+        $approve_leaves = [];
+
+        $leaves_list = EmployeeLeaves::select('id','leave_status_code','leave_start_date','leave_end_date','staff_id')->whereIn('leave_status_code', [1,3])->get();
+        $className = '';
+        foreach($leaves_list as $leave)
+        {
+            $name = User::where('id', $leave->staff_id)->first()->name;
+            $start_date = Carbon::parse($leave->leave_start_date)->format('Y-m-d H:i:s');
+            $end_date = Carbon::parse($leave->leave_end_date)->format('Y-m-d H:i:s');
+
+            if($leave->leave_status_code == '1')
+            {
+                $className = "approved";
+            }
+            else
+            {
+                $className = "disapproved";
+            }
+           
+            $approve_leaves[] = ['className'=> $className,'title'=> $name, 'start' => $start_date, 'end' => $end_date,'id' => $leave->id];    
+        }
+
+        return json_encode($approve_leaves);
+    }
+
 }

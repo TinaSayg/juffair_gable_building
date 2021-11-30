@@ -49,13 +49,11 @@ class RequestController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'posted_date' => 'required|string',
         ]);
 
         $complaint = new Complain();
         $complaint->complain_title = $request->input('title');
         $complaint->complain_description = $request->input('description');
-        $complaint->complain_date = $request->input('posted_date');
         $complaint->complain_person_id = Auth::user()->id;
         $complaint->complain_status_code = 1;
 
