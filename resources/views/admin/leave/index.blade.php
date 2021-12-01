@@ -7,17 +7,43 @@
 <link rel="stylesheet" href="{{ asset('public/admin/assets/') }}/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.css') }}">
 <style>
-tr:hover {
+/* tr:hover {
     background: #a3a3a3 !important;
+} */
+
+#calendar {
+width: 100%;
+margin: 0 auto;
+padding: 15px;
+background: #fff;
+border-radius: 5px;
+box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625rem rgba(90, 97, 105, 0.1), 0 0.25rem 0.53125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1);
 }
-   
+.fc-event-title-container
+{
+  text-align: center;
+}
+::-webkit-scrollbar {
+  
+}  
+::-webkit-scrollbar-thumb {
+  width: 10px;
+  border-radius: 8px !important; 
+}
+.approved
+{
+  background-color: #54ca68 !important;
+}
+.disapproved
+{
+  background-color: #fc544b !important;
+}
 </style>
 @stop
 @section('content')
 <section class="section">
-   
-    </ul>
-     <div class="row">
+    @if(Auth::user()->userType == 'employee')
+    <div class="row">
       <div class="col-12">
         <div class="card">
           <div class="card-header">
@@ -150,8 +176,99 @@ tr:hover {
             </div>
           </div>
         </div>
+      
+    </div>
+    @endif
+    @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-xl-3 col-12">
+        <div class="card card-primary">
+          <div class="card-header">
+            <h4>Leave Request</h4>
+          </div>
+          <div class="card-body" style="min-height:100px;max-height: 586px;overflow-y:auto;scrollbar-color: #6777ef #C2D2E4;scrollbar-width: thin;">
+            <div class="row">
+              @foreach ($employeeleave->where('leave_status_code', 2) as $leave)
+              <div class="col-12">
+
+                <p class="mb-0" style="font-weight: 600;">Name</p>
+                <p class="mb-0">
+                  @php
+                    $name = \App\Models\User::where('id',$leave->staff_id)->first()->name;
+                  @endphp
+                  {{ $name }}
+                </p>
+                <p class="mb-0" style="font-weight: 600;">Leave Start Date</p>
+                <p class="mb-0">{{ \Carbon\Carbon::parse($leave->leave_start_date)->format('Y-m-d') }}</p>
+                <p class="mb-0" style="font-weight: 600;">Leave End Date</p>
+                <p>{{ \Carbon\Carbon::parse($leave->leave_end_date)->format('Y-m-d') }}</p>
+                <div class="dropdown">
+                  <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
+                  <div class="dropdown-menu">
+                    <a href="#" class="dropdown-item has-icon" onclick="getLeaveDetails({{ $leave->id }})"><i class="fas fa-eye"></i> View</a>
+                    @if($leave->leave_status_code ==2)
+                    <a href="{{ route('leave.edit', $leave->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>
+                    @endif
+                    @if($leave->leave_status_code ==2)
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item has-icon approve_leave" data-leave_id="{{ $leave->id }}" data-approve_leave="1"><i style="color:green" class="fas fa-check-circle"></i>
+                      Approve</a>
+                    <a href="#" class="dropdown-item has-icon disapprove_leave" data-leave_id="{{ $leave->id }}" data-disapprove_leave="3"><i style="color:red" class="fas fa-times-circle"></i>
+                      Disapprove</a>
+                    @endif
+                  </div>
+                  
+                </div>
+                <hr>
+              </div>
+              <div class="col-4">
+                
+              </div>
+              @endforeach
+            </div>
+                
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-9 col-xl-9 col-12">
+        <link href="{{asset('public/admin/assets/css/main.css') }}" rel='stylesheet' />
+        <script src='{{asset('public/admin/assets/js/main.js') }}'></script>
+        <script>
+
+          document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              
+              editable: true,
+              selectable: false,
+              businessHours: false,
+              displayEventTime : false,
+              dayMaxEvents: true, // allow "more" link when too many events
+              events: {
+                url: '{{ route('leave.get_approved_leave_info') }}',
+                method: 'POST',
+                extraParams: {
+                  _token: '{!! csrf_token() !!}',
+                },
+                failure: function() {
+                  alert('there was an error while fetching events!');
+                }
+              },
+              eventClick: function(info) {
+                let id = info.event.id
+                getLeaveDetails(id)
+              }
+            });
+
+            calendar.render();
+          });
+
+        </script>
+        <div id='calendar'></div>
       </div>
     </div>
+    @endif
   </section>
   <div class="modal" id="leaveModal" >
     <div class="modal-dialog" role="document">

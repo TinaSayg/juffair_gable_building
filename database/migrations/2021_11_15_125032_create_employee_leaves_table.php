@@ -18,7 +18,7 @@ class CreateEmployeeLeavesTable extends Migration
             $table->dateTime('leave_start_date');
             $table->dateTime('leave_end_date');
             $table->dateTime('apply_date');
-            $table->string('leave_reason');
+            $table->longText('leave_reason');
             $table->integer('leave_status_code');
             $table->integer('leave_type_code');
             $table->string('leave_document');

@@ -91,7 +91,7 @@ class PagesController extends Controller
             'date_of_birth' => 'required',
             'email_address' =>  'required|email|unique:job_opportunities,email_address',
             'phone' =>  'required|unique:job_opportunities,phone',
-            'cv' => 'required|max:20480| mimes:application/pdf',
+            'cv' => 'required|max:20480| mimes:pdf',
         ], [
             'first_name.required' => 'First Name is required!',
             'last_name.required'  => 'Last Name  is required!',
@@ -104,13 +104,13 @@ class PagesController extends Controller
         ]);
         
         $filename ='';
-        if($request->file('cv'))
+        
+        if($request->file('image'))
         {
+          
             $file_name = time().'_'.trim($request->file('cv')->getClientOriginalName());
-            
-            $image = Image::make($request->file('cv')->getRealPath());
-            $image->resize(300,200);
-            $image->save(public_path('admin/assets/img/documents/'). $file_name);
+            //print_r(public_path('admin/assets/img/servicecontract/').$file_name); exit;
+            $request->file('cv')->move(public_path('admin/assets/img/documents/'), $file_name);
             $filename= $file_name;  
         }
        
@@ -121,7 +121,7 @@ class PagesController extends Controller
         $jobopprotunities->date_of_birth = $request['date_of_birth'];
         $jobopprotunities->email_address = $request['email_address'];
         $jobopprotunities->phone = $request['phone'];
-        $jobopprotunities->cv = $request['cv'];
+        $jobopprotunities->cv = $filename;
         $jobopprotunities->save();
        return redirect()->back()->with('message', 'Application submitted successfully!We will contact you soon!');
     }

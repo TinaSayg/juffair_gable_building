@@ -77,8 +77,8 @@ Juffair Gable
                         </div>
                      </div>
                      <div class="form-group col-md-4">
-                        <label for="number">Contact</label>
-                        <input type="text" class="form-control"  name="number" id="number"
+                        <label for="number">Contact Number (Without Country Code)</label>
+                        <input type="text" class="form-control" maxlength="8"  name="number" id="number"
                         @if (!empty($staffData['employee_mobile_phone'])) value="{{$staffData['employee_mobile_phone']}}" @else value="{{ old('employee_mobile_phone')}}" @endif
                         placeholder="Staff number">
                         <div class="invalid-feedback">

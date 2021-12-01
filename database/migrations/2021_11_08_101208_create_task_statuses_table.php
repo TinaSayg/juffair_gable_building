@@ -31,6 +31,18 @@ class CreateTaskStatusesTable extends Migration
          DB::table('task_statuses')->insert(array('task_status_id' => '3',
                 'task_status_name' => 'Completed',
                 'task_status_code' => '3'));
+
+         DB::table('task_statuses')->insert(array('task_status_id' => '4',
+                'task_status_name' => 'resubmit',
+                'task_status_code' => '4'));
+
+         DB::table('task_statuses')->insert(array('task_status_id' => '5',
+                'task_status_name' => 'Closed',
+                'task_status_code' => '5'));
+
+         DB::table('task_statuses')->insert(array('task_status_id' => '6',
+                'task_status_name' => 'Cancel',
+                'task_status_code' => '6'));
     }
 
     /**

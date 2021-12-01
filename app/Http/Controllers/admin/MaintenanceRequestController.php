@@ -42,7 +42,6 @@ class MaintenanceRequestController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'date' => 'required|string',
             'location_id' =>  'required',
         ]);
        
@@ -56,7 +55,6 @@ class MaintenanceRequestController extends Controller
         $maintenancerequest = new MaintenanceRequest();
         $maintenancerequest->title = $request->input('title');
         $maintenancerequest->description = $request->input('description');
-        $maintenancerequest->date = $request->input('date');
         $maintenancerequest->location_id= $request->input('location_id');
         $maintenancerequest->floor_id = $floor_id;
         $maintenancerequest->unit_id = $unit_id;

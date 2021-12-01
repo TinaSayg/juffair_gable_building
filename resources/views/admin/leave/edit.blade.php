@@ -21,7 +21,7 @@
             <div class="col-12">
                <div class="card">
                   <div class="card-header">
-                     <h4>Leave Details</h4>
+                     <h4>Leave Detail</h4>
                   </div>
                   <div class="card-body">
                      <div class="row">
@@ -43,15 +43,17 @@
                             </select>
                            </div>
                         </div>
-                           <div class="row">
-                           <div class="form-group col-md-4 attachdocument" style="display: none">
+                        
+                        <div class="row">
+                           <div class="form-group col-md-4 attachdocument" @if($employeeleave->leave_type_code == 2) style="display:none;" @endif>
                            <label>Attach Medical Certificate</label>
                            <input type="file" name="leave_document"  class="form-control">
                            @if(isset($employeeleave->leave_document) && !empty($employeeleave->leave_document))
-                               <img src="{{asset('public/admin/assets/img/documents/'.$employeeleave->leave_document)}}" height="150" width="150">
+                           <a href="{{ url('public/admin/assets/img/documents') }}/{{ isset($employeeleave->leave_document)? $employeeleave->leave_document : '' }}" target="blank">Click here to see old attachment.</a>
                            @endif 
                         </div>
                         </div>
+                        
                         <div class="row">
                         <div class="form-group col-md-8">
                            <label>Leave Reason</label>
@@ -83,6 +85,7 @@
      }
     }
  </script>
+ 
 
 @stop
 

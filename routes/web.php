@@ -180,7 +180,9 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::get('/edit/{id}', [StaffController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [StaffController::class, 'update'])->name('update');
         Route::get('/profile', [StaffController::class, 'profile'])->name('profile');
-        
+        Route::post('/profile/change_image/{id}', [StaffController::class, 'change_profile_image'])->name('change_profile_image');
+        Route::post('/profile/edit-profile/{id}', [StaffController::class, 'edit_profile'])->name('edit_profile');
+        Route::post('/profile/change_password/{id}', [StaffController::class, 'change_password'])->name('change_password');
     });
  
     
@@ -275,9 +277,13 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::delete('/task/delete/{id}', [TaskController::class, 'destroy'])->name('delete');
         Route::get('/task/show/{id}', [TaskController::class, 'show'])->name('show');
         Route::post('/change_task_status', [TaskController::class, 'change_task_status'])->name('change_task_status');
+        Route::get('/closed/{id}', [TaskController::class, 'task_closed'])->name('closed');
+        Route::get('/cancel/{id}', [TaskController::class, 'task_cancelled'])->name('cancelled');
+        Route::post('/task/resubmit', [TaskController::class, 'resubmit_task'])->name('resubmit');
         Route::get('/completed_task/list', [TaskController::class, 'complete_task_list'])->name('completed_task.list');
         Route::get('/locations/{id}', [TaskController::class, 'get_task_location'])->name('get_task_location');
         Route::post('/assign_task', [TaskController::class, 'assign_task'])->name('assign_task');
+        Route::post('/search', [TaskController::class, 'search_tasks_by_status'])->name('search_tasks_by_status');
         Route::post('/assign_task_for_maintenance', [TaskController::class, 'assign_task_for_maintenance'])->name('assign_task_for_maintenance');
 
     });
@@ -345,6 +351,9 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::post('/leave/update/{id}', [LeavesController::class, 'update'])->name('update');
     Route::delete('/leave/delete/{id}', [LeavesController::class, 'destroy'])->name('delete');
     Route::get('/leave/show/{id}', [LeavesController::class, 'show'])->name('show');
+    Route::post('/leave/get_approved_leave_info', [LeavesController::class, 'get_approved_leave_info'])->name('get_approved_leave_info');
+    Route::post('/leave/get_disapproved_leave_info', [LeavesController::class, 'get_disapproved_leave_info'])->name('get_disapproved_leave_info');
+
 
    });
    //Testimonials routes
