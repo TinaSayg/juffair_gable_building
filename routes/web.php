@@ -39,6 +39,7 @@ use App\Http\Controllers\admin\MaintenanceCostController;
 use App\Http\Controllers\admin\MaintenanceRequestController;
 use App\Http\Controllers\admin\SecuritydepositController;
 use App\Http\Controllers\admin\UnitstatusreportController;
+use App\Http\Controllers\admin\InvoiceController;
 use App\Models\MaintenanceRequest;
 
 /*
@@ -210,7 +211,7 @@ Route::group(['middleware' => ['auth:web']], function() {
      });
 
     // Rent Collection routes
-    Route::group(['prefix' => 'rent', 'as' => 'rent.'], function () {
+        Route::group(['prefix' => 'rent', 'as' => 'rent.'], function () {
         Route::get('/rent_list', [RentController::class, 'index'])->name('list');
         Route::get('/rent/create', [RentController::class, 'create'])->name('create');
         Route::post('/rent/store', [RentController::class, 'store'])->name('store');
@@ -218,6 +219,12 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::get('/rent/edit/{id}', [RentController::class, 'edit'])->name('edit');
         Route::post('/rent/update/{id}', [RentController::class, 'update'])->name('update');
         Route::delete('/rent/delete/{id}', [RentController::class, 'destroy'])->name('delete');
+    });
+
+    //Invoice routes
+    Route::group(['prefix' => 'invoice', 'as' => 'invoice.'], function () {
+        Route::get('/invoice/create/{id}', [InvoiceController::class, 'create'])->name('create');
+        Route::post('/save_invoice_info', [InvoiceController::class, 'save_invoice_info'])->name('save_invoice_info');
     });
 
     // Utility bill routes
@@ -352,6 +359,16 @@ Route::group(['middleware' => ['auth:web']], function() {
 
    });
 
+    //Rent routes
+    Route::group(['prefix' => 'rent', 'as' => 'rent.'], function () {
+    Route::get('/rent_list', [RentController::class, 'index'])->name('list');
+    Route::get('/rent/create', [RentController::class, 'create'])->name('create');
+    Route::post('/rent/store', [RentController::class, 'store'])->name('store');
+    Route::get('/rent/edit/{id}', [RentController::class, 'edit'])->name('edit');
+    Route::post('/rent/update/{id}', [RentController::class, 'update'])->name('update');
+    Route::delete('/rent/delete/{id}', [RentController::class, 'destroy'])->name('delete');
+    Route::get('/rent/show/{id}', [RentController::class, 'show'])->name('show');
+   });
    //Approve routes
    Route::group(['prefix' => 'approveleave', 'as' => 'approveleave.'], function () {
     Route::get('/approveleave_list', [LeavesController::class, 'index'])->name('list');

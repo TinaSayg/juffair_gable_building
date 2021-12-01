@@ -43,7 +43,6 @@
                         <td>{{ \Carbon\Carbon::parse($noticeboard->notice_date)->toFormattedDateString() }}</td>
                         <td>{{ isset($noticeboard->role) ? $noticeboard->role->name : '' }}</td>
                         <td>{{ isset($noticeboard->notice_status) ? $noticeboard->notice_status->notice_boardstatus_name : '' }}</td>
-                        
                         <td>
                             <a href="#" onclick="getNoticeDetails({{ $noticeboard->id }})"><i class="fa fa-eye mr-2"></i> </a>
                           <a href="#" onclick="form_alert('noticeboard-{{ $noticeboard->id }}','Want to delete this noticeboard')"><i class="fa fa-trash mr-2" style="font-size: 12px;" data-toggle="modal" data-target="#exampleModal1"></i> </a>

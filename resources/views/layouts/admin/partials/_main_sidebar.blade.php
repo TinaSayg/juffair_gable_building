@@ -172,8 +172,13 @@
         <li class="dropdown {!! (Request::is('testimonials/*') ? "active" : "") !!}">
           <a href="{{ route('testimonials.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Testimonials</span></a>
         </li>
-        @endif  
-         
+        @endif 
+        
+        @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
+        <li class="dropdown {!! (Request::is('rent/*') ? "active" : "") !!}">
+          <a href="{{ route('rent.list') }}" class="nav-link"><i class="fas fa-money-check"></i><span>Rent</span></a>
+        </li>
+        @endif 
         @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
         <li class="dropdown {!! (Request::is('maintenancecost/*') ? "active" : "") !!}">
           <a href="{{ route('maintenancecosts.list') }}" class="nav-link"><i class="fas fas fa-toolbox"></i><span>Maintenance Costs</span></a>
