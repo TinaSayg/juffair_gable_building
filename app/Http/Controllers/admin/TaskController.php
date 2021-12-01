@@ -29,7 +29,10 @@ class TaskController extends Controller
         $tasks = Task::orderBy('id', 'desc')->get();
         $employee_list = User::where('userType', 'employee')->get();
 
-        return view('admin.task.index', compact('tasks','employee_list'));
+        $task_status_list = TaskStatus::all();
+        
+
+        return view('admin.task.index', compact('tasks','employee_list','task_status_list'));
     }
 
     /**
@@ -248,13 +251,13 @@ class TaskController extends Controller
                 }
             }
             Toastr::success('This Task is closed.');
-            return back();
+            return redirect()->route('tasks.list');
 
         }
         else
         {
             Toastr::success('Something went wrong.');
-            return back();
+            return redirect()->route('tasks.list');
         }
 
     }
@@ -268,13 +271,13 @@ class TaskController extends Controller
         if($task->save())
         {
             Toastr::success('This Task is cancelled.');
-            return back();
+            return redirect()->route('tasks.list');
 
         }
         else
         {
             Toastr::success('Something went wrong.');
-            return back();
+            return redirect()->route('tasks.list');
         }
 
     }
@@ -297,13 +300,13 @@ class TaskController extends Controller
         if($task->save())
         {
             Toastr::success('This Task is resubmit again.');
-            return back();
+            return redirect()->route('tasks.list');
 
         }
         else
         {
             Toastr::success('Something went wrong.');
-            return back();
+            return redirect()->route('tasks.list');
         }
 
     }
@@ -423,12 +426,12 @@ class TaskController extends Controller
         if($task->save())
         {
             Toastr::success('Task assigned to employee successfully.');
-            return back();
+            return redirect()->route('tasks.list');
         }
         else
         {
             Toastr::success('Something went wrong.');
-            return back();
+            return redirect()->route('tasks.list');
         }
     }
 
@@ -478,6 +481,27 @@ class TaskController extends Controller
             Toastr::success('Something went wrong.');
             return back();
         }
+    }
+
+    public function search_tasks_by_status(Request $request)
+    {
+        $task_status_code = $request->input('task_status_code',null);
+        
+
+        $query = Task::query();
+
+        if($task_status_code)
+        {
+            $query->where('task_status_code', $task_status_code);
+        }
+
+        $tasks = $query->orderBy('id','desc')->get();
+        $employee_list = User::where('userType', 'employee')->get();
+
+        $task_status_list = TaskStatus::all();
+        
+
+        return view('admin.task.index', compact('tasks','employee_list','task_status_list','task_status_code'));
     }
 
    

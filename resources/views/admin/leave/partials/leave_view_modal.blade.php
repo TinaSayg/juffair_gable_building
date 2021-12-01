@@ -51,4 +51,9 @@ $employee_name = \App\Models\User::where('id', $staff_id)->first()->name;
     </td>
 </tr>
 
+<tr>
+    <td>Reason</td>
+    <td>{{ isset($employeeleave->leave_reason)? $employeeleave->leave_reason : '' }}</td>
+</tr>
+
     

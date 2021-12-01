@@ -114,7 +114,34 @@
         </div> --}}
         <div class="row">
           <div class="col-12">
-            <a  href="{{ route('tasks.create') }}" class="btn btn-primary float-right mb-3" role="button">Add Task</a>
+            <a  href="{{ route('tasks.create') }}" class="btn btn-primary float-right mb-4" style="padding:7px 35px" role="button">Add Task</a>
+          </div>
+          <div class="col-lg-12">
+            <div class="card" style="padding:15px 15px">
+              <div class="card-header">
+                <h4>Search Tasks By Status</h4>
+              </div>
+              <div class="card-body">
+                <form action="{{ route('tasks.search_tasks_by_status') }}" method="POST">
+                    @csrf
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label for="">Select Status</label>
+                            <select class="form-control" name="task_status_code" >
+                                <option value="0">All</option>
+                                @foreach ($task_status_list as $task_status)
+                                    <option value="{{ $task_status->task_status_code }}" @if(isset($task_status_code) && ($task_status_code == $task_status->task_status_code)) selected @endif>{{ $task_status->task_status_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        
+                        <div class="form-group col-md-2" style="margin-top: 1.90rem !important;">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+              </div>
+          </div>
           </div>
         </div>
         <div class="card">

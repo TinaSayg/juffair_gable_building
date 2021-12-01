@@ -267,6 +267,7 @@ Juffair Gable
                           <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                           <div class="dropdown-menu">
                             <a href="#" class="dropdown-item has-icon" onclick="getRequestMentenanceDetails({{ $item->id }})"><i class="fas fa-eye"></i> View</a>
+                            <a href="{{ route('request.edit', $item->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i>Edit</a>
                             {{-- <a href="" class="dropdown-item has-icon"><i class="
                               fas fa-book"></i>Resubmit</a> --}}
                               @if((Auth::user()->userType == 'general-manager' OR Auth::user()->userType == 'Admin')  &&  $item->maintenance_request_status_code != 3)

@@ -13,6 +13,7 @@
    tr:hover {
     background: #a3a3a3 !important;
   }
+  
 </style>
 @stop
 @section('content')
@@ -126,6 +127,9 @@
                           <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                           <div class="dropdown-menu">
                             <a href="#" class="dropdown-item has-icon" onclick="getRequestMentenanceDetails({{ $item->id }})"><i class="fas fa-eye"></i> View</a>
+                            <a href="{{ route('request.edit', $item->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i>Edit</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item has-icon" onclick="form_alert('maintenance-request-{{ $item->id }}','Want to delete this request')"><i class="fas fa-trash"></i>Delete</a>
                             {{-- <a href="" class="dropdown-item has-icon"><i class="
                               fas fa-book"></i>Resubmit</a> --}}
                               @if(Auth::user()->userType == 'general-manager' &&  $item->maintenance_request_status_code != 3)
@@ -134,11 +138,14 @@
                                   fas fa-pen-square" style="color:green;"></i>Under Review</a>
                                 @endif
                                 @if($item->maintenance_request_status_code ==1 || $item->maintenance_request_status_code ==2)
-                                  <div class="dropdown-divider"></div>
                                   <a href="#" data-request_id="{{ $item->id }}" class="dropdown-item has-icon assign_task"><i class="fas fa-user-shield"></i>Assign Task</a>
                                 @endif
                               @endif
                           </div>
+                          <form action="{{ route('request.delete', $item->id) }}"
+                            method="post" id="maintenance-request-{{ $item->id }}">
+                            @csrf @method('delete')
+                          </form>
                         </div>
                       </td>
                     </tr>

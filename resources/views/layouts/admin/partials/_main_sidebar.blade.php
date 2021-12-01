@@ -9,7 +9,8 @@
         {{-- <div class="sidebar-user-picture">
           <img alt="image" src="{{ asset('public/admin/assets/img/staff/') }}/{{Auth::user()->image}}">
         </div> --}}
-        <div class="text-white">{{ Auth::user()->userType}}</div>
+        {{-- <div class="text-white">{{ Auth::user()->userType}}</div> --}}
+        <div class="text-white">{{ Auth::user()->name}}</div>
       </div>
       <ul class="sidebar-menu">
         <li class="menu-header">Main</li>

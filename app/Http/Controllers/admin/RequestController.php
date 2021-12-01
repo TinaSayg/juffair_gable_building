@@ -95,7 +95,9 @@ class RequestController extends Controller
      */
     public function edit($id)
     {
-        //
+        $maintenancerequest = MaintenanceRequest::find($id);
+       
+        return view('admin.request.edit', compact('maintenancerequest'));
     }
 
     /**
@@ -107,7 +109,50 @@ class RequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'location_id' =>  'required',
+        ]);
+       
+        $location_id = $request->input('location_id');
+        $floor_id = $request->input('floor_id',null);
+        $unit_id = $request->input('unit_id',null);
+        $common_area_id = $request->input('common_area_id',null);
+        $service_area_id = $request->input('service_area_id',null);
+       
+
+        $maintenancerequest = MaintenanceRequest::find($id);
+        $maintenancerequest->title = $request->input('title');
+        $maintenancerequest->description = $request->input('description');
+        $maintenancerequest->location_id= $request->input('location_id');
+        $maintenancerequest->floor_id = $floor_id;
+        $maintenancerequest->unit_id = $unit_id;
+        $maintenancerequest->common_area_id = $common_area_id;
+        $maintenancerequest->service_area_id = $service_area_id;
+        $maintenancerequest->maintenance_request_status_code = 1;
+
+        if(Auth::user()->userType == 'employee')
+        {
+            $maintenancerequest->user_id = Auth::user()->id;
+        }
+        
+
+        if($maintenancerequest->save()){
+            Toastr::success('Maintenance Request updated successfully.');
+            
+            if(Auth::user()->userType == 'employee')
+            {
+                return redirect()->route('request.list');
+            }
+            
+            return redirect()->route('dashboard');
+        }
+        else
+        {
+            Toastr::success('Something went wrong.');
+            return redirect()->route('request.create');
+        }
     }
 
     /**
@@ -118,7 +163,18 @@ class RequestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $maintenancerequest = MaintenanceRequest::find($id);
+        
+        if($maintenancerequest->delete())
+        {
+            Toastr::success('This request is deleted.');
+            return redirect()->back();
+        }
+        else
+        {
+            Toastr::success('Something went wrong.');
+            return redirect()->back();
+        }
     }
 
     public function request_action(Request $request, $id)
