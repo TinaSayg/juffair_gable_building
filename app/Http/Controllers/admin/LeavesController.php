@@ -83,9 +83,14 @@ class LeavesController extends Controller
         // dd($leave_start_date,$leave_end_date);
         $aleary_applied_for_leave_on_same_date_count = EmployeeLeaves::where('staff_id', Auth::user()->id)
                                                                     ->where(function($query) use($leave_start_date,$leave_end_date) {
-                                                                        $query->orWhereDate('leave_start_date', $leave_start_date)
+                                                                        $query->whereDate('leave_start_date', $leave_start_date)
                                                                               ->orWhereDate('leave_end_date', $leave_end_date);
-                                                                    })->get()->count();
+                                                                    })->orWhere(function($query) use($leave_start_date,$leave_end_date) {
+                                                                        $query->whereDate('leave_start_date', $leave_end_date)
+                                                                              ->orWhereDate('leave_end_date', $leave_start_date);
+                                                                    })
+                                                                    ->get()->count();
+        // dd($aleary_applied_for_leave_on_same_date_count);                                                                
        
         if($aleary_applied_for_leave_on_same_date_count > 0)
         {
@@ -176,7 +181,7 @@ class LeavesController extends Controller
         $leave_end_date = Carbon::parse($request['leave_end_date'])->format("Y-m-d");
         
 
-        if(Carbon::parse($leave_end_date)->gt(Carbon::parse($leave_start_date)))
+        if(Carbon::parse($leave_end_date)->lt(Carbon::parse($leave_start_date)))
         {
             Toastr::error('Leave end date must be less then Leave start date.');
             return redirect()->back();
@@ -279,7 +284,7 @@ class LeavesController extends Controller
                     $leave_end_date = Carbon::parse($leave->leave_end_date);
     
                     //leave taken days
-                    $leave_taken = $leave_start_date->diffInDays($leave_end_date);
+                    $leave_taken = $leave_start_date->diffInDays($leave_end_date) + 1 ;
     
                     //leave taken contract years
                     $leave_contract_years = Carbon::parse($employee_contract_start_date)->format('Y'). '-'. Carbon::parse($employee_contract_end_date)->format('Y');

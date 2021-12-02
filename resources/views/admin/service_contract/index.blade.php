@@ -11,6 +11,10 @@
    tr:hover {
     background: #a3a3a3 !important;
    }
+   .finished-contract
+   {
+     background:#c17676 !important;
+   }
 </style>
 @stop
 @section('content')
@@ -40,29 +44,65 @@
             
             <div class="card-body">
               <div class="table-responsive">
-                <table id="table-2" class="table table-striped">
+                <table id="table-2" class="table table-striped display nowrap"  width="100%">
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Description</th>
-                      <th>Cost</th>
-                      <th>Frequency of pay</th>
-                      <th>Renew Date</th>
+                      <th>Title</th>
+                      <th>Cost Per Period</th>
+                      <th>Frequency of Pay</th>
+                      <th>Contract Start Date</th>
+                      <th>Contract End Date</th>
+                      <th>Auto Renewal</th>
+                      {{-- <th>Status</th> --}}
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     @foreach($services_contract_list as $key => $item)
-                    <tr style="cursor:pointer">
+                    @php
+                      $current_date = \Carbon\Carbon::now()->format('Y-m-d');
+                      $contract_end_date = \Carbon\Carbon::parse($item->contract_end_date)->format('Y-m-d');
+                      
+                      $class = '';
+                      if(\Carbon\Carbon::parse($current_date)->gt(\Carbon\Carbon::parse($contract_end_date)))
+                      {
+                        $class = 'finished-contract';
+                      }
+                    @endphp
+                    <tr style="cursor:pointer" class="@if($class) {{$class}} @endif">
                       <td onclick="getServiceContractDetails({{ $item->id }})">{{ $key+1 }}</td>
-                      <td onclick="getServiceContractDetails({{ $item->id }})">{{ $item->description }}</td>
+                      <td onclick="getServiceContractDetails({{ $item->id }})">{{ $item->Title }}</td>
                       <td onclick="getServiceContractDetails({{ $item->id }})">{{ $item->amount }} BD</td>
                       <td onclick="getServiceContractDetails({{ $item->id }})">{{ $item->frequency_of_pay }}</td>
-                      
-                      <td onclick="getServiceContractDetails({{ $item->id }})">{{ \Carbon\Carbon::parse($item->contract_renew_date)->toFormattedDateString() }}</td>
+                      <td onclick="getServiceContractDetails({{ $item->id }})">{{ \Carbon\Carbon::parse($item->contract_start_date)->toFormattedDateString() }}</td>
+                      <td onclick="getServiceContractDetails({{ $item->id }})">{{ \Carbon\Carbon::parse($item->contract_end_date)->toFormattedDateString() }}</td>
+                      <td>
+                        <span class="badge btn-warning">
+                          @if($item->auto_renewal == '1')
+                          Yes
+                          @else
+                          No
+                          @endif
+                        </span>
+                      </td>
+                      {{-- <td>
+                        @php
+                          $class = '';
+                          switch ($item->service_contract_status_code) {
+                            case 1:
+                              $class = 'badge-success';
+                              break;
+                            default:
+                              $class = 'badge-danger';
+                              break;
+                          }
+                        @endphp
+                        <span class="badge {{ $class }}">{{ isset($item->service_contract_status_code) ? $item->service_contract_status->service_contract_status_name : ''}}</span>
+                      </td> --}}
                       <td>
                         <div class="dropdown">
-                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                           <div class="dropdown-menu">
                             <a href="#" onclick="getServiceContractDetails({{ $item->id }})" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
                             <a href="{{ route('service_contract.edit', $item->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i> Edit</a>

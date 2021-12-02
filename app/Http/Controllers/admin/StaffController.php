@@ -45,7 +45,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereIn('slug', ['employee','officer'])->orderBy('name','asc')->get();
+        $roles = Role::whereIn('slug', ['employee','officer','general-manager'])->orderBy('name','asc')->get();
 
         return view('admin.staff.create', compact('roles'));
     }

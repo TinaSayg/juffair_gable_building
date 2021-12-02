@@ -160,10 +160,10 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-4" >
+                            {{-- <div class="form-group col-md-4" >
                                 <label>Security Deposit (BD)</label>
                                 <input type="text" name="security_deposit" value="{{ isset($tenant->security_deposit)? $tenant->security_deposit : '' }}" class="form-control">
-                            </div>
+                            </div> --}}
                         </div>
                         <button class="btn btn-primary mr-1" type="submit">Save</button>
                     </div>

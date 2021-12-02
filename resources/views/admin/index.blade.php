@@ -69,6 +69,7 @@ Juffair Gable
         
         $total_employees = \App\Models\User::whereIn('userType', ['employee','officer'])->count();
         $total_complains = \App\Models\Complain::where('assigneed_id', Auth::user()->id)->whereIn('complain_status_code' , [1,2])->count();
+        $leaves_request = \App\Models\EmployeeLeaves::where('leave_status_code', 2)->count();
         
         foreach (\App\Models\MaintenanceCost::pluck('maintenance_cost_total_amount') as $key => $value) {
           $total_maintenance_cost += $value;
@@ -81,7 +82,7 @@ Juffair Gable
           <div class="card card-box">
             <div class="card-statistic-4">
               <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Total Unit</h6>
+                <h6 class="m-b-20 text-right">Total Apartment</h6>
                 <h4 class="text-right"><i class="fas fa-door-open pull-left bg-cyan c-icon"></i><span>{{ $total_units }}</span>
                 </h4>
                 <a href="{{ route('units.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
@@ -93,9 +94,9 @@ Juffair Gable
           <div class="card card-box">
             <div class="card-statistic-4">
               <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Vacant Units</h6>
+                <h6 class="m-b-20 text-right">Vacant Apartment</h6>
                 <h4 class="text-right"><i
-                    class="fas fa-home pull-left bg-deep-orange c-icon"></i><span>{{ $vacant_units }}</span>
+                    class="fas fa-home pull-left bg-deep-orange c-icon"></i><span>{{ $total_units - $total_tenant }}</span>
                 </h4>
                 <a href="{{ route('units.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
@@ -106,7 +107,7 @@ Juffair Gable
           <div class="card card-box">
             <div class="card-statistic-4">
               <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Total Tenant</h6>
+                <h6 class="m-b-20 text-right">Rented Apartment</h6>
                 <h4 class="text-right"><i
                     class="fas fa-users pull-left bg-green c-icon"></i><span>{{ $total_tenant }}</span>
                 </h4>
@@ -134,7 +135,7 @@ Juffair Gable
           <div class="card card-box">
             <div class="card-statistic-4">
               <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Total Rent</h6>
+                <h6 class="m-b-20 text-right">Total Rent Per Year</h6>
                 <h4 class="text-right"><i
                     class="fas fa-dollar-sign pull-left bg-green c-icon"></i><span>4514.000 BD</span>
                 </h4>
@@ -148,7 +149,7 @@ Juffair Gable
           <div class="card card-box">
             <div class="card-statistic-4">
               <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Total Maintenance</h6>
+                <h6 class="m-b-20 text-right">Maintenance Cost Per Year</h6>
                 <h4 class="text-right"><i
                     class="fas fa-toolbox pull-left bg-green c-icon"></i><span>{{ $total_maintenance_cost }} BD</span>
                 </h4>
@@ -162,11 +163,11 @@ Juffair Gable
           <div class="card card-box">
             <div class="card-statistic-4">
               <div class="info-box7-block">
-                <h6 class="m-b-20 text-right">Total Complaints</h6>
+                <h6 class="m-b-20 text-right">Leaves Request</h6>
                 <h4 class="text-right">
-                <i class="far fa-user pull-left bg-green c-icon"></i><span>{{ $total_complains }}</span>
+                <i class="far fa-user pull-left bg-green c-icon"></i><span>{{ $leaves_request }}</span>
                 </h4>
-                <a href="{{ route('complains.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('leave.list') }}" class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
               
               </div>
             </div>
@@ -316,7 +317,7 @@ Juffair Gable
                 <h6 class="text-right  m-b-20">Average time to resolve an assigned tasks</h6>
                 <h4 class="text-right"><i class="fas fa-clock pull-left bg-cyan c-icon mt-4"></i><span>{{ isset($hours)? $hours.' '.'hours': '0' }}  {{ isset($minutes) ? $minutes.' '. 'minutes' : ''}} </span>
                 </h4>
-                <a href="{{ route('tasks.completed_task.list') }}" style="position: relative;top:17px"  class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{{ route('tasks.completed_task.list') }}"  class="small-box-footer text-center d-block pt-2">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
           </div>
@@ -331,10 +332,9 @@ Juffair Gable
            
             //leave taken contract years
             $leave_contract_years = Illuminate\Support\Carbon::parse($employee_contract_start_date)->format('Y'). '-'. Illuminate\Support\Carbon::parse($employee_contract_end_date)->format('Y');
-           
             $leaves_taken = 0;
             $leaves = \App\Models\EmployeeLeaves::where('staff_id', Auth::user()->id)->where('leaves_taken_year', $leave_contract_years)->pluck('leaves_taken');
-            
+           
             if($leaves->count() > 0)
             {
               $leaves_taken = array_sum($leaves->toArray());

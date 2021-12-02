@@ -41,8 +41,8 @@
               fas fa-plus-circle"></i><span>Add a New Service Contract</span></a>
           </li>
           
-          <li class="dropdown {!! (Request::is('floors/floor_list') ? "active" : "") !!}">
-            <a href="{{ route('floors.list') }}" class="nav-link"><i class="
+          <li class="dropdown">
+            <a href="/reports" class="nav-link"><i class="
               fas fa-sticky-note"></i><span>Reports</span></a>
           </li>
         @endif
@@ -183,7 +183,7 @@
         @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
         <li  class="dropdown {!! (Request::is('floors/*') ? "active" : "") !!} {!! (Request::is('units*') ? "active" : "") !!} {!! (Request::is('role/edit/*') ? "active" : "") !!} {!! (Request::is('module/list') ? "active" : "") !!} {!! (Request::is('module/create') ? "active" : "") !!} {!! (Request::is('module/edit/*') ? "active" : "") !!} {!! (Request::is('permission/list') ? "active" : "") !!} {!! (Request::is('permission/create') ? "active" : "") !!} {!! (Request::is('permission/edit/*') ? "active" : "") !!} {!! (Request::is('role/assign-permission/*') ? "active" : "") !!}" >
           <a href="#" class="menu-toggle nav-link has-dropdown role-permission-dropdown"><i class="
-              fas fa-cogs"></i><span>Building Setting</span></a>
+              fas fa-cogs"></i><span>Building Setup</span></a>
           <ul class="dropdown-menu">
               <li><a href="{{ route('floors.list') }}" class="nav-link">Floors</a></li>
               <li><a href="{{ route('units.list') }}" class="nav-link">Apartments</a></li>

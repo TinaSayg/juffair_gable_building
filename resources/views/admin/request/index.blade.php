@@ -127,9 +127,11 @@
                           <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                           <div class="dropdown-menu">
                             <a href="#" class="dropdown-item has-icon" onclick="getRequestMentenanceDetails({{ $item->id }})"><i class="fas fa-eye"></i> View</a>
+                            @if($item->maintenance_request_status_code == 1)
                             <a href="{{ route('request.edit', $item->id) }}" class="dropdown-item has-icon"><i class="far fa-edit"></i>Edit</a>
                             <div class="dropdown-divider"></div>
                             <a href="#" class="dropdown-item has-icon" onclick="form_alert('maintenance-request-{{ $item->id }}','Want to delete this request')"><i class="fas fa-trash"></i>Delete</a>
+                            @endif
                             {{-- <a href="" class="dropdown-item has-icon"><i class="
                               fas fa-book"></i>Resubmit</a> --}}
                               @if(Auth::user()->userType == 'general-manager' &&  $item->maintenance_request_status_code != 3)

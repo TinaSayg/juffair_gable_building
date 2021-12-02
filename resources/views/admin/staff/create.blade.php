@@ -85,7 +85,7 @@ Juffair Gable
                               <div class="custom-file">
                                  <input type="file"
                                     id="staff_image" name="staff_image"
-                                    accept="image/jpeg">
+                                    accept="image/jpeg,image/png">
                               </div>
                            </div>
                         </div>

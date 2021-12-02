@@ -33,7 +33,7 @@ class CreateTenantsTable extends Migration
             $table->dateTime('lease_period_start_datetime');
             $table->dateTime('lease_period_end_datetime');
 
-            $table->decimal('security_deposit', 15, 3);
+            // $table->decimal('security_deposit', 15, 3)->nullable();
 
             $table->integer('rent_paid_status_code')->default(0);
 

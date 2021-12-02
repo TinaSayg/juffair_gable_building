@@ -22,6 +22,17 @@
         <link rel="stylesheet" href="{{ asset('public/assets/css/nice-select.css') }}">
         <link rel="stylesheet" href="{{ asset('public/assets/css/style.css') }}">
         <style>
+            @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+            
+            body
+            {
+                font-family: 'Open Sans', sans-serif;
+            }
+            
+            p
+            {
+                line-height:2.0 !important;
+            }
             @media (min-width: 1200px)
             {
                 .terms {
@@ -177,10 +188,10 @@
             }
         .testimonials
         {
-        padding: 40px 0;
-        background: #f1f1f1;
-        color: #434343;
-        text-align: center;
+            padding: 40px 0;
+            background: #fff !important;
+            color: #434343;
+            text-align: center;
         }
 
         .testimonial-inner
@@ -414,21 +425,21 @@
                 </div>
                 <div class="footer-bottom" style="border: none;">
                     <div class="row d-flex justify-content-between align-items-center">
-                        <div class="col-xl-9 col-lg-8">
-                            <div class="footer-copy-right">
-                                <p>Copyright &copy; 2021 All rights reserved by SayG SPC,<a
+                        <div class="col-xl-12 col-lg-12 col-12">
+                            <div class="footer-copy-right text-center">
+                                <p class="text-center">Copyright &copy; 2021 All rights reserved by SayG SPC,<a
                                         href="https://www.sayg.bh">www.sayg.bh </a></p>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-lg-4">
+                        <!--<div class="col-xl-3 col-lg-4">-->
                             <!-- Footer Social -->
-                            <div class="footer-social f-right">
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-twitter"></i></a>
-                                <a href="#"><i class="fas fa-globe"></i></a>
-                                <a href="#"><i class="fab fa-instagram"></i></a>
-                            </div>
-                        </div>
+                        <!--    <div class="footer-social f-right">-->
+                        <!--        <a href="#"><i class="fab fa-facebook-f"></i></a>-->
+                        <!--        <a href="#"><i class="fab fa-twitter"></i></a>-->
+                        <!--        <a href="#"><i class="fas fa-globe"></i></a>-->
+                        <!--        <a href="#"><i class="fab fa-instagram"></i></a>-->
+                        <!--    </div>-->
+                        <!--</div>-->
                     </div>
                 </div>
             </div>

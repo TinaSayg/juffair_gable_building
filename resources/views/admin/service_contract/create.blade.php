@@ -32,30 +32,59 @@
             <form method="POSt" action="{{ route('service_contract.store') }}" enctype="multipart/form-data">
               @csrf
                 <div class="row">
-                    <div class="form-group col-md-12">
-                        <label>Contract Description</label>
-                        <textarea name="contract_description" class="form-control" id="" cols="30" rows="10"></textarea>
+                    <div class="form-group col-md-4">
+                        <label>Title</label>
+                        <input type="text" name="title"  class="form-control">
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Contract Cost</label>
-                        <input type="text" name="contract_cost" id="contractCost" class="form-control">
+                        <label>Cost Per Period (BD)</label>
+                        <input type="text" name="cost_per_period" id="contractCost" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Frequency Of Pay</label>
-                        <input type="text" name="frequency_of_pay" id="frequencyOFPay" class="form-control">
+                        <label>Frequency of Pay</label>
+                        <select name="frequency_of_pay" id="" class="form-control">
+                            <option value="monthly">Monthly</option>
+                            <option value="quarterly">Quarterly</option>
+                            <option value="yearly">Yearly</option>
+                            <option value="bi-yearly">Bi-yearly</option>
+                            <option value="one-time-payment">One time Payment</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4 renew_date" >
+                        <label>Contract Start Date</label>
+                        <input type="text" name="contract_start_date" class="form-control datepicker1">
+                    </div>
+                    <div class="form-group col-md-4 renew_date" >
+                        <label>Contract End Date</label>
+                        <input type="text" name="contract_end_date" readonly class="form-control">
                     </div>
                     <div class="form-group col-md-4 attachdocument">
-                        <label>Upload Invoice</label>
-                        <input type="file" name="image" accept="application/pdf" class="form-control">
+                        <label>Upload Invoice/Receipt</label>
+                        <input type="file" name="image"  accept="application/pdf, image/jpeg" class="form-control">
                         
                     </div>
-                    </div>
-                    <div class="row">
                     <div class="form-group col-md-4">
-                        <label>Renew Date</label>
-                        <input type="text" name="renew_date" class="form-control datepicker">
+                        <label>Auto Renewal</label>
+                        <div class="form-control">
+                            <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="customRadioInline1" value="1" name="auto_renew"
+                                class="custom-control-input" checked>
+                            <label class="custom-control-label" for="customRadioInline1">Yes</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                            <input type="radio" id="customRadioInline2" value="0" name="auto_renew"
+                                class="custom-control-input">
+                            <label class="custom-control-label" for="customRadioInline2">No</label>
+                        </div>
+                        </div>
                     </div>
-                </div>
+                    
+                    <div class="form-group col-md-12">
+                        <label>Description</label>
+                        <textarea name="contract_description" class="form-control" id="" cols="30" rows="10"></textarea>
+                    </div>
+                    </div>
+                    
                
                 <button class="btn btn-primary mr-1" type="submit">Save</button>
                 </div>
@@ -65,6 +94,7 @@
 @stop
 @section('footer_scripts')
 <script src="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     (function($) {
             $.fn.inputFilter = function(inputFilter) {
@@ -93,4 +123,117 @@
     
         
     </script>
+    <script>
+        $("select[name=frequency_of_pay]").change(function(){
+            let frequency_of_pay = $("select[name=frequency_of_pay]").val()
+            let contract_start_date = moment($("input[name=contract_start_date]").val())
+
+            if(frequency_of_pay == 'monthly')
+            {
+                let contract_end_date = moment(contract_start_date).add(30, 'days');
+                
+                $("input[name=contract_end_date]").val(contract_end_date.format('YYYY-MM-DD'))
+            }
+
+            if(frequency_of_pay == 'quarterly')
+            {
+                let contract_end_date = moment(contract_start_date).add(90, 'days');
+                
+                $("input[name=contract_end_date]").val(contract_end_date.format('YYYY-MM-DD'))
+            }
+
+            if(frequency_of_pay == 'yearly')
+            {
+                let contract_end_date = moment(contract_start_date).add(365, 'days');
+                
+                $("input[name=contract_end_date]").val(contract_end_date.format('YYYY-MM-DD'))
+            }
+
+            if(frequency_of_pay == 'bi-yearly')
+            {
+                let contract_end_date = moment(contract_start_date).add(730, 'days');
+                
+                $("input[name=contract_end_date]").val(contract_end_date.format('YYYY-MM-DD'))
+            }
+
+            if(frequency_of_pay == 'one-time-payment')
+            {
+                $("input[name=contract_start_date]").parent().hide()
+                $("input[name=contract_end_date]").parent().hide()
+            }
+            else
+            {
+                $("input[name=contract_start_date]").parent().show()
+                $("input[name=contract_end_date]").parent().show()
+            }
+
+        })
+
+        $("input[name=contract_start_date]").change(function(){
+            let frequency_of_pay = $("select[name=frequency_of_pay]").val()
+            let contract_start_date = moment($("input[name=contract_start_date]").val())
+            
+            if(frequency_of_pay == 'monthly')
+            {
+                let contract_end_date = moment(contract_start_date).add(30, 'days');
+                
+                $("input[name=contract_end_date]").val(contract_end_date.format('YYYY-MM-DD'))
+            }
+
+            if(frequency_of_pay == 'quarterly')
+            {
+                let contract_end_date = moment(contract_start_date).add(90, 'days');
+                
+                $("input[name=contract_end_date]").val(contract_end_date.format('YYYY-MM-DD'))
+            }
+
+            if(frequency_of_pay == 'yearly')
+            {
+                let contract_end_date = moment(contract_start_date).add(365, 'days');
+                
+                $("input[name=contract_end_date]").val(contract_end_date.format('YYYY-MM-DD'))
+            }
+
+            if(frequency_of_pay == 'bi-yearly')
+            {
+                let contract_end_date = moment(contract_start_date).add(730, 'days');
+                
+                $("input[name=contract_end_date]").val(contract_end_date.format('YYYY-MM-DD'))
+            }
+
+            if(frequency_of_pay == 'one-time-payment')
+            {
+                $("input[name=contract_start_date]").parent().hide()
+                $("input[name=contract_end_date]").parent().hide()
+            }
+            
+        })
+
+
+    </script>
+    <script>
+        $(".datepicker1").daterangepicker({
+        locale: { format: "YYYY-MM-DD" },
+        singleDatePicker: true,
+        
+        });
+
+        $(".datepicker2").daterangepicker({
+        locale: { format: "YYYY-MM-DD" },
+        singleDatePicker: true,
+        
+        });
+    </script>
+    {{-- <script>
+        $('input[type=radio][name=auto_renew]').change(function() {
+           
+            if (this.value == '0') {
+                $('.renew_date').show()
+            }
+            else if (this.value == '1') {
+                $('.renew_date').hide()
+
+            }
+        });
+    </script> --}}
 @stop

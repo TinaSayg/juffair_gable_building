@@ -87,7 +87,7 @@ class TenantController extends Controller
             'tenant_cpr_no' => 'required|unique:tenants,tenant_cpr_no',
             'lease_period_start_datetime' => 'required',
             'lease_period_end_datetime' => 'required',
-            'security_deposit' => 'required',
+            // 'security_deposit' => 'required',
             'emergancy_contact_number' => 'required',
             'emergancy_email' => 'required',
             'tenant_type_code' => 'required',
@@ -111,7 +111,7 @@ class TenantController extends Controller
         $tenant->tenant_cpr_no = $request['tenant_cpr_no'];
         $tenant->lease_period_start_datetime = $request['lease_period_start_datetime'];
         $tenant->lease_period_end_datetime = $request['lease_period_end_datetime'];
-        $tenant->security_deposit = $request['security_deposit'];
+        // $tenant->security_deposit = $request['security_deposit'];
         $tenant->emergancy_contact_number = $request['emergancy_contact_number'];
         $tenant->emergancy_email = $request['emergancy_email'];
         $tenant->tenant_date_of_birth = $request['tenant_date_of_birth'];
@@ -258,7 +258,7 @@ class TenantController extends Controller
             'tenant_cpr_no' => 'required|unique:tenants,tenant_cpr_no,'.$id,
             'lease_period_start_datetime' => 'required',
             'lease_period_end_datetime' => 'required',
-            'security_deposit' => 'required',
+            // 'security_deposit' => 'required',
             'emergancy_contact_number' => 'required',
             'emergancy_email' => 'required|email',
             'tenant_type_code' => 'required',
@@ -278,7 +278,7 @@ class TenantController extends Controller
         $tenant->tenant_cpr_no = $request['tenant_cpr_no'];
         $tenant->lease_period_start_datetime = $request['lease_period_start_datetime'];
         $tenant->lease_period_end_datetime = $request['lease_period_end_datetime'];
-        $tenant->security_deposit = $request['security_deposit'];
+        // $tenant->security_deposit = $request['security_deposit'];
         $tenant->emergancy_contact_number = $request['emergancy_contact_number'];
         $tenant->emergancy_email = $request['emergancy_email'];
         $tenant->tenant_date_of_birth = $request['tenant_date_of_birth'];

@@ -5,7 +5,7 @@
 @stop
 {{-- page level styles --}}
 @section('header_styles')
-
+<link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.css') }}">
 <style>
    textarea
    {
@@ -46,8 +46,8 @@
                         <input type="text" maxLength="20" name="tenant_last_name" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
-                        <label>Contact No.</label>
-                        <input type="text" maxLength="12" name="tenant_mobile_phone" id="contactNo" class="form-control">
+                        <label>Contact No (Without Country Code)</label>
+                        <input type="text" maxLength="8" name="tenant_mobile_phone" id="contactNo" class="form-control">
                     </div>
                     <div class="form-group col-md-4">
                         <label>Tenant Email</label>
@@ -56,11 +56,11 @@
 
                     <div class="form-group col-md-4">
                         <label>Date of birth</label>
-                        <input type="date" name="tenant_date_of_birth" class="form-control">
+                        <input type="text" name="tenant_date_of_birth" class="form-control datepicker">
                     </div>
                     <div class="form-group col-md-4">
                         <label>Image</label>
-                        <input type="file" name="tenant_image" class="form-control">
+                        <input type="file" name="tenant_image" accept="image/png,image/jpeg" class="form-control">
                     </div>
                     
                     <div class="form-group col-md-4">
@@ -146,10 +146,10 @@
                         <label>Select Apartment</label>
                         <select class="form-control" name="unit_id" id="unitSelect"></select>
                     </div>
-                    <div class="form-group col-md-4" >
+                    {{-- <div class="form-group col-md-4" >
                         <label>Security Deposit (BD)</label>
                         <input type="text" name="security_deposit" class="form-control">
-                    </div>
+                    </div> --}}
                 </div>
                 <button class="btn btn-primary mr-1" type="submit">Save</button>
             </div>
@@ -159,6 +159,8 @@
 </section>    
 @stop
 @section('footer_scripts')
+<script src="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+
 <script>
 (function($) {
         $.fn.inputFilter = function(inputFilter) {

@@ -15,11 +15,16 @@ class CreateServiceContractsTable extends Migration
     {
         Schema::create('service_contracts', function (Blueprint $table) {
             $table->id();
-            $table->longText('description');
+            $table->Text('Title');
+            $table->longText('description')->nullable();
             $table->decimal('amount', 15, 3);
-            $table->integer('frequency_of_pay');
-            $table->string('image');
-            $table->dateTime('contract_renew_date');
+            $table->string('frequency_of_pay');
+            $table->string('image')->nullable();
+            $table->integer('auto_renewal');
+            $table->dateTime('contract_start_date')->nullable();
+            $table->dateTime('contract_end_date')->nullable();
+           
+            $table->integer('service_contract_status_code');
             
             $table->timestamps();
         });

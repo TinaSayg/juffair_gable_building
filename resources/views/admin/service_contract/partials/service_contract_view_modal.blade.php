@@ -1,9 +1,13 @@
 <tr>
+    <td>Title</td>
+    <td>{{ isset($service_contract->Title) ? $service_contract->Title: '' }}</td>
+</tr>
+<tr>
     <td>Description</td>
     <td>{{ isset($service_contract->description) ? $service_contract->description: '' }}</td>
 </tr>
 <tr>
-    <td>Cost</td>
+    <td>Cost Per Period</td>
     <td>{{ isset($service_contract->amount) ? $service_contract->amount: '' }} BD</td>
 </tr>
 <tr>
@@ -15,8 +19,24 @@
     <td><a href="{{ url('public/admin/assets/img/servicecontract') }}/{{ isset($service_contract->image)? $service_contract->image : '' }}" target="blank">view</a></td>
 </tr>
 <tr>
-    <td>Renew Date</td>
-    <td>{{ isset($service_contract->contract_renew_date) ? \Carbon\Carbon::parse($service_contract->contract_renew_date)->toFormattedDateString() : '' }}</td>
+    <td>Contract Start Date</td>
+    <td>{{ isset($service_contract->contract_start_date) ? \Carbon\Carbon::parse($service_contract->contract_start_date)->toFormattedDateString() : '' }}</td>
+</tr>
+<tr>
+    <td>Contract Close Date</td>
+    <td>{{ isset($service_contract->contract_end_date) ? \Carbon\Carbon::parse($service_contract->contract_end_date)->toFormattedDateString() : '' }}</td>
+</tr>
+<tr>
+    <td>Auto Renewal</td>
+    <td>
+        <span class="badge btn-warning">
+            @if(isset($service_contract) && $service_contract->auto_renewal == '1')
+            Yes
+            @else
+            No
+            @endif
+        </span>
+    </td>
 </tr>
 
 

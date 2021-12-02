@@ -155,9 +155,9 @@ Juffair Gable
                                     <div class="dropdown">
                                         <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                                         <div class="dropdown-menu">
-                                          <a href="{{ route('units.show',$unit->id) }}" class="dropdown-item has-icon" ><i class="fas fa-eye"></i> View</a>
-                                          <div class="dropdown-divider"></div>
-                                          @if(Auth::user()->userType == 'Admin')
+                                            <a href="{{ route('units.show',$unit->id) }}" class="dropdown-item has-icon" ><i class="fas fa-eye"></i> View</a>
+                                        @if(Auth::user()->userType == 'Admin')
+                                            <div class="dropdown-divider"></div>
                                           <a href="{{ route('units.edit',$unit->id) }}" class="dropdown-item has-icon"><i class="fa fa-pencil-alt"></i> Edit</a>
                                           <a href="#" class="dropdown-item has-icon text-danger" onclick="form_alert('unit-{{ $unit->id }}','Want to delete this apartment')"><i class="far fa-trash-alt"></i>
                                             Delete</a>

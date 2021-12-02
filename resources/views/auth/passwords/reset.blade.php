@@ -29,14 +29,14 @@
 </head>
 
 <body class="login-bg">
-  <div>
-        <aside id="sidebar-wrapper">
-          <div class="sidebar-brand">
-            <a href="index.html"><h2> <img alt="image" src="{{asset('public/admin/assets')}}/img/logo.png" class="header-logo" /> <span
-                class="logo-name">AMS</h2></span>
-            </a>
-          </div>
-        </div>
+  {{-- <div>
+  <aside id="sidebar-wrapper">
+    <div class="sidebar-brand">
+      <a href="index.html"><h2> <img alt="image" src="{{asset('public/admin/assets')}}/img/logo.png" class="header-logo" /> <span
+          class="logo-name">AMS</h2></span>
+      </a>
+    </div>
+  </div> --}}
 
   <div class="loader"></div>
   <div id="app">

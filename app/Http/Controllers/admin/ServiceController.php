@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\ServiceContract;
 use App\Http\Controllers\Controller;
@@ -40,14 +41,23 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        
+       
         $request->validate([
-            'contract_description' => 'required',
-            'contract_cost' =>  'required' ,
+            'title' => 'required',
+            'cost_per_period' =>  'required' ,
             'frequency_of_pay' => 'required',
-            'renew_date' => 'required',  
-            'image' => 'required|max:20480|mimes:pdf',
+            'auto_renew' => 'required',
+            'image' => 'required',
         ]);
+
+        if($request['frequency_of_pay'] != 'one-time-payment')
+        {
+            $request->validate([
+            'contract_start_date' => 'required',
+            'contract_end_date' => 'required', 
+            ]);
+        }
+
         $filename ='';
         $store = new ServiceContract();
        
@@ -58,18 +68,27 @@ class ServiceController extends Controller
             //print_r(public_path('admin/assets/img/servicecontract/').$file_name); exit;
             $request->file('image')->move(public_path('admin/assets/img/servicecontract/'), $file_name);
             $filename= $file_name;  
-            $store->image = $filename;
         }
 
+        $store->title = $request->input("title");
         $store->description = $request->input("contract_description");
-        $store->amount = $request->input("contract_cost");
         $store->frequency_of_pay = $request->input("frequency_of_pay");
-        $store->contract_renew_date = $request->input("renew_date");
-        $store->image = $filename;
+        $store->auto_renewal = $request->input("auto_renew");
+        $store->amount = $request->input("cost_per_period");
 
+        if($request['frequency_of_pay'] != 'one-time-payment')
+        {
+            $store->contract_start_date = $request->input('contract_start_date');
+            $store->contract_end_date = $request->input('contract_end_date');
+        }
+        
+        
+        $store->image = $filename;
+        $store->service_contract_status_code = 1; // opened
+        // dd($store);
         if($store->save())
         {
-            Toastr::success('This service contract details added successfully.');
+            Toastr::success('This service contract added successfully.');
             return  redirect()->route('service_contract.list');
         }
         else
@@ -77,6 +96,7 @@ class ServiceController extends Controller
             Toastr::success('Something went wrong.');
             return back();
         }
+       
     }
 
     /**
@@ -119,38 +139,56 @@ class ServiceController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'contract_description' => 'required',
-            'contract_cost' =>  'required' ,
+            'title' => 'required',
+            'cost_per_period' =>  'required' ,
             'frequency_of_pay' => 'required',
-            'renew_date' => 'required',
-            'image' => 'required|max:20480|mimes:pdf',
-              
+            'auto_renew' => 'required',
         ]);
 
-        $update = ServiceContract::find($id);
-        $filename = $update->image;
+        if($request['frequency_of_pay'] != 'one-time-payment')
+        {
+            $request->validate([
+            'contract_start_date' => 'required',
+            'contract_end_date' => 'required', 
+            ]);
+        }
+
+        $filename ='';
+        $store = ServiceContract::find($id);
        
         if($request->file('image'))
         {
-            unlink(public_path('admin/assets/img/servicecontract/'). $update->image);
+            unlink(public_path('admin/assets/img/servicecontract/'). $store->image);
             
             $file_name = time().'_'.trim($request->file('image')->getClientOriginalName());
             //print_r(public_path('admin/assets/img/servicecontract/').$file_name); exit;
             $request->file('image')->move(public_path('admin/assets/img/servicecontract/'), $file_name);
             $filename= $file_name;  
-            $update->image = $filename;
+        }
+        else
+        {
+            $filename = $store->image;
         }
 
-        
-        $update->description = $request->input("contract_description");
-        $update->amount = $request->input("contract_cost");
-        $update->frequency_of_pay = $request->input("frequency_of_pay");
-        $update->contract_renew_date = $request->input("renew_date");
-        $update->image = $file_name;
+        $store->title = $request->input("title");
+        $store->description = $request->input("contract_description");
+        $store->frequency_of_pay = $request->input("frequency_of_pay");
+        $store->auto_renewal = $request->input("auto_renew");
+        $store->amount = $request->input("cost_per_period");
 
-        if($update->save())
+        if($request['frequency_of_pay'] != 'one-time-payment')
         {
-            Toastr::success('This service contract details updated successfully.');
+            $store->contract_start_date = $request->input('contract_start_date');
+            $store->contract_end_date = $request->input('contract_end_date');
+        }
+        
+        
+        $store->image = $filename;
+        $store->service_contract_status_code = 1; // opened
+        // dd($store);
+        if($store->save())
+        {
+            Toastr::success('This service contract updated successfully.');
             return  redirect()->route('service_contract.list');
         }
         else
