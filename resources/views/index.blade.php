@@ -339,14 +339,6 @@
                 </a>
             </div>
         </div>
-
-
-
-
-
-
-
-
         <!--Hero Area End-->
         <!-- Popular Locations Start -->
         {{-- <div class="popular-location section-padding30" id="gallery">
@@ -925,8 +917,7 @@
                                         <li><a href="https://goo.gl/maps/53QYgcbP3RuJm8em6" class="list"  target="_blank">Juffair Beauty Center</a></li>
                                         <li><a href="https://goo.gl/maps/k7hifWi79P5559ea9" class="list"  target="_blank">Abstract Beauty Center</li>
                                         <li><a href="https://g.page/juffair-square?share" class="list"  target="_blank">Aya Palace Salon</li>
-                                        <li><a href="https://goo.gl/maps/pPWVuNzamYRHPMpZ7" class="list"  target="_blank">Al Shabab Gents Salon</li>
-
+                                      
                                     </ul>
                                 </div>
                             </div>

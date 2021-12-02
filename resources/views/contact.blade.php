@@ -466,18 +466,18 @@
               <div class="border mb-5"></div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-6 col-12 ">
+                        <div class="col-lg-6 col-12 " style="padding-bottom:35px;">
                             <img src="{{ asset('public/assets/img/gallery/001.svg') }}" class="building" height="400" alt="">
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 col-12">
                             <div class="card card2" id="card1">
                                 <div class="card-title">
                                     <h1 class="mb-3" style="color:hsl(25.3, 80.5%, 65.9%); ">Contact Details</h1>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-3 col-4 text-left">Address:</div>
-                                    <div class="col-lg-8 col-8 pl-0  text-left">Juffair Gables,Building No:1234,Way234,block789,
-                                        Kingdom Of Bahrain.</div>
+                                    <div class="col-lg-8 col-8 pl-0  text-left">Juffair Gables,Building 1092,Road 4022,
+                                        Block 340,Juffair,Kingdom Of Bahrain.</div>
                                 </div>
                                 <div class="row mt-3">
                                     <div class="col-lg-3 col-4 text-left">Phone:</div>
