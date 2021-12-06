@@ -63,6 +63,10 @@
         <li class="dropdown {!! (Request::is('request/request/*') ? "active" : "") !!}">
           <a href="{{ route('request.list') }}" class="nav-link"><i class="fas fa-user-edit"></i><span>Report Maintenance Request</span></a>
         </li>
+        <li class="dropdown {!! (Request::is('send/message*') ? "active" : "") !!}">
+          <a href="{{ route('send_message') }}" class="nav-link"><i class="fas fa-envelope"></i><span>Send Message</span></a>
+        </li>
+        
         @endif
 
        

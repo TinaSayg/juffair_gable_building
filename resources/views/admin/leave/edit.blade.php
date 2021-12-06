@@ -60,8 +60,10 @@
                            <textarea name="leave_reason" class="form-control">{{ isset($employeeleave->leave_reason) ? $employeeleave->leave_reason : ''}}</textarea>
                         </div>
                      </div>
-                     <button  class="btn btn-primary mr-1" type="submit">update</a>
-                     </div>
+                     <button  class="btn btn-primary mr-1" type="submit">update</button>
+                     <a href="{{ url()->previous() }}"  class="btn btn-primary ml-2">Cancel</a>
+
+                  </div>
                   </div>
                </div>
             </div>

@@ -67,10 +67,13 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 Route::group(['middleware' => ['auth:web']], function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard/task/closed/{id}', [TaskController::class, 'task_closed'])->name('dashboard.task.closed');
+    
     Route::get('/fetch_floors/{floor_type_code}', [PagesController::class, 'fetch_floors'])->name('floor_type.fetch_floors');
     Route::get('/fetch_all_units_and_floors_list/{floor_type_code}', [PagesController::class, 'fetch_all_units_and_floors_list'])->name('floor_type.fetch_all_units_and_floors_list');
     Route::get('/fetch_units/{floor_id}', [PagesController::class, 'fetch_units'])->name('floor.fetch_units');
     Route::get('/fetch_all_units/{floor_id}', [PagesController::class, 'fetch_all_units'])->name('floor_type.fetch_all_units');
+    Route::get('/send/message', [PagesController::class, 'send_message'])->name('send_message');
 
 
     //Floor routes
@@ -353,8 +356,6 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::get('/leave/show/{id}', [LeavesController::class, 'show'])->name('show');
     Route::post('/leave/get_approved_leave_info', [LeavesController::class, 'get_approved_leave_info'])->name('get_approved_leave_info');
     Route::post('/leave/get_disapproved_leave_info', [LeavesController::class, 'get_disapproved_leave_info'])->name('get_disapproved_leave_info');
-
-
    });
    //Testimonials routes
    Route::group(['prefix' => 'testimonials', 'as' => 'testimonials.'], function () {
@@ -367,6 +368,9 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::get('/testimonials/show/{id}', [TestimonialController::class, 'show'])->name('show');
 
    });
+
+   Route::post('/send_email', [PagesController::class, 'send_email'])->name('email.send');
+
 
     //Rent routes
     Route::group(['prefix' => 'rent', 'as' => 'rent.'], function () {

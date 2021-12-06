@@ -163,4 +163,14 @@ class PagesController extends Controller
         return view('/testimonials' , compact('testimonial'));
      
     }
+
+    public function send_message(Request $request)
+    {
+        return view('admin.messages.index');
+    }
+
+    public function send_email(Request $request)
+    {
+        dd($request->all());
+    }
 }

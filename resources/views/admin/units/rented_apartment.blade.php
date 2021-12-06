@@ -99,8 +99,7 @@ Juffair Gable
                         <tr>
                             <th>Floor</th>
                             <th>Apartment No.</th>
-                            <th>Apartment Rent</th>
-                            <th>Apartment Type</th>
+                            <th>Renter Name</th>
                             <th>No. of bedrooms</th>
                             <th>Apartment Area</th>
                             <th>Status</th>
@@ -119,8 +118,7 @@ Juffair Gable
                             <tr @if($user_type == 'employee') style="cursor: pointer" class='clickable-row' data-href='{{route('units.rented_apartment.show', $unit->id)}}' @endif>
                                 <td>{{ isset($unit->floor) ? $unit->floor->number : '' }}</td>
                                 <td>{{ $unit->unit_number }}</td>
-                                <td>{{ $unit->unit_rent }} BD</td>
-                                <td>{{ isset($unit->floor->floor_type) ? $unit->floor->floor_type->floor_type_name : '' }}</td>
+                                <td>{{ $unit->tenant ? $unit->tenant->tenant_first_name . ' '. $unit->tenant->tenant_last_name : '' }}</td>
                                 <td>{{ $unit->no_of_bed_rooms }}</td>
                                 <td>{{ $unit->unit_area }} m<sup>2</sup></td>
                                 <td>

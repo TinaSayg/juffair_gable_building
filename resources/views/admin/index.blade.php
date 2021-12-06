@@ -197,7 +197,6 @@ Juffair Gable
                       <th>Date</th>
                       <th>Status</th>
                       <th>Action</th>
-                     
                     </tr>
                   </thead>
                   <tbody>
@@ -276,8 +275,10 @@ Juffair Gable
                               <a href="#" data-request_id="{{ $item->id }}" class="dropdown-item has-icon under-review" ><i class="
                                 fas fa-pen-square" style="color:green;"></i>Under Review</a>
                               @endif --}}
-                            <div class="dropdown-divider"></div>
-                            <a href="#" data-request_id="{{ $item->id }}" data-task-assignee_id="{{ $item->user_id }}" class="dropdown-item has-icon assign_task"><i class="fas fa-user-shield"></i>Assign Task</a>
+                              <a href="#" data-request_id="{{ $item->id }}" data-task-assignee_id="{{ $item->user_id }}" class="dropdown-item has-icon assign_task"><i class="fas fa-user-shield"></i>Assign Task</a>
+                              <div class="dropdown-divider"></div>
+                              <a href="{{ route('dashboard.task.closed',$item->id) }}" data-task_id="{{  $item->id }}" class="dropdown-item has-icon" style="color:green"><i class="
+                                fas fa-check-circle"></i> Close</a>
                             @endif
                           </div>
                         </div>

@@ -58,10 +58,10 @@
                         </div>
                     </div>
                 </div>
-               
-                
                 <button class="btn btn-primary mr-1" type="submit">Update</button>
-                </div>
+                <a href="{{ url()->previous() }}"  class="btn btn-primary ml-2">Cancel</a>
+                
+            </div>
             </from>
           </div>
 </section>    

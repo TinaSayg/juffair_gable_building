@@ -50,7 +50,8 @@
                                     <textarea name="leave_reason" class="form-control"></textarea>
                                 </div>
                         </div>
-                        <button  class="btn btn-primary mr-1" type="submit">Submit</a>
+                        <button  class="btn btn-primary mr-1" type="submit">Submit</button>
+                        <a href="{{ url()->previous() }}"  class="btn btn-primary ml-2">Cancel</a>
                     </div>
                 </form>
              </div>

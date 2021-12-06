@@ -277,6 +277,7 @@
                   <tr>
                     <th>#</th>
                     <th>Title</th>
+                    <th>Location</th>
                     <th>Date Assigned</th>
                     <th>Deadline Date</th>
                     <th>Status</th>
@@ -291,6 +292,36 @@
                   <tr class="activeTask" style="cursor: pointer">
                     <td  data-href='{{ route('tasks.show', $item->id) }}'>{{ $key+1 }}</td>
                     <td  data-href='{{ route('tasks.show', $item->id) }}'>{{ $item->title }}</td>
+                    <td data-href='{{ route('tasks.show', $item->id) }}'>
+                      @if($item->location_id == 1)
+                        @php
+                          $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                          $apartment_number = \App\Models\Unit::where('id', $item->unit_id)->first()->unit_number;
+                        @endphp
+                        Apartment {{ $apartment_number }}
+                      @endif
+
+                      @if($item->location_id == 2)
+                        @php
+                          $location_area = \App\Models\CommonArea::where('id', $item->common_area_id)->first()->area_name;
+                        @endphp
+                        {{ $location_area }}
+                      @endif
+
+                      @if($item->location_id == 3)
+                      @php
+                        $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                      @endphp
+                      Floor {{ $floor_number }}
+                      @endif
+
+                      @if($item->location_id == 4)
+                        @php
+                          $location_area = \App\Models\ServiceArea::where('id', $item->service_area_id)->first()->service_area_name;
+                        @endphp
+                        {{ $location_area }} Area
+                      @endif
+                    </td>
                     <td  data-href='{{ route('tasks.show', $item->id) }}'>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ \Carbon\Carbon::parse($item->assign_time)->format('g:i A') }}</td>
                     <td  data-href='{{ route('tasks.show', $item->id) }}'>{{ \Carbon\Carbon::parse($item->deadling_date)->toFormattedDateString() }} {{ \Carbon\Carbon::parse($item->deadline_time)->format('g:i A') }}</td>
                     <td>
@@ -380,7 +411,7 @@
                             $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
                             $apartment_number = \App\Models\Unit::where('id', $item->unit_id)->first()->unit_number;
                           @endphp
-                          Floor {{ $floor_number }}, Apartment {{ $apartment_number }}
+                          Apartment {{ $apartment_number }}
                         @endif
 
                         @if($item->location_id == 2)
@@ -609,17 +640,13 @@
   })
 
   $("#table-3").dataTable({
-    "columnDefs": [
-      { "sortable": false, "targets": [0, 2, 3] }
-    ],
+    
     order: [[0, "asc"]], //column indexes is zero based
 
   });
 
   $("#table-4").dataTable({
-    "columnDefs": [
-      { "sortable": false, "targets": [0, 2, 3] }
-    ],
+    
     order: [[0, "asc"]], //column indexes is zero based
 
   });

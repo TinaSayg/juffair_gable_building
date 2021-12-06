@@ -233,32 +233,72 @@ class TaskController extends Controller
         }
     }
 
-    public function task_closed($id)
+    public function task_closed(Request $request,$id)
     {
-        $task = Task::find($id);
+        if($request->is('dashboard/task/closed/*')){
+            $maintenance_request = MaintenanceRequest::find($id);
 
-        $task->task_status_code = 5;
+            $store = new Task();
+            $store->title =  $maintenance_request->title;
+            $store->description =  $maintenance_request->description;
+            $store->location_id =  $maintenance_request->location_id;
+            $store->floor_id =  $maintenance_request->floor_id;
+            $store->unit_id =  $maintenance_request->unit_id;
+            $store->common_area_id =  $maintenance_request->common_area_id;
+            $store->service_area_id =  $maintenance_request->service_area_id;
 
-        if($task->save())
-        {
-            if($task->task_status_code == 5)
+            $store->task_status_code = 5;
+
+            if($store->save())
             {
-                if($task->maintenance_request_id)
-                {
-                    $maintenance_request = MaintenanceRequest::find($task->maintenance_request_id);
-                    $maintenance_request->maintenance_request_status_code = 4;
-                    $maintenance_request->save();
-                }
-            }
-            Toastr::success('This Task is closed.');
-            return redirect()->route('tasks.list');
+                $maintenance_request = MaintenanceRequest::find($id);
+                $maintenance_request->maintenance_request_status_code = 4;
+                $maintenance_request->save();
 
+                Toastr::success('This Task is closed.');
+                return redirect()->route('tasks.list');
+            }
+
+            else
+            {
+                Toastr::error('Something went wrong.');
+                return redirect()->back();
+            }
+
+
+            
+            dd($maintenance_request);
         }
         else
         {
-            Toastr::success('Something went wrong.');
-            return redirect()->route('tasks.list');
+
+            $task = Task::find($id);
+    
+            $task->task_status_code = 5;
+    
+            if($task->save())
+            {
+                if($task->task_status_code == 5)
+                {
+                    if($task->maintenance_request_id)
+                    {
+                        $maintenance_request = MaintenanceRequest::find($task->maintenance_request_id);
+                        $maintenance_request->maintenance_request_status_code = 4;
+                        $maintenance_request->save();
+                    }
+                }
+
+                Toastr::success('This Task is closed.');
+                return redirect()->route('tasks.list');
+    
+            }
+            else
+            {
+                Toastr::error('Something went wrong.');
+                return redirect()->route('tasks.list');
+            }
         }
+        
 
     }
 
