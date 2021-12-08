@@ -6,10 +6,22 @@
 {{-- page level styles --}}
 @section('header_styles')
 <link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.css') }}">
+<link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
+
 <style>
    textarea
    {
        height: 75px !important;
+   }
+
+   .bootstrap-tagsinput
+   {
+       height: auto;
+       width: 100% !important;
+   }
+   .bootstrap-tagsinput input
+   {
+       margin-top: 5px !important;
    }
 </style>
 @stop
@@ -127,7 +139,7 @@
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="form-group col-md-4">
+                    {{-- <div class="form-group col-md-4">
                         <label for="">Floor Type</label>
                         <select class="form-control" name="floor_type_code" onchange="getFloors(this.value)" id="floor_type_code">
                           <option value="0" selected disabled>---Select---</option>
@@ -135,23 +147,33 @@
                               <option value="{{ $floor_type->floor_type_code }}">{{ $floor_type->floor_type_name }}</option>
                           @endforeach
                         </select>
-                    </div>
+                    </div> --}}
           
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label for="">Select Floor</label>
-                        <select class="form-control" name="floor_id" onchange="getUnits(this.value)" id="floorSelect"></select>
+                        <select class="form-control" name="floor_id" style="height: 38px;" onchange="getUnits(this.value)" id="floorSelect">
+                            <option value="0" selected disabled>---Select---</option>
+                            @foreach ($floor_list as $floor)
+                                <option value="{{ $floor->id }}">{{ $floor->number }}</option>
+                            @endforeach
+                        </select>
     
                     </div>
-                    <div class="form-group col-md-4" >
+                    <div class="form-group col-md-3" >
                         <label>Select Apartment</label>
-                        <select class="form-control" name="unit_id" id="unitSelect"></select>
+                        <select class="form-control" name="unit_id" id="unitSelect" style="height: 38px;"></select>
                     </div>
-                    {{-- <div class="form-group col-md-4" >
-                        <label>Security Deposit (BD)</label>
-                        <input type="text" name="security_deposit" class="form-control">
-                    </div> --}}
+                    <div class="form-group col-md-6">
+                        <label style="display: block;">Add Facilities</label>
+                        <input type="text" name="all_facilities" class="form-control inputtags">
+                      </div>
+                    <div class="form-group col-md-4" >
+                        <label>Total Rent</label>
+                        <input type="text" name="total_rent" class="form-control" style="height: 38px;">
+                    </div>
                 </div>
                 <button class="btn btn-primary mr-1" type="submit">Save</button>
+                <a href="{{ url()->previous() }}" class="btn btn-primary mr-1">Cancel</a>
             </div>
         </form>
         </div>
@@ -160,7 +182,10 @@
 @stop
 @section('footer_scripts')
 <script src="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
-
+<script src="{{asset('public/admin/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
+<script>
+    $(".inputtags").tagsinput('items');
+</script>
 <script>
 (function($) {
         $.fn.inputFilter = function(inputFilter) {
@@ -190,6 +215,16 @@
     return /^-?\d*$/.test(value); });
 
     
+</script>
+<script>
+    $(document).ready(function() {
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+        }
+    });
+    });
 </script>
 <script>
     // function getFloors(id) {

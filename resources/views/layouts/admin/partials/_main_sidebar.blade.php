@@ -40,9 +40,13 @@
             <a href="{{ route('service_contract.list') }}" class="nav-link"><i class="
               fas fa-plus-circle"></i><span>Add a New Service Contract</span></a>
           </li>
+
+          <li class="dropdown {!! (Request::is('rent/*') ? "active" : "") !!}">
+            <a href="{{ route('rent.list') }}" class="nav-link"><i class="fas fa-money-check"></i><span>Update Rent Collection</span></a>
+          </li>
           
-          <li class="dropdown">
-            <a href="/reports" class="nav-link"><i class="
+          <li class="dropdown {!! (Request::is('reports*') ? "active" : "") !!}">
+            <a href="{{ route('reports.list') }}" class="nav-link"><i class="
               fas fa-sticky-note"></i><span>Reports</span></a>
           </li>
         @endif
@@ -170,6 +174,11 @@
         @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
         <li class="dropdown {!! (Request::is('approveleave/*') ? "active" : "") !!} {!! (Request::is('leave/*') ? "active" : "") !!}">
           <a href="{{ route('approveleave.list') }}" class="nav-link"><i class="fas fa-users"></i><span>Leave Request</span></a>
+        </li>
+        @endif  
+        @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')
+        <li class="dropdown {!! (Request::is('messages/*') ? "active" : "") !!} {!! (Request::is('leave/*') ? "active" : "") !!}">
+          <a href="{{ route('messages.list') }}" class="nav-link"><i class="fas fa-envelope"></i><span>Messages</span></a>
         </li>
         @endif  
         @if(Auth::user()->userType == 'general-manager' || Auth::user()->userType == 'Admin')

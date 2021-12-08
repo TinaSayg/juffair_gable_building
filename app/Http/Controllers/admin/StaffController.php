@@ -442,4 +442,22 @@ class StaffController extends Controller
         }
 
     }
+
+    public function staff_passed($id)
+    {
+        $user = User::find($id);
+
+        $user->is_passed = 1;
+
+        if($user->save())
+        {
+            Toastr::success('This employee is passed.');
+            return back();
+        }
+        else
+        {
+            Toastr::error('Something went wrong.');
+            return back();
+        }
+    }
 }

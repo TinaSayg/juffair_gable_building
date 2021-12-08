@@ -84,9 +84,8 @@
                         <textarea name="contract_description"  class="form-control" id="" cols="30" rows="10">{{ isset($service_contract->description) ? $service_contract->description: '' }}</textarea>
                     </div>
                     </div>
-                    
-               
-                <button class="btn btn-primary mr-1" type="submit">Save</button>
+                    <button class="btn btn-primary mr-1" type="submit">Save</button>
+                    <a href="{{ url()->previous() }}" class="btn btn-primary mr-1">Cancel</a> 
                 </div>
             </from>
           </div>

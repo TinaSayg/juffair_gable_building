@@ -70,7 +70,9 @@
               </div>
             </div>
           </div>
-        
+          <div class="text-center">
+            <a href="{{ url()->previous() }}" class="btn btn-primary">Back</a>
+          </div>
         </div>
         <div class="col-12 col-md-12 col-lg-8">
           <div class="card">
@@ -105,19 +107,31 @@
                       <br>
                       <p class="text-muted">{{isset($tenant->unit) ? $tenant->unit->unit_number : '' }}</p>
                     </div>
-                    
+                    <div class="col-md-3 col-6">
+                      <strong>Total Rent</strong>
+                      <br>
+                      <p class="text-muted">{{isset($tenant->tenant_rent) ? $tenant->tenant_rent.' BHD' : '' }}</p>
+                    </div>
                   </div>
                    
+                  <div class="section-title">Facilities</div>
+                  <ul>
+                    @foreach($tenant->tenant_facilities_list as $facilities)
+                      <li>{{ $facilities }}</li>
+                      </li>
+                    @endforeach
+                  </ul>
                   <div class="section-title">Contract Details</div>
                   <ul>
                     <li>Lease Period Start Date: from {{ isset($tenant->lease_period_start_datetime) ? \Carbon\Carbon::parse($tenant->lease_period_start_datetime)->toFormattedDateString() : '' }} to {{ isset($tenant->lease_period_end_datetime) ? \Carbon\Carbon::parse($tenant->lease_period_end_datetime)->toFormattedDateString() : '' }}</li>
+                    </li>
+                  </ul>
+                  <div class="section-title">Address</div>
+                  <ul>
+                    <li>Present Address:{{ isset($tenant->tenant_present_address )? $tenant->tenant_present_address  : '' }}</li>
+                    <li>Permenant Address:{{ isset($tenant->tenant_permanent_address )? $tenant->tenant_permanent_address  : '' }}
                     </li></ul>
-                     <div class="section-title">Address</div>
-                    <ul>
-                      <li>Present Address:{{ isset($tenant->tenant_present_address )? $tenant->tenant_present_address  : '' }}</li>
-                      <li>Permenant Address:{{ isset($tenant->tenant_permanent_address )? $tenant->tenant_permanent_address  : '' }}
-                      </li></ul>
-                    </ul>
+                  </ul>
                     <div class="section-title">Documents</div>
                     <ul>
                       <li><a href="{{ url('public/admin/assets/img/documents').'/'. $tenant->tenant_passport_copy }}" target="blank">Passport Copy</a></li>

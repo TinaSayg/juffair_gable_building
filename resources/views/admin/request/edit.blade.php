@@ -140,5 +140,29 @@
             }
         });
     }
+</script>
+<script>
+    // function getFloors(id) {
+    //     $.get({
+    //         url: '{{route('tenants.fetch_floors', '')}}' + "/"+ id,
+    //         dataType: 'json',
+    //         success: function (data) {
+    //             console.log(data.options)
+    //             $('#floorSelect').empty().append(data.options)
+    //             $('#unitSelect').empty().append(data.options1)
+    //            }
+    //     });
+    // }
+    function getUnits(id) {
+       
+        $.get({
+            url: '{{route('floor_type.fetch_all_units','')}}' + "/"+ id,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.options)
+                $('#unitSelect').empty().append(data.options)
+               }
+        });
+    }
 </script> 
 @stop

@@ -176,7 +176,7 @@
                             $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
                             $apartment_number = \App\Models\Unit::where('id', $item->unit_id)->first()->unit_number;
                           @endphp
-                          Floor {{ $floor_number }}, Apartment {{ $apartment_number }}
+                          Apartment {{ $apartment_number }}
                         @endif
 
                         @if($item->location_id == 2)
@@ -533,6 +533,20 @@
                   </select>
                 </div>
               </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group">
+                  <div class="form-check">
+                    <input class="form-check-input" name="now_cb" checked type="checkbox">
+                    <label class="form-check-label" style="margin-top:1px !important">
+                      Now
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row assign_schedule" style="display: none">
               <div class="col-6">
                 <div class="form-group">
                   <label>Assign Date</label>
@@ -552,10 +566,12 @@
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="row">
               <div class="col-6">
                 <div class="form-group">
                   <label>Deadline Date</label>
-                  <input type="text" name="deadline_date" class="form-control datepicker">
+                  <input type="text" name="deadline_date" class="form-control datepicker1">
                 </div>
               </div>
               <div class="col-6">
@@ -724,5 +740,21 @@
 
    
   })
+
+  $('input[type=checkbox]').change(function() {
+     
+     if (this.checked) {
+         $(".assign_schedule").hide() 
+     } else {
+       $(".assign_schedule").show()
+     }
+   });
+ 
+ 
+   $(".datepicker1").daterangepicker({
+         locale: { format: "YYYY-MM-DD" },
+         singleDatePicker: true,
+         minDate : moment(new Date(),"YYYY-MM-DD").add('days', 1),
+   });
 </script>
 @stop

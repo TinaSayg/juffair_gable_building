@@ -33,33 +33,11 @@ class RentController extends Controller
      */
     public function index(Request $request)
     {  
-        $year = !empty($request->year) ? $request->year : date('Y');
-        $month = !empty($request->month) ? $request->month : date('m');
         $units = Unit::orderBy('id','desc')->get();
-        $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
-        $unit_status = UnitStatus::all();
-        
         $rent_paid_status = RentPaidStatus::all();
-        $rent = Rent::orderBy('id','desc')->get();
-        //$tenants = Tenant::orderBy('id','desc')->get();
-        $tenants = DB::table('tenants')
-        ->select([
-            'tenants.id as ten_id',
-            'tenants.tenant_first_name',
-            'tenants.tenant_last_name',
-            'rents.*'])
-        ->leftJoin('units','units.id','=','tenants.unit_id')
-        ->leftJoin('rents',function($join) use($year,$month){
-            $join->on('rents.tenant_id','=','tenants.id');
-            $join->on('rents.rent_month','=',DB::raw("'".$month."'"));
-            $join->on('rents.rent_year','=',DB::raw("'".$year."'"));
-        })
-        ->where('lease_period_start_datetime','<=',Carbon::now())
-        ->where('lease_period_end_datetime','>=',Carbon::now())
-        ->get();
-        echo "<pre>";
-       print_r($tenants->toArray()); exit;
-        return view('admin.rent.index', compact('year','month','units','floor_types','unit_status','rent','tenants'));
+        $rent_details = Rent::orderBy('id','desc')->get();
+    
+        return view('admin.rent.index', compact('rent_details','rent_paid_status'));
     }
     /**
      * Show the form for creating a new resource.
@@ -74,8 +52,9 @@ class RentController extends Controller
         $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
         $unit_status = UnitStatus::all();
         $rent_paid_status = RentPaidStatus::all();
-        $tenants = Tenant::all();
-        return view('admin.rent.create', compact('rent_types','units','floor_types','unit_status','rent_paid_status','tenants'));
+        $tenant_list = Tenant::where('is_passed', null)->get();
+        
+        return view('admin.rent.create', compact('rent_types','units','floor_types','unit_status','rent_paid_status','tenant_list'));
     }
    
     /**

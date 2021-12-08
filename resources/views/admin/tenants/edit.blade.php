@@ -6,10 +6,19 @@
 {{-- page level styles --}}
 @section('header_styles')
 <link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.css') }}">
+<link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.css') }}">
+
 <style>
    textarea.form-control {
         height: 80px !important;
     }
+
+    .bootstrap-tagsinput
+   {
+       height: auto;
+       width: 100% !important;
+   }
+   
 </style>
 @stop
 @section('content')
@@ -134,31 +143,39 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="form-group col-md-4">
+                            {{-- <div class="form-group col-md-4">
                                 <label for="">Floor Type</label>
                                 <select class="form-control" name="floor_type_code" onchange="getFloors(this.value)" id="floor_type_code">
                                 @foreach ($floor_types as $floor_type)
                                     <option value="{{ $floor_type->floor_type_code }}" {{(isset($tenant) && ($tenant->unit->floor->floor_type_code == $floor_type->floor_type_code)) ? 'selected': '' }}>{{ $floor_type->floor_type_name }}</option>
                                 @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
                 
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label for="">Select Floor</label>
-                                <select class="form-control" name="floor_id" onchange="getUnits(this.value)" id="floorSelect">
+                                <select class="form-control" style="height: 32px;" name="floor_id" onchange="getUnits(this.value)" id="floorSelect">
                                     @foreach ($floors as $floor)
                                         <option value="{{ $floor->id }}" {{ (isset($tenant) && ($tenant->floor_id == $floor->id)) ? 'selected' :'' }}>{{ $floor->number}}</option>
                                     @endforeach
                                 </select>
             
                             </div>
-                            <div class="form-group col-md-4" >
+                            <div class="form-group col-md-3" >
                                 <label>Select Apartment</label>
-                                <select class="form-control" name="unit_id"  id="unitSelect">
+                                <select class="form-control" style="height: 32px;" name="unit_id"  id="unitSelect">
                                     @foreach ($units as $unit)
                                         <option value="{{ $unit->id }}" {{ (isset($tenant) && ($tenant->unit_id == $unit->id)) ? 'selected' :'' }}>{{ $unit->unit_number}}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label style="display: block;">Add Facilities</label>
+                                <input type="text" name="all_facilities" value="{{ implode(',', $tenant->tenant_facilities_list) }}" class="form-control inputtags">
+                              </div>
+                            <div class="form-group col-md-4" >
+                                <label>Total Rent</label>
+                                <input type="text" style="height: 32px;" name="total_rent" value="{{ isset($tenant->tenant_rent)? $tenant->tenant_rent : '' }}" class="form-control" style="height: 38px;">
                             </div>
                             {{-- <div class="form-group col-md-4" >
                                 <label>Security Deposit (BD)</label>
@@ -175,6 +192,20 @@
 @stop
 @section('footer_scripts')
 <script src="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="{{asset('public/admin/assets/bundles/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js') }}"></script>
+<script>
+    $(".inputtags").tagsinput('items');
+</script>
+<script>
+    $(document).ready(function() {
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+        }
+    });
+    });
+</script>
 <script>
     (function($) {
             $.fn.inputFilter = function(inputFilter) {

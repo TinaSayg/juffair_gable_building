@@ -13,21 +13,16 @@
 @stop
 @section('content')
 <section class="section">
-   
-    </ul>
      <div class="row">
+       <div class="col-12">
+        @if(request()->user()->can('add-maintenance-cost'))
+        <a href="{{ route('maintenancecosts.create') }}" type="button"  class="btn btn-primary float-right mb-4" style="padding:7px 35px;">Add Maintenance Cost</a>
+        @endif
+       </div>
       <div class="col-12">
         <div class="card">
           <div class="card-header">
            <h4>Maintenance Cost list</h4>
-            
-            
-             <div class="card-header-form">
-              @if(request()->user()->can('add-maintenance-cost'))
-              <a href="{{ route('maintenancecosts.create') }}" type="button"  class="btn btn-primary">Add Maintenance Cost</a>
-              @endif
-             </a>
-            </div>
           </div>
             
             <div class="card-body">
@@ -37,11 +32,10 @@
                     <tr>
                       <th>#</th>
                       <th>Maintenance Title</th>
-                      <th>Description</th>
+                      <th>Location</th>
                       <th>Date</th>
                       <th>Total Amount</th>
-                     
-                      <th>Actions</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -49,12 +43,41 @@
                     <tr style="cursor:pointer;">
                         <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ $key+1 }}</td>
                         <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ $maintenancecost->maintenance_title }}</td>
-                        <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ $maintenancecost->maintenance_description}}</td>
+                        <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">
+                          @if($maintenancecost->location_id == 1)
+                          @php
+                            $floor_number = \App\Models\FloorDetail::where('id', $maintenancecost->floor_id)->first()->number;
+                            $apartment_number = \App\Models\Unit::where('id', $maintenancecost->unit_id)->first()->unit_number;
+                          @endphp
+                          Apartment {{ $apartment_number }}
+                          @endif
+  
+                          @if($maintenancecost->location_id == 2)
+                          @php
+                            $location_area = \App\Models\CommonArea::where('id', $maintenancecost->common_area_id)->first()->area_name;
+                          @endphp
+                          {{ $location_area }}
+                          @endif
+    
+                          @if($maintenancecost->location_id == 3)
+                          @php
+                            $floor_number = \App\Models\FloorDetail::where('id', $maintenancecost->floor_id)->first()->number;
+                          @endphp
+                          Floor {{ $floor_number }}
+                          @endif
+    
+                          @if($maintenancecost->location_id == 4)
+                            @php
+                              $location_area = \App\Models\ServiceArea::where('id', $maintenancecost->service_area_id)->first()->service_area_name;
+                            @endphp
+                            {{ $location_area }} Area
+                          @endif
+                        </td>
                         <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ \Carbon\Carbon::parse($maintenancecost->maintenance_date)->toFormattedDateString() }}</td>
-                        <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ $maintenancecost->maintenance_cost_total_amount}}</td>
+                        <td onclick="getMaintenancecostDetails({{ $maintenancecost->id }})">{{ $maintenancecost->maintenance_cost_total_amount}} BD</td>
                         <td>
                           <div class="dropdown">
-                            <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Options</a>
+                            <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
                             <div class="dropdown-menu">
                               @if(request()->user()->can('view-maintenance-cost'))
                               <a href="#" onclick="getMaintenancecostDetails({{ $maintenancecost->id }})" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>

@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.3",
         "ourcodeworld/name-that-color": "9999999-dev",
+        "rap2hpoutre/fast-excel": "^3.1",
         "yajra/laravel-datatables-oracle": "^9.18"
     },
     "require-dev": {

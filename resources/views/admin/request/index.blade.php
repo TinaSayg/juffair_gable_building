@@ -30,6 +30,10 @@
     </ul> --}}
       <div class="row">
         <div class="col-12">
+          <a href="{{ route('request.create') }}" class="btn btn-primary float-right mb-4" style="padding:7px 35px;" role="button">Add Request</a>
+
+        </div>
+        <div class="col-12">
         <div class="card">
           <div class="card-header">
            <h4>
@@ -39,9 +43,6 @@
              Maintenance Requests You Reported
              @endif
             </h4>
-            <div class="card-header-form">
-              <a href="{{ route('request.create') }}" class="btn btn-primary" role="button">Add Request</a>
-            </div>
           </div>
             <div class="card-body">
               <div class="table-responsive">

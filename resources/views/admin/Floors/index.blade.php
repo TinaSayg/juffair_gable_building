@@ -24,20 +24,18 @@ Juffair Gable
     
     </ul> --}}
      <div class="row">
+      <div class="col-lg-12 col-12">
+        @if(request()->user()->can('create-floor'))
+            <button type="button" data-toggle="modal" data-target="#floorModal" class="btn btn-primary float-right mb-4" style="padding:7px 35px;">Add Floor
+            </button>
+        @endif
+      </div>
       <div class="col-12">
         <div class="card">
-          <div class="card-header">
-           <h4>Floor List</h4>
-            <div class="card-header-form">
-            @if(request()->user()->can('create-floor'))
-              <button type="button" data-toggle="modal" data-target="#floorModal" class="btn btn-primary">Add Floor
-              </button>
-            @endif
-            </div>
-          </div>
+          
             <div class="card-body">
               <div class="table-responsive">
-                <table id="tableExport" class="table table-export table-striped table-hover">
+                <table id="table-1" class="table table-export table-striped table-hover">
                   <thead>
                     <tr>
                       <th>Floor No</th>

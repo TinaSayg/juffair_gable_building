@@ -24,6 +24,8 @@ class UnitController extends Controller
     {
         $units = Unit::orderBy('id','desc')->get();
         $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
+        $floor_list = FloorDetail::where('floor_type_code', 2)->get();
+
         $unit_status = UnitStatus::all();
         $color_codes_list = Unit::pluck('color_code');
         // dd($color_codes_list);
@@ -43,7 +45,7 @@ class UnitController extends Controller
             $color_codes_list = $color_codes_list->combine($color_names_list);
         }
        
-        return view('admin.units.index',compact('units','floor_types','unit_status','color_codes_list'));
+        return view('admin.units.index',compact('units','floor_types','floor_list','unit_status','color_codes_list'));
     }
 
     public function apartment_by_floor(Request $request)
@@ -173,10 +175,10 @@ class UnitController extends Controller
      */
     public function create()
     {
-        $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
-
+        // $floor_types = FloorType::whereIn('floor_type_code', [2,4])->get();
+        $floor_list = FloorDetail::where('floor_type_code', 2)->get();
         $unit_status = UnitStatus::all();
-        return view('admin.units.create', compact('floor_types','unit_status'));
+        return view('admin.units.create', compact('floor_list','unit_status'));
     }
 
     /**
@@ -189,7 +191,7 @@ class UnitController extends Controller
     {
         $request->validate([
             'unit_number' => 'required',
-            'unit_rent' => 'required',
+            // 'unit_rent' => 'required',
             'apartment_type' => 'required',
             'color_code' => 'required',
             'no_of_bed_rooms' => 'required',
@@ -223,7 +225,7 @@ class UnitController extends Controller
            
             $unit = Unit::create([
                 'unit_number' => $floor_number.$request['unit_number'],
-                'unit_rent' => $request['unit_rent'],
+                // 'unit_rent' => $request['unit_rent'],
                 'apartment_type' => $request['apartment_type'],
                 'color_code' => $request['color_code'],
                 'no_of_bed_rooms' => $request['no_of_bed_rooms'],
@@ -266,10 +268,11 @@ class UnitController extends Controller
         
         $unit = Unit::find($id);
         
-        $floor_types = FloorType::all();
+        $floor_list = FloorDetail::where('floor_type_code', 2)->get();
+
         $unit_status = UnitStatus::all();
 
-        return view('admin.units.edit',compact('unit','floor_types','unit_status'));
+        return view('admin.units.edit',compact('unit','floor_list','unit_status'));
     }
 
     /**
@@ -283,8 +286,7 @@ class UnitController extends Controller
     {
         
         $request->validate([
-            // 'unit_number' => 'required',
-            'unit_rent' => 'required',
+            'unit_number' => 'required',
             'color_code' => 'required',
             'no_of_bed_rooms' => 'required',
             'unit_area' => 'required',
@@ -299,12 +301,13 @@ class UnitController extends Controller
 
         // update units
         $unit = Unit::find($id);
-        // $unit->unit_number = $request['unit_number'];
-        $unit->unit_rent = $request['unit_rent'];
+        $unit->unit_number = $request['unit_number'];
+        $unit->apartment_type = $request['apartment_type'];
+        // $unit->unit_rent = $request['unit_rent'];
         $unit->color_code = $request['color_code'];
         $unit->no_of_bed_rooms = $request['no_of_bed_rooms'];
         $unit->unit_area = $request['unit_area'];
-        // $unit->floor_id = $request['floor_id'];
+        $unit->floor_id = $request['floor_id'];
         $unit->unit_status_code = $request['unit_status_code'];
 
         if($unit->save())
@@ -402,6 +405,9 @@ class UnitController extends Controller
 
             $color_codes_list = $color_codes_list->combine($color_names_list);
         }
-        return view('admin.units.index',compact('units','floor_types','unit_status','color_codes_list'));
+
+        $floor_list = FloorDetail::where('floor_type_code', 2)->get();
+
+        return view('admin.units.index',compact('units','floor_list','floor_types','unit_status','color_codes_list'));
     }
 }

@@ -57,9 +57,10 @@ class TenantController extends Controller
      */
     public function create()
     {
-        $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
+        // $floor_types = FloorType::where('floor_type_code', 2)->get();
+        $floor_list = FloorDetail::where('floor_type_code', 2)->get();
         $tenant_types = TenantType::all();
-        return view('admin.tenants.create', compact('floor_types','tenant_types'));
+        return view('admin.tenants.create', compact('floor_list','tenant_types'));
     }
 
     /**
@@ -116,6 +117,8 @@ class TenantController extends Controller
         $tenant->emergancy_email = $request['emergancy_email'];
         $tenant->tenant_date_of_birth = $request['tenant_date_of_birth'];
         $tenant->tenant_type_code = $request['tenant_type_code'];
+        $tenant->tenant_rent = $request['total_rent'];
+        $tenant->tenant_facilities_list = explode(',',$request['all_facilities']);
         
         //save tenant image
         if($request->file('tenant_image'))
@@ -218,6 +221,7 @@ class TenantController extends Controller
      */
     public function edit($id)
     {
+        
         $tenant = Tenant::find($id);
         $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
         $tenant_types = TenantType::all();
@@ -237,6 +241,7 @@ class TenantController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $tenant = Tenant::find($id);
 
         // Tenant old email
@@ -283,6 +288,8 @@ class TenantController extends Controller
         $tenant->emergancy_email = $request['emergancy_email'];
         $tenant->tenant_date_of_birth = $request['tenant_date_of_birth'];
         $tenant->tenant_type_code = $request['tenant_type_code'];
+        $tenant->tenant_rent = $request['total_rent'];
+        $tenant->tenant_facilities_list = explode(',',$request['all_facilities']);
 
         //save tenant image
         if($request->file('tenant_image'))
@@ -385,5 +392,28 @@ class TenantController extends Controller
 
         Toastr::success('Tenant deleted successfully!');
         return back();
+    }
+
+    public function tenant_passed($id)
+    {
+        $tenant = Tenant::find($id);
+
+        $tenant->is_passed = 1;
+
+        if($tenant->save())
+        {
+            $unit = Unit::find($tenant->unit_id);
+            $unit->unit_status_code = 2; // vacant
+
+            $unit->save();
+            
+            Toastr::success('Tenant is passed.');
+            return back();
+        }
+        else
+        {
+            Toastr::error('Something went wrong.');
+            return back();
+        }
     }
 }

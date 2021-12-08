@@ -45,6 +45,11 @@ box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625re
     @if(Auth::user()->userType == 'employee')
     <div class="row">
       <div class="col-12">
+        @if(Auth::user()->userType == 'employee' )
+              <a href="{{ route('leave.create') }}" type="button"  class="btn btn-primary float-right mb-4" style="padding:7px 35px;">Apply Leave Request</a>
+        @endif
+      </div>
+      <div class="col-12">
         <div class="card">
           <div class="card-header">
            <h4>
@@ -54,13 +59,6 @@ box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625re
               Apply Leave
               @endif
             </h4>
-             <div class="card-header-form">
-              @if(Auth::user()->userType == 'employee' )
-              <a href="{{ route('leave.create') }}" type="button"  class="btn btn-primary">Apply leave request</a>
-             
-              @endif
-            </a>
-            </div>
           </div>
             <div class="card-body">
               <div class="table-responsive">

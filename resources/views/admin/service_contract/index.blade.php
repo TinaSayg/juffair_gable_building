@@ -30,16 +30,13 @@
     
     </ul> --}}
      <div class="row">
+       <div class="col-12">
+        <a href="{{ route('service_contract.create') }}" class="btn btn-primary float-right mb-4" style="padding: 7px 35px;" role="button">Add New Contract</a>
+       </div>
       <div class="col-12">
         <div class="card">
           <div class="card-header">
            <h4>Service Contract list</h4>
-            
-            
-             <div class="card-header-form">
-            <a href="{{ route('service_contract.create') }}" class="btn btn-primary" role="button">Add New Contract</a>
-             
-            </div>
           </div>
             
             <div class="card-body">

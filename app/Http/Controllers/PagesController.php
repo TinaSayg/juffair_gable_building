@@ -1,16 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
+use Mail;
 use Image;
 use App\Models\Unit;
+use App\Models\Message;
 use App\Models\Building;
-use App\Models\JobOpportunities;
 use App\Models\FloorType;
 use App\Models\FloorDetail;
-use Illuminate\Http\Request;
 use App\Models\Testimonials;
+use Illuminate\Http\Request;
+use App\Models\JobOpportunities;
 use Brian2694\Toastr\Facades\Toastr;
-
+use Illuminate\Support\Facades\Auth;
+use App\Mail\SendMailToGeneralManager;
 
 class PagesController extends Controller
 {
@@ -166,11 +169,35 @@ class PagesController extends Controller
 
     public function send_message(Request $request)
     {
-        return view('admin.messages.index');
+        return view('admin.messages.create');
     }
 
     public function send_email(Request $request)
     {
-        dd($request->all());
+        
+        $request->validate([
+            'subject' => 'required',
+            'message' =>  'required' ,   
+        ]);
+
+        $data = [ 'subject' => $request['subject'], 'message' => $request['message']];
+        
+        Mail::to('mrshaheen@juffairgables.com')->send(new SendMailToGeneralManager($data));
+ 
+        if (Mail::failures()) {
+            return response()->Fail('Something went wrong.');
+        }
+        else
+        {
+            $message = new Message();
+            $message->subject = $request['subject'];
+            $message->description = $request['message'];
+            $message->sender_id = Auth::user()->id;
+            
+            $message->save();
+
+            Toastr::success('Your message sent successfully.');
+            return redirect()->back();
+        }
     }
 }

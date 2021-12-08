@@ -15,6 +15,11 @@ class MaintenanceCost extends Model
         'maintenance_year',
         'maintenance_date',
         'maintenance_cost_total_amount',
+        'location_id',
+        'floor_id',
+        'unit_id',
+        'common_area_id',
+        'service_area_id',
     ];
 }
 

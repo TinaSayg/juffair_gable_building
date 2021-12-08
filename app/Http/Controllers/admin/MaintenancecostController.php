@@ -52,20 +52,35 @@ class MaintenanceCostController extends Controller
             'maintenance_description' =>  'required' ,
             'maintenance_date' => 'required',
             'maintenance_cost_total_amount' => 'required',
+            'location_id' =>  'required',
 
         ], [
             'maintenance_title.required' => 'Maintenance title is required!',
             'maintenance_description.required'  => 'Maintenance description is required!',
             'maintenance_date.required' => 'Maintenance date is required!',
             'maintenance_cost_total_amount.required' => 'Maintenance cost is required!',
-            
+            'location_id.required' => 'Please select the location!',
         ]);
+
+        $location_id = $request->input('location_id');
+        $floor_id = $request->input('floor_id',null);
+        $unit_id = $request->input('unit_id',null);
+        $common_area_id = $request->input('common_area_id',null);
+        $service_area_id = $request->input('service_area_id',null);
+
+        
         $maintenancecost = MaintenanceCost::create([
             'maintenance_title' => $request['maintenance_title'],
             'maintenance_description' => $request['maintenance_description'],
             'maintenance_date' => $request['maintenance_date'],
             'maintenance_cost_total_amount' => $request['maintenance_cost_total_amount'],
+            'location_id' => $request['location_id'],
+            'floor_id' => $request['floor_id'],
+            'unit_id' => $request['unit_id'],
+            'common_area_id' => $request['common_area_id'],
+            'service_area_id' => $request['service_area_id'],
         ]);
+
         Toastr::success('Maintenance Cost added successfully!');
         return redirect()->route('maintenancecosts.list');
     }
@@ -116,14 +131,20 @@ class MaintenanceCostController extends Controller
             'maintenance_description' =>  'required' ,
             'maintenance_date' => 'required',
             'maintenance_cost_total_amount' => 'required',
+            'location_id' =>  'required',
         ], [
             'maintenance_title.required' => 'Maintenance title is required!',
             'maintenance_description.required'  => 'Maintenance description is required!',
             'maintenance_date.required' => 'Maintenance date is required!',
             'maintenance_cost_total_amount.required' => 'Maintenance cost is required!',
-
-        
+            'location_id.required' => 'Please select the location!',
         ]);
+
+        $location_id = $request->input('location_id');
+        $floor_id = $request->input('floor_id',null);
+        $unit_id = $request->input('unit_id',null);
+        $common_area_id = $request->input('common_area_id',null);
+        $service_area_id = $request->input('service_area_id',null);
 
         $maintenancecost = Maintenancecost::find($id);
 
@@ -131,7 +152,11 @@ class MaintenanceCostController extends Controller
         $maintenancecost->maintenance_description = $request['maintenance_description'];
         $maintenancecost->maintenance_date = $request['maintenance_date'];
         $maintenancecost->maintenance_cost_total_amount = $request['maintenance_cost_total_amount'];
-      
+        $maintenancecost->location_id = $location_id;
+        $maintenancecost->floor_id = $floor_id;
+        $maintenancecost->unit_id = $unit_id;
+        $maintenancecost->common_area_id = $common_area_id;
+        $maintenancecost->service_area_id = $service_area_id;
       
         $maintenancecost->save();
 

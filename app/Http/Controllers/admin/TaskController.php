@@ -442,20 +442,39 @@ class TaskController extends Controller
 
     public function assign_task(Request $request)
     {
+        
         $request->validate([
             'employee_id' => 'required',
-            'assign_date' => 'required',
-            'assign_time' => 'required|string',
             'deadline_date' => 'required',
             'deadline_time' => 'required',
         ],[
             'employee_id.required' => 'Please select the Employee before proceeding.'
         ]);
 
+        if($request['now_cb'] == 'on')
+        {
+            $current_date = Carbon::now();
+
+            $assign_date = Carbon::parse($current_date)->format('Y-m-d');
+            $assign_time = Carbon::parse($current_date)->format('H:i');
+        }
+        else
+        {
+            $request->validate([
+                'assign_date' => 'required',
+                'assign_time' => 'required|string',
+            ]);
+
+            $assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
+            $assign_time = Carbon::parse($request['assign_time'])->format("H:i");
+        }
+
+       
         $id = $request->input('task_id');
         $task = Task::find($id);
-        $task->assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
-        $task->assign_time = Carbon::parse($request['assign_time'])->format("H:i");
+        
+        $task->assign_date = $assign_date;
+        $task->assign_time = $assign_time;
         $task->deadline_date = Carbon::parse($request['deadline_date'])->format('Y-m-d');
         $task->deadline_time = Carbon::parse($request['deadline_time'])->format("H:i");
         $task->assignor_id = Auth::user()->id;
@@ -477,10 +496,9 @@ class TaskController extends Controller
 
     public function assign_task_for_maintenance(Request $request)
     {
+        // dd($request->all());
         $request->validate([
             'employee_id' => 'required',
-            'assign_date' => 'required',
-            'assign_time' => 'required|string',
             'deadline_date' => 'required',
             'deadline_time' => 'required',
         ],[
@@ -488,6 +506,23 @@ class TaskController extends Controller
         ]);
 
         $maintenance_request = MaintenanceRequest::find($request->input('maintenance_request_id'));
+        if($request['now_cb'] == 'on')
+        {
+            $current_date = Carbon::now();
+
+            $assign_date = Carbon::parse($current_date)->format('Y-m-d');
+            $assign_time = Carbon::parse($current_date)->format('H:i');
+        }
+        else
+        {
+            $request->validate([
+                'assign_date' => 'required',
+                'assign_time' => 'required|string',
+            ]);
+
+            $assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
+            $assign_time = Carbon::parse($request['assign_time'])->format("H:i");
+        }
 
         $task = new Task();
         $task->title = $maintenance_request->title;
@@ -497,8 +532,8 @@ class TaskController extends Controller
         $task->unit_id = $maintenance_request->unit_id;
         $task->common_area_id = $maintenance_request->common_area_id;
         $task->service_area_id = $maintenance_request->service_area_id;
-        $task->assign_date = Carbon::parse($request['assign_date'])->format('Y-m-d');
-        $task->assign_time = Carbon::parse($request['assign_time'])->format("H:i");
+        $task->assign_date = $assign_date;
+        $task->assign_time = $assign_time;
         $task->deadline_date = Carbon::parse($request['deadline_date'])->format('Y-m-d');
         $task->deadline_time = Carbon::parse($request['deadline_time'])->format("H:i");
         $task->assignor_id = Auth::user()->id;

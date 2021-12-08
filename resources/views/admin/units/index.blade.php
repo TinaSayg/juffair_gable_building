@@ -31,13 +31,18 @@ Juffair Gable
     
     </ul> --}}
     <div class="row">
-        
+        <div class="col-lg-12">
+            @if(Auth::user()->userType == 'Admin')
+                <a href="{{ route('units.create') }}" style="padding:7px 35px;" type="button" class="btn btn-primary float-right mb-4">Add Apartment
+                </a>
+            @endif
+        </div>
         <div class="col-12">
             <div class="card" style="padding:15px 15px">
                 <form action="{{ route('units.search_filter') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="form-group col-md-3">
+                        {{-- <div class="form-group col-md-3">
                             <label for="">Floor Type</label>
                             <select class="form-control" name="floor_type_code" onchange="getFloors(this.value)" id="floor_type_code">
                                 <option value="0" selected disabled>---Select---</option>
@@ -45,10 +50,15 @@ Juffair Gable
                                     <option value="{{ $floor_type->floor_type_code }}">{{ $floor_type->floor_type_name }}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
                         <div class="form-group col-md-3">
                             <label for="">Select Floor</label>
-                            <select class="form-control" name="floor_id" id="floorSelect"></select>
+                            <select class="form-control" name="floor_id"  id="floorSelect">
+                                <option value="0" selected disabled>---Select---</option>
+                                @foreach ($floor_list as $floor)
+                                    <option value="{{ $floor->id }}">{{ $floor->number }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="">Select Type</label>
@@ -94,16 +104,6 @@ Juffair Gable
         
         <div class="col-12">
             <div class="card">
-            <div class="card-header">
-                <h4>Apartment List</h4>
-                <div class="card-header-form">
-                    @if(Auth::user()->userType == 'Admin')
-                        <a href="{{ route('units.create') }}" type="button" class="btn btn-primary">Add Apartment
-                        </a>
-                    @endif
-                </div>
-                
-            </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table id="table-2" class="table table-striped display nowrap"  width="100%" style="">
@@ -111,7 +111,6 @@ Juffair Gable
                         <tr>
                             <th>Floor</th>
                             <th>Apartment No.</th>
-                            <th>Rent</th>
                             <th>Apartment Type</th>
                             <th>No. of bedrooms</th>
                             <th>Area</th>
@@ -131,7 +130,6 @@ Juffair Gable
                             <tr style="cursor: pointer">
                                 <td data-href='{{route('units.full_apartment.show', $unit->id)}}'>{{ isset($unit->floor) ? $unit->floor->number : '' }}</td>
                                 <td data-href='{{route('units.full_apartment.show', $unit->id)}}'>{{ $unit->unit_number }}</td>
-                                <td data-href='{{route('units.full_apartment.show', $unit->id)}}'>{{ $unit->unit_rent }} BD</td>
                                 <td data-href='{{route('units.full_apartment.show', $unit->id)}}'>{{ isset($unit->apartment_type) ? $unit->apartment_type : '' }}</td>
                                 <td data-href='{{route('units.full_apartment.show', $unit->id)}}'>{{ $unit->no_of_bed_rooms }}</td>
                                 <td data-href='{{route('units.full_apartment.show', $unit->id)}}'>{{ $unit->unit_area }} m<sup>2</sup></td>

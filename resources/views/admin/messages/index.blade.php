@@ -8,72 +8,69 @@
 <link rel="stylesheet" href="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.css') }}">
 <link rel="stylesheet" href="{{asset('public/admin/assets/bundles/summernote/summernote-bs4.css') }}">
 <style>
-.card .card-header
-{
-    display: block !important;
-}
-.note-editable
-{
-    margin-top: 20px;
-}
-.note-editor.note-frame
-{
-    border:unset !important;
+
+tr:hover {
+background: #a3a3a3 !important;
 }
 </style>
 @stop
 @section('content')
 <section class="section">
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2">
-            <div class="card">
-                <div class="boxs mail_listing">
-                  <div class="inbox-center table-responsive">
-                    <table class="table table-hover">
-                      <thead>
-                        <tr>
-                          <th colspan="1">
-                            <div class="inbox-header">
-                              Send Message To General Manager
-                            </div>
-                          </th>
-                        </tr>
-                      </thead>
-                    </table>
-                  </div>
-                  <form class="composeForm" action="{{ route('email.send') }}" method="POST" style="padding:25px;">
-                  <div class="row">
-                    <div class="col-lg-12">
-                        @csrf
-                        {{-- <div class="form-group">
-                          <div class="form-line">
-                            <input type="text" id="email_address" class="form-control" placeholder="TO">
-                          </div>
-                        </div> --}}
-                        <div class="form-group">
-                          <div class="form-line">
-                            <input type="text" name="subject" id="subject" class="form-control" placeholder="Subject">
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h4>All Messages</h4>
+        </div>
+          
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="table-2" class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Subject</th>
+                    <th>Sender Name</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @foreach($message_list as $key => $message)
+                  <tr style="cursor:pointer;">
+                      <td data-href='{{ route('messages.show', $message->id) }}'>{{ $key+1 }}</td>
+                      <td data-href='{{ route('messages.show', $message->id) }}'>{{ $message->subject }}</td>
+                      
+                      <td data-href='{{ route('messages.show', $message->id) }}'>
+                        @php
+                          $name = \App\Models\User::where('id', $message->sender_id)->first()->name;
+                        @endphp
+
+                        {{ $name }}
+                      </td>
+                      <td>
+                        <div class="dropdown">
+                          <a href="#" data-toggle="dropdown" class="btn btn-primary dropdown-toggle">Action</a>
+                          <div class="dropdown-menu">
+                            <a href="{{ route('messages.show', $message->id) }}" onclick="" class="dropdown-item has-icon"><i class="fas fa-eye"></i> View</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" onclick="form_alert('message-{{ $message->id }}','Want to delete this message')" class="dropdown-item has-icon text-danger"><i class="far fa-trash-alt"></i>
+                              Delete</a>
                           </div>
                         </div>
-                        <textarea class="summernote" name="message"></textarea>
-                        {{-- <div class="compose-editor m-t-20">
-                          <div id="summernote"></div>
-                          <input type="file"  class="default mb-3" name="attachments[]" multiple>
-                        </div> --}}
-                      
-                    </div>
-                    <div class="col-lg-12">
-                      <div class="m-b-20">
-                        <button type="submit" class="btn btn-primary btn-border-radius waves-effect">Send</button>
-                        {{-- <a href="{{ url()->previous() }}" type="button" class="btn btn-danger btn-border-radius waves-effect">Cancel</a> --}}
-                      </div>
-                    </div>
-                </div>
-            </form>
-                </div>
+                        <form action="{{ route('messages.delete', $message->id) }}"
+                            method="post" id="message-{{ $message->id }}">
+                            @csrf @method('delete')
+                        </form>
+                    </td>
+                  </tr>
+                  @endforeach
+                </tbody>
+              </table>
             </div>
+          </div>
         </div>
-    </div>
+      </div>
+   </div>
 </section>
 @stop
 @section('footer_scripts')
@@ -89,6 +86,8 @@
 <!-- JS Libraies -->
 <script src="{{asset('public/admin/assets/bundles/ckeditor/ckeditor.js') }}"></script>
 <script>
-  
+  $("tr td:not(:last-child)").click(function() {
+      window.location = $(this).data("href");
+  });
 </script>
 @stop

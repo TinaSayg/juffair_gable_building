@@ -16,7 +16,8 @@ class CreateUnitsTable extends Migration
         Schema::create('units', function (Blueprint $table) {
             $table->id();
             $table->string('unit_number');
-            $table->string('unit_rent');
+            $table->string('apartment_type');
+            $table->string('unit_rent')->nullable();
             $table->string('color_code');
             $table->integer('no_of_bed_rooms');
             $table->string('unit_area');

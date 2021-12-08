@@ -40,7 +40,7 @@ Juffair Gable
     position: absolute;
     top: 20px;
     bottom: 0;
-    left: 116px;
+    left: 122px;
     right: 0;
     opacity: 1;
     transition: .3s ease;

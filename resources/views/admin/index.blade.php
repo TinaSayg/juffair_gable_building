@@ -379,6 +379,7 @@ Juffair Gable
                       <tr>
                         <th>#</th>
                         <th>Title</th>
+                        <th>Location</th>
                         <th>Date Assigned</th>
                         <th>Deadline Date</th>
                         <th>Status</th>
@@ -390,6 +391,36 @@ Juffair Gable
                       <tr class="active-task-table" style="cursor: pointer;">
                         <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $key+1 }}</td>
                         <td data-href='{{ route('tasks.show', $item->id) }}'>{{ $item->title }}</td>
+                        <td data-href='{{ route('tasks.show', $item->id) }}'>
+                          @if($item->location_id == 1)
+                          @php
+                            $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                            $apartment_number = \App\Models\Unit::where('id', $item->unit_id)->first()->unit_number;
+                          @endphp
+                            Apartment {{ $apartment_number }}
+                          @endif
+
+                          @if($item->location_id == 2)
+                            @php
+                              $location_area = \App\Models\CommonArea::where('id', $item->common_area_id)->first()->area_name;
+                            @endphp
+                            {{ $location_area }}
+                          @endif
+
+                          @if($item->location_id == 3)
+                          @php
+                            $floor_number = \App\Models\FloorDetail::where('id', $item->floor_id)->first()->number;
+                          @endphp
+                          Floor {{ $floor_number }}
+                          @endif
+
+                          @if($item->location_id == 4)
+                            @php
+                              $location_area = \App\Models\ServiceArea::where('id', $item->service_area_id)->first()->service_area_name;
+                            @endphp
+                            {{ $location_area }} Area
+                          @endif
+                        </td>
                         <td data-href='{{ route('tasks.show', $item->id) }}'>{{ \Carbon\Carbon::parse($item->assign_date)->toFormattedDateString() }} {{ $item->assign_time }}</td>
                         <td data-href='{{ route('tasks.show', $item->id) }}'>{{ \Carbon\Carbon::parse($item->deadline_date)->toFormattedDateString() }} {{ $item->deadline_time }}</td>
                         <td>
@@ -494,6 +525,20 @@ Juffair Gable
                 </select>
               </div>
             </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <div class="form-check">
+                  <input class="form-check-input" name="now_cb" checked type="checkbox">
+                  <label class="form-check-label" style="margin-top:1px !important">
+                    Now
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row assign_schedule" style="display: none">
             <div class="col-6">
               <div class="form-group">
                 <label>Assign Date</label>
@@ -513,10 +558,12 @@ Juffair Gable
                 </div>
               </div>
             </div>
+          </div>
+          <div class="row">
             <div class="col-6">
               <div class="form-group">
                 <label>Deadline Date</label>
-                <input type="text" name="deadline_date" class="form-control datepicker">
+                <input type="text" name="deadline_date" class="form-control datepicker1">
               </div>
             </div>
             <div class="col-6">
@@ -575,6 +622,8 @@ Juffair Gable
 <script src="{{ asset('public/admin/assets/') }}/js/page/datatables.js"></script>
 <script src="{{ asset('public/admin/assets/') }}/bundles/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
 <script src="{{asset('public/admin/assets/bundles/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
   $("tr.active-task-table td:not(:nth-last-child(2),:nth-last-child(1))").click(function() {
       window.location = $(this).data("href");
@@ -652,6 +701,22 @@ function getRequestMentenanceDetails(id) {
         }
     });
   }
+
+  $('input[type=checkbox]').change(function() {
+     
+    if (this.checked) {
+        $(".assign_schedule").hide() 
+    } else {
+      $(".assign_schedule").show()
+    }
+  });
+
+
+  $(".datepicker1").daterangepicker({
+        locale: { format: "YYYY-MM-DD" },
+        singleDatePicker: true,
+        minDate : moment(new Date(),"YYYY-MM-DD").add('days', 1),
+  });
 </script>
 
 @stop

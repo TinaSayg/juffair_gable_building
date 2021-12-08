@@ -48,7 +48,7 @@ Juffair Gable
                         <p class="text-muted">{{ isset($unit->floor)? $unit->floor->number : '' }}</p>
                       </div>
                       <div class="col-md-3 col-6 b-r">
-                        <strong>Rent Apartment No.</strong>
+                        <strong>Apartment No.</strong>
                         <br>
                         <p class="text-muted">{{isset($unit) ? $unit->unit_number : ''}}</p>
                       </div>
@@ -57,13 +57,9 @@ Juffair Gable
                         <br>
                         <p class="text-muted">{{ isset($unit->apartment_type )? $unit->apartment_type  : '' }}</p>
                       </div>
+                      
                       <div class="col-md-3 col-6">
-                        <strong>Apartment Rent</strong>
-                        <br>
-                        <p class="text-muted">{{isset($unit) ? $unit->unit_rent : '' }}</p>
-                      </div>
-                      <div class="col-md-3 col-6">
-                        <strong>No of bed</strong>
+                        <strong>No of bedrooms</strong>
                         <br>
                         <p class="text-muted">{{isset($unit) ? $unit->no_of_bed_rooms : '' }}</p>
                       </div>

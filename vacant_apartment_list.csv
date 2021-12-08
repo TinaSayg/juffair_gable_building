@@ -1,0 +1,2 @@
+﻿id,unit_number,apartment_type,unit_rent,color_code,no_of_bed_rooms,unit_area,floor_id,unit_status_code,created_at,updated_at
+1,51,"Type 1",,#e0f0f0,3,147,60,2,2021-12-07T07:30:25.000000Z,2021-12-07T07:41:36.000000Z

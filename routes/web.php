@@ -1,9 +1,10 @@
 <?php
 
+use App\Models\MaintenanceRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PagesController;
 
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\admin\RentController;
 use App\Http\Controllers\admin\RoleController;
@@ -14,15 +15,18 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\admin\FloorController;
 use App\Http\Controllers\admin\OwnerController;
 use App\Http\Controllers\admin\StaffController;
+use App\Http\Controllers\admin\LeavesController;
+
 use App\Http\Controllers\admin\ModuleController;
+
 use App\Http\Controllers\admin\NoticeController;
 
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\admin\TenantController;
-
+use App\Http\Controllers\admin\InvoiceController;
+use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\admin\RequestController;
-
 use App\Http\Controllers\admin\ServiceController;
-use App\Http\Controllers\admin\LeavesController;
 use App\Http\Controllers\admin\VisitorController;
 use App\Http\Controllers\admin\EmployeeController;
 use App\Http\Controllers\admin\HelpdeskController;
@@ -36,11 +40,9 @@ use App\Http\Controllers\admin\UtilitybillController;
 use App\Http\Controllers\admin\VisitorsreportController;
 use App\Http\Controllers\admin\ComplaintreportController;
 use App\Http\Controllers\admin\MaintenanceCostController;
-use App\Http\Controllers\admin\MaintenanceRequestController;
 use App\Http\Controllers\admin\SecuritydepositController;
 use App\Http\Controllers\admin\UnitstatusreportController;
-use App\Http\Controllers\admin\InvoiceController;
-use App\Models\MaintenanceRequest;
+use App\Http\Controllers\admin\MaintenanceRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,6 +87,14 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::get('/floor/edit/{id}', [FloorController::class, 'edit'])->name('edit');
         Route::post('/floor/update/{id}', [FloorController::class, 'update'])->name('update');
        
+    });
+
+    //Messages routes
+    Route::group(['prefix' => 'messages', 'as' => 'messages.'], function () {
+        Route::get('/messages', [MessageController::class, 'index'])->name('list');
+        Route::get('/message/show/{id}', [MessageController::class, 'show'])->name('show');
+        Route::delete('/message/delete/{id}', [MessageController::class, 'destroy'])->name('delete');
+        
     });
 
     //Service Contract list
@@ -152,6 +162,16 @@ Route::group(['middleware' => ['auth:web']], function() {
         
     });
 
+    //Reports routes
+    Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+        Route::get('/', [ReportController::class, 'index'])->name('list');
+        Route::get('/rented_apartment_list', [ReportController::class, 'generate_rented_apartment_list'])->name('generate_rented_apartment_list');
+        Route::get('/vacant_apartment_list', [ReportController::class, 'generate_vacant_apartment_list'])->name('generate_vacant_apartment_list');
+        Route::get('/full_apartment_list', [ReportController::class, 'generate_full_apartment_list'])->name('generate_full_apartment_list');
+        Route::get('/generate_active_tenant_list', [ReportController::class, 'generate_active_tenant_list'])->name('generate_active_tenant_list');
+        Route::get('/generate_passed_tenant_list', [ReportController::class, 'generate_passed_tenant_list'])->name('generate_passed_tenant_list');
+    });
+
     // Modules routes
     Route::group(['prefix' => 'module', 'as' => 'module.'], function () {
         Route::get('/list', [ModuleController::class, 'index'])->name('list');
@@ -186,6 +206,8 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::post('/profile/change_image/{id}', [StaffController::class, 'change_profile_image'])->name('change_profile_image');
         Route::post('/profile/edit-profile/{id}', [StaffController::class, 'edit_profile'])->name('edit_profile');
         Route::post('/profile/change_password/{id}', [StaffController::class, 'change_password'])->name('change_password');
+        Route::get('/staff/passed/{id}', [StaffController::class, 'staff_passed'])->name('passed');
+        
     });
  
     
@@ -202,6 +224,7 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::get('/tenant/edit/{id}', [TenantController::class, 'edit'])->name('edit');
         Route::post('/tenant/update/{id}', [TenantController::class, 'update'])->name('update');
         Route::delete('/tenant/delete/{id}', [TenantController::class, 'destroy'])->name('delete');
+        Route::get('/tenant/passed/{id}', [TenantController::class, 'tenant_passed'])->name('passed');
     });
 
      // Employee routes

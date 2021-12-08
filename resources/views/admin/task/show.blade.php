@@ -45,7 +45,7 @@
                                 $apartment_number = \App\Models\Unit::where('id', $task->unit_id)->first()->unit_number;
                             @endphp
                             
-                            <span class="task_heading">Location: </span> Floor {{ $floor_number }}, Apartment {{ $apartment_number }}
+                            <span class="task_heading">Location: </span> Apartment {{ $apartment_number }}
                             @endif
 
                             @if($task->location_id == 2)
