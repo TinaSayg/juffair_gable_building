@@ -38,14 +38,14 @@ Juffair Gable
           <div class="card">
             <form 
             action="{{route('units.store') }}" 
-             method="POST"  enctype="multipart/form-data">
+             method="POST"  enctype="multipart/form-data" autocomplete="off">
               @csrf
               <div class="card-header">
                 <h4>Add Apartment</h4>
               </div>
               <div class="card-body">
                 <div class="form-group row">
-                  <div class="form-group col-md-6">
+                  {{-- <div class="form-group col-md-6">
                     <label for="">Floor Type</label>
                     <select class="form-control" name="floor_type_code" onchange="getFloors(this.value)" id="floor_type_code">
                       <option value="0" selected disabled>---Select---</option>
@@ -53,51 +53,61 @@ Juffair Gable
                           <option value="{{ $floor_type->floor_type_code }}">{{ $floor_type->floor_type_name }}</option>
                       @endforeach
                     </select>
-                  </div>
+                  </div> --}}
       
                   <div class="form-group col-md-6">
                     <label for="">Select Floor</label>
-                    <select class="form-control" name="floor_id" id="floorSelect"></select>
-
+                    <select class="form-control" name="floor_id"  id="floorSelect">
+                      <option value="0" selected disabled>---Select---</option>
+                      @foreach ($floor_list as $floor)
+                          <option value="{{ $floor->id }}">{{ $floor->number }}</option>
+                      @endforeach
+                    </select>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="name">Apartment Numbers</label>
+                    <input type="text" name="unit_number" value="{{ old('unit_number') }}" class="form-control" maxlength="4" id="unitNumber">
                   </div>
                 </div>
                 <div class="form-group row">
-                    <div class="form-group col-md-6">
-                      <label for="name">Apartment Numbers</label>
-                      <input type="text" name="unit_number" class="form-control" maxlength="4" id="unitNumber">
+                    <div class="form-group col-md-3">
+                      <label for="name">Apartment Type</label>
+                      <select name="apartment_type" class="form-control" id="">
+                        <option value="Type 1">Type 1</option>
+                        <option value="Type 2">Type 2</option>
+                        <option value="Type 3">Type 3</option>
+                        <option value="Type 4">Type 4</option>
+                        <option value="Type 5">Type 5</option>
+                      </select>
                     </div>
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-3">
                       <label for="">Pick Color</label>
-                      <input type="text" name="color_code" class="form-control colorpickerinput">
+                      <input type="text" name="color_code" value="{{ old('color_code') }}" class="form-control colorpickerinput">
                       
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label for="name">No of bed rooms</label>
+                      <select class="form-control" name="no_of_bed_rooms" id="">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label for="number">Apartment Area (m<sup>2</sup>)</label>
+                      <input type="text" maxlength="3" value="{{ old('unit_area') }}" name="unit_area" placeholder="" class="form-control" id="unitArea">
                     </div>
                 </div>
 
                 
                 <div class="form-group row">
-                  <div class="form-group col-md-3">
-                    <label for="name">Total Rent (BD)</label>
-                    <input type="text" name="unit_rent" class="form-control" id="totalRent" maxlength="8">
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="name">No of bed rooms</label>
-                    <select class="form-control" name="no_of_bed_rooms" id="">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="number">Apartment Area (m<sup>2</sup>)</label>
-                    <input type="text" maxlength="3" name="unit_area" placeholder="" class="form-control" id="unitArea">
-                  </div>
                   <div class="form-group col-md-3">
                     <label for="number">Apartment Status</label>
                     <select name="unit_status_code" class="form-control" id="unitStatus">
@@ -107,15 +117,12 @@ Juffair Gable
                     </select>
                   </div>
                 </div>
-
-
-         
- 
       </div>
 
       
               <div class="card-footer">
                 <button type="submit" class="btn btn-primary">Save</button>
+                <a href="{{ url()->previous() }}"  class="btn btn-primary ml-2">Cancel</a>
               </div>
             </form>
           </div>

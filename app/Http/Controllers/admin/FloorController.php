@@ -23,7 +23,7 @@ class FloorController extends Controller
     {
         $floors = Floor::all();
         $floor_types = FloorType::all();
-        return view('admin.floors.index',compact('floors','floor_types'));
+        return view('admin.Floors.index',compact('floors','floor_types'));
     }
 
 

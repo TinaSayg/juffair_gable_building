@@ -32,37 +32,34 @@ Juffair Gable
                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab"
                       aria-controls="home" aria-selected="true">Apartment Information</a>
                   </li>
+                  @if($unit->tenant)
                   <li class="nav-item">
                     <a class="nav-link" id="tenant-tab" data-toggle="tab" href="#tenant" role="tab"
                       aria-controls="profile" aria-selected="false">Tenant Information</a>
                   </li>
-                
+                  @endif
                 </ul>
                 <div class="tab-content" id="myTabContent">
                   <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                     <div class="row">
-                      <div class="col-md-3 col-6 b-r">
-                        <strong>Apartment Type</strong>
-                        <br>
-                        <p class="text-muted">{{ isset($unit->floor->floor_type )? $unit->floor->floor_type->floor_type_name  : '' }}</p>
-                      </div>
                       <div class="col-md-3 col-6 b-r">
                         <strong>Floor</strong>
                         <br>
                         <p class="text-muted">{{ isset($unit->floor)? $unit->floor->number : '' }}</p>
                       </div>
                       <div class="col-md-3 col-6 b-r">
-                        <strong>Rent Apartment No.</strong>
+                        <strong>Apartment No.</strong>
                         <br>
                         <p class="text-muted">{{isset($unit) ? $unit->unit_number : ''}}</p>
                       </div>
-                      <div class="col-md-3 col-6">
-                        <strong>Apartment Rent</strong>
+                      <div class="col-md-3 col-6 b-r">
+                        <strong>Apartment Type</strong>
                         <br>
-                        <p class="text-muted">{{isset($unit) ? $unit->unit_rent : '' }}</p>
+                        <p class="text-muted">{{ isset($unit->apartment_type )? $unit->apartment_type  : '' }}</p>
                       </div>
+                      
                       <div class="col-md-3 col-6">
-                        <strong>No of bed</strong>
+                        <strong>No of bedrooms</strong>
                         <br>
                         <p class="text-muted">{{isset($unit) ? $unit->no_of_bed_rooms : '' }}</p>
                       </div>
@@ -72,13 +69,30 @@ Juffair Gable
                         <p class="text-muted">{{isset($unit) ? $unit->unit_area : '' }} m<sup>2</sup></p>
                       </div>
                       <div class="col-md-3 col-6">
-                        <strong>Color Code</strong>
+                        <strong>Apartment Color</strong>
                         <br>
-                        <p class="text-muted">{{isset($unit) ? $unit->color_code : '' }}</p>
+                        <span style="padding:5px 25px;background-color: {{ isset($unit)? $unit->color_code: ''}};box-shadow: 0 1px 2px;"></span>
+                      </div>
+                      <div class="col-md-3 col-6">
+                        <strong>Status</strong>
+                        <br>
+                        @php
+                            $class = '';
+                            switch ( $unit->unit_status_code) {
+                            case 1:
+                                $class = 'badge-success';
+                                break;
+                            default:
+                                $class = 'badge-warning';
+                                break;
+                            }
+                        @endphp
+                        <span class="badge {{ $class }}">{{ isset($unit->unit_status) ? $unit->unit_status->unit_status_name : '' }}</span>
                       </div>
                       
                     </div>
                   </div>
+                  @if($unit->tenant)
                   <div class="tab-pane fade" id="tenant" role="tabpanel" aria-labelledby="tenant-tab">
                     <div class="row mt-sm-5">
                       <div class="col-12 col-md-12 col-lg-4">
@@ -196,7 +210,7 @@ Juffair Gable
                       </div>
                     </div>
                   </div>
-                  
+                  @endif
                 </div>
               </div>
             </div>

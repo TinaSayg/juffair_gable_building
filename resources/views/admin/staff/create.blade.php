@@ -51,8 +51,8 @@ Juffair Gable
                         </div>
                      </div>
                      <div class="form-group col-md-4">
-                        <label for="number">Contact Number</label>
-                        <input type="tel" maxlength="12" class="form-control" autocomplete="off" name="number" id="number" required="" 
+                        <label for="number">Contact Number (Without Country Code)</label>
+                        <input type="tel" maxlength="8" class="form-control" autocomplete="off" name="number" id="number" required="" 
                            value="{{ old('number')}}" 
                            placeholder="Staff contact number">
                         <div class="invalid-feedback">
@@ -85,15 +85,12 @@ Juffair Gable
                               <div class="custom-file">
                                  <input type="file"
                                     id="staff_image" name="staff_image"
-                                    accept="image/jpeg">
+                                    accept="image/jpeg,image/png">
                               </div>
                            </div>
                         </div>
                      </div>
-                     <div class="form-group col-md-4">
-                        <label>Total Leaves Per Month</label>
-                        <input type="text" name="leaves_per_month" class="form-control" id="leaves_per_month"></input>
-                     </div>
+                     
                      <div class="form-group col-md-4">
                         <label>Annual Leaves</label>
                         <input type="text" name="annual_leaves" class="form-control" id="annual_leaves"></input>
@@ -112,8 +109,12 @@ Juffair Gable
                         <textarea name="staff_permanent_address" class="form-control"></textarea>
                      </div>
                      <div class="form-group col-md-4">
-                        <label>CPR</label>
+                        <label>Cpr Number</label>
                         <input type="text" maxlength="9" name="staff_cpr_no" class="form-control" id="cprNumber">
+                     </div>
+                     <div class="form-group col-md-4">
+                        <label>Passport Number</label>
+                        <input type="text" maxlength="9" name="passport_number" class="form-control" id="cprNumber">
                      </div>
                      <div class="form-group col-md-4">
                         <label>LeasePeriodStartDate</label>
@@ -124,15 +125,15 @@ Juffair Gable
                         <input type="date" name="lease_period_end_datetime" class="form-control">
                      </div>
                      <div class="form-group col-md-4">
-                        <label>Staff Passport Copy</label>
+                        <label>Passport Copy</label>
                         <input type="file" accept="image/png, image/jpeg" name="staff_passport_copy" class="form-control">
                      </div>
                      <div class="form-group col-md-4">
-                        <label>Staff CPR Copy</label>
+                        <label>CPR Copy</label>
                         <input type="file" accept="image/png, image/jpeg" name="staff_cpr_copy" class="form-control">
                      </div>
                      <div class="form-group col-md-4">
-                        <label>Staff Contract Copy</label>
+                        <label>Contract Copy</label>
                         <input type="file" accept="image/png, image/jpeg" name="staff_contract_copy" class="form-control">
                      </div>
                      <div class="form-group col-md-12" style="margin-right: 10px">

@@ -3,11 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
-use App\Models\RequestStatus;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Complain;
 use Illuminate\Http\Request;
+use App\Models\MaintenanceRequest;
+use App\Models\RequestStatus;
+use App\Models\ComplainStatus;
+use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Auth;
+
 class RequestController extends Controller
 {
     /**
@@ -17,7 +21,9 @@ class RequestController extends Controller
      */
     public function index()
     {
-        return view('admin.request.index');
+        $maintenancerequest = MaintenanceRequest::all();
+        $employee_list = User::where('userType', 'employee')->get();
+        return view('admin.request.index', compact('maintenancerequest','employee_list'));
     }
 
     /**
@@ -43,24 +49,18 @@ class RequestController extends Controller
         $request->validate([
             'title' => 'required',
             'description' => 'required',
-            'assign_date' => 'required|string',
-            'assigned_id' => 'required',
-        ],[
-            'assigned_id.required' => 'Select the assign to value'
         ]);
 
-        $employee_request = \App\Models\Request::create([
-            'title' => $request['title'],
-            'description' => $request['description'],
-            'date' => $request['assign_date'],
-            'posted_by' => Auth::user()->id,
-            'assigned_id' => $request['assigned_id'],
-            'request_status_code' => 1, //padding
-        ]);
+        $complaint = new Complain();
+        $complaint->complain_title = $request->input('title');
+        $complaint->complain_description = $request->input('description');
+        $complaint->complain_person_id = Auth::user()->id;
+        $complaint->complain_status_code = 1;
 
-        if($employee_request){
+        if($complaint->save() )
+        {
             Toastr::success('Your request submit successfully.');
-            return redirect()->route('tasks.list', ['tab' => '1']);
+            return redirect()->route('request.list', ['tab' => '1']);
         }
         else
         {
@@ -95,7 +95,9 @@ class RequestController extends Controller
      */
     public function edit($id)
     {
-        //
+        $maintenancerequest = MaintenanceRequest::find($id);
+       
+        return view('admin.request.edit', compact('maintenancerequest'));
     }
 
     /**
@@ -107,7 +109,50 @@ class RequestController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title' => 'required',
+            'description' => 'required',
+            'location_id' =>  'required',
+        ]);
+       
+        $location_id = $request->input('location_id');
+        $floor_id = $request->input('floor_id',null);
+        $unit_id = $request->input('unit_id',null);
+        $common_area_id = $request->input('common_area_id',null);
+        $service_area_id = $request->input('service_area_id',null);
+       
+
+        $maintenancerequest = MaintenanceRequest::find($id);
+        $maintenancerequest->title = $request->input('title');
+        $maintenancerequest->description = $request->input('description');
+        $maintenancerequest->location_id= $request->input('location_id');
+        $maintenancerequest->floor_id = $floor_id;
+        $maintenancerequest->unit_id = $unit_id;
+        $maintenancerequest->common_area_id = $common_area_id;
+        $maintenancerequest->service_area_id = $service_area_id;
+        $maintenancerequest->maintenance_request_status_code = 1;
+
+        if(Auth::user()->userType == 'employee')
+        {
+            $maintenancerequest->user_id = Auth::user()->id;
+        }
+        
+
+        if($maintenancerequest->save()){
+            Toastr::success('Maintenance Request updated successfully.');
+            
+            if(Auth::user()->userType == 'employee')
+            {
+                return redirect()->route('request.list');
+            }
+            
+            return redirect()->route('dashboard');
+        }
+        else
+        {
+            Toastr::success('Something went wrong.');
+            return redirect()->route('request.create');
+        }
     }
 
     /**
@@ -118,7 +163,18 @@ class RequestController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $maintenancerequest = MaintenanceRequest::find($id);
+        
+        if($maintenancerequest->delete())
+        {
+            Toastr::success('This request is deleted.');
+            return redirect()->back();
+        }
+        else
+        {
+            Toastr::success('Something went wrong.');
+            return redirect()->back();
+        }
     }
 
     public function request_action(Request $request, $id)
@@ -144,6 +200,5 @@ class RequestController extends Controller
 
        Toastr::success('Something went wrong.');
        return back();
-
     }
 }

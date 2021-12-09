@@ -57,9 +57,10 @@ class TenantController extends Controller
      */
     public function create()
     {
-        $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
+        // $floor_types = FloorType::where('floor_type_code', 2)->get();
+        $floor_list = FloorDetail::where('floor_type_code', 2)->get();
         $tenant_types = TenantType::all();
-        return view('admin.tenants.create', compact('floor_types','tenant_types'));
+        return view('admin.tenants.create', compact('floor_list','tenant_types'));
     }
 
     /**
@@ -87,7 +88,7 @@ class TenantController extends Controller
             'tenant_cpr_no' => 'required|unique:tenants,tenant_cpr_no',
             'lease_period_start_datetime' => 'required',
             'lease_period_end_datetime' => 'required',
-            'security_deposit' => 'required',
+            // 'security_deposit' => 'required',
             'emergancy_contact_number' => 'required',
             'emergancy_email' => 'required',
             'tenant_type_code' => 'required',
@@ -111,11 +112,13 @@ class TenantController extends Controller
         $tenant->tenant_cpr_no = $request['tenant_cpr_no'];
         $tenant->lease_period_start_datetime = $request['lease_period_start_datetime'];
         $tenant->lease_period_end_datetime = $request['lease_period_end_datetime'];
-        $tenant->security_deposit = $request['security_deposit'];
+        // $tenant->security_deposit = $request['security_deposit'];
         $tenant->emergancy_contact_number = $request['emergancy_contact_number'];
         $tenant->emergancy_email = $request['emergancy_email'];
         $tenant->tenant_date_of_birth = $request['tenant_date_of_birth'];
         $tenant->tenant_type_code = $request['tenant_type_code'];
+        $tenant->tenant_rent = $request['total_rent'];
+        $tenant->tenant_facilities_list = explode(',',$request['all_facilities']);
         
         //save tenant image
         if($request->file('tenant_image'))
@@ -218,6 +221,7 @@ class TenantController extends Controller
      */
     public function edit($id)
     {
+        
         $tenant = Tenant::find($id);
         $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
         $tenant_types = TenantType::all();
@@ -237,6 +241,7 @@ class TenantController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
         $tenant = Tenant::find($id);
 
         // Tenant old email
@@ -258,7 +263,7 @@ class TenantController extends Controller
             'tenant_cpr_no' => 'required|unique:tenants,tenant_cpr_no,'.$id,
             'lease_period_start_datetime' => 'required',
             'lease_period_end_datetime' => 'required',
-            'security_deposit' => 'required',
+            // 'security_deposit' => 'required',
             'emergancy_contact_number' => 'required',
             'emergancy_email' => 'required|email',
             'tenant_type_code' => 'required',
@@ -278,11 +283,13 @@ class TenantController extends Controller
         $tenant->tenant_cpr_no = $request['tenant_cpr_no'];
         $tenant->lease_period_start_datetime = $request['lease_period_start_datetime'];
         $tenant->lease_period_end_datetime = $request['lease_period_end_datetime'];
-        $tenant->security_deposit = $request['security_deposit'];
+        // $tenant->security_deposit = $request['security_deposit'];
         $tenant->emergancy_contact_number = $request['emergancy_contact_number'];
         $tenant->emergancy_email = $request['emergancy_email'];
         $tenant->tenant_date_of_birth = $request['tenant_date_of_birth'];
         $tenant->tenant_type_code = $request['tenant_type_code'];
+        $tenant->tenant_rent = $request['total_rent'];
+        $tenant->tenant_facilities_list = explode(',',$request['all_facilities']);
 
         //save tenant image
         if($request->file('tenant_image'))
@@ -385,5 +392,28 @@ class TenantController extends Controller
 
         Toastr::success('Tenant deleted successfully!');
         return back();
+    }
+
+    public function tenant_passed($id)
+    {
+        $tenant = Tenant::find($id);
+
+        $tenant->is_passed = 1;
+
+        if($tenant->save())
+        {
+            $unit = Unit::find($tenant->unit_id);
+            $unit->unit_status_code = 2; // vacant
+
+            $unit->save();
+            
+            Toastr::success('Tenant is passed.');
+            return back();
+        }
+        else
+        {
+            Toastr::error('Something went wrong.');
+            return back();
+        }
     }
 }

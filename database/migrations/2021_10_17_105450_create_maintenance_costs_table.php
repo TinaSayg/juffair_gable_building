@@ -18,7 +18,12 @@ class CreateMaintenanceCostsTable extends Migration
             $table->string('maintenance_title');
             $table->string('maintenance_description', 10000);
             $table->dateTime('maintenance_date');
-            $table->decimal('maintenance_cost_total_amount', 15, 4);
+            $table->integer('location_id');
+            $table->integer('floor_id')->nullable();
+            $table->integer('unit_id')->nullable();
+            $table->integer('common_area_id')->nullable();
+            $table->integer('service_area_id')->nullable();
+            $table->decimal('maintenance_cost_total_amount', 15, 3);
             $table->timestamps();
         });
     }

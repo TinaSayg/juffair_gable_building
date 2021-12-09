@@ -20,7 +20,6 @@ class CreateRequestsTable extends Migration
 
             $table->longText('request_action_reason')->nullable();
             $table->dateTime('date');
-            $table->integer('posted_by');
             $table->integer('assigned_id');
             $table->integer('request_status_code');
             $table->timestamps();

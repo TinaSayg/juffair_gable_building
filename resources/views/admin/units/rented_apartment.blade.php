@@ -19,6 +19,9 @@ Juffair Gable
     padding: 20px 10px !important;
     outline: none;
      }
+    tr:hover {
+        background: #a3a3a3 !important;
+    }
 </style>
 @stop
 @section('content')
@@ -96,12 +99,11 @@ Juffair Gable
                         <tr>
                             <th>Floor</th>
                             <th>Apartment No.</th>
-                            <th>Apartment Rent</th>
-                            <th>Apartment Type</th>
+                            <th>Renter Name</th>
                             <th>No. of bedrooms</th>
                             <th>Apartment Area</th>
                             <th>Status</th>
-                            <th>Colour Code</th>
+                            <th>Colour</th>
                             @if(request()->user()->userType == 'general-manager')
                                 <th>Action</th>
                             @endif
@@ -116,12 +118,24 @@ Juffair Gable
                             <tr @if($user_type == 'employee') style="cursor: pointer" class='clickable-row' data-href='{{route('units.rented_apartment.show', $unit->id)}}' @endif>
                                 <td>{{ isset($unit->floor) ? $unit->floor->number : '' }}</td>
                                 <td>{{ $unit->unit_number }}</td>
-                                <td>{{ $unit->unit_rent }} BD</td>
-                                <td>{{ isset($unit->floor->floor_type) ? $unit->floor->floor_type->floor_type_name : '' }}</td>
+                                <td>{{ $unit->tenant ? $unit->tenant->tenant_first_name . ' '. $unit->tenant->tenant_last_name : '' }}</td>
                                 <td>{{ $unit->no_of_bed_rooms }}</td>
                                 <td>{{ $unit->unit_area }} m<sup>2</sup></td>
-                                <td>{{ isset($unit->unit_status) ? $unit->unit_status->unit_status_name : '' }}</td>
-                                <td>{{ $unit->color_code }}</td>
+                                <td>
+                                    @php
+                                        $class = '';
+                                        switch ( $unit->unit_status_code) {
+                                        case 1:
+                                            $class = 'badge-success';
+                                            break;
+                                        default:
+                                            $class = 'badge-warning';
+                                            break;
+                                        }
+                                    @endphp
+                                    <span class="badge {{ $class }}">{{ isset($unit->unit_status) ? $unit->unit_status->unit_status_name : '' }}</span>
+                                </td>
+                                <td><span style="padding:5px 25px;background-color: {{$unit->color_code}};box-shadow: 0 1px 2px;"></span></td>
                                 @if(request()->user()->userType == 'general-manager')
                                 <td>
                                     <a href="{{ route('units.show',$unit->id) }}"><i class="fa fa-eye mr-2" data-toggle="modal" data-target="#exampleModal1"></i> </a>

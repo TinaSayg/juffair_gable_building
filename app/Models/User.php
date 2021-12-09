@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Owner;
+use App\Models\StaffDetail;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\Auth;
 use App\Permissions\HasPermissionsTrait;
@@ -54,6 +55,6 @@ class User extends Authenticatable
     }
 
     public function staffDetail(){
-        return $this->hasOne(staffDetail::class,'staff_id')->where('staff_id',Auth::user()->id);
+        return $this->hasOne(StaffDetail::class,'staff_id')->where('staff_id',Auth::user()->id);
     }
 }

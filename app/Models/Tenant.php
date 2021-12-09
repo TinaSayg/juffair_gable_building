@@ -14,6 +14,10 @@ class Tenant extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'tenant_facilities_list' => 'array',
+    ];
+
     public function building(){
         return $this->belongsTo(Building::class, 'building_id', 'id');
     }

@@ -15,19 +15,16 @@ class CreateRentsTable extends Migration
     {
         Schema::create('rents', function (Blueprint $table) {
             $table->id();
+            $table->integer('tenant_id');
             $table->string('renter_name');
-
             $table->decimal('rent', 15, 3);
             $table->decimal('ewa_bill', 15, 3);
             $table->decimal('utility_bill', 15, 3);
-
             $table->dateTime('paid_date');
             $table->string('rent_month');
+            $table->integer('rent_year');
             $table->string('payment_method');
-
-            $table->integer('unit_id');
-            $table->integer('floor_id');
-            $table->integer('building_id');
+            $table->integer('rent_paid_status_code');
             $table->integer('rent_type_code');
             $table->timestamps();
         });

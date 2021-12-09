@@ -44,42 +44,46 @@ Juffair Gable
                 <h4>Edit Apartment</h4>
               </div>
               <div class="card-body">
-                {{-- <div class="form-group row">
-                  <div class="form-group col-md-6">
+                <div class="form-group row">
+                  {{-- <div class="form-group col-md-6">
                     <label for="">Floor Type</label>
                     <select class="form-control" name="floor_type_code" onchange="getFloors(this.value)" id="floor_type_code">
                       @foreach ($floor_types as $floor_type)
                           <option value="{{ $floor_type->floor_type_code }}" {{(isset($unit->floor->floor_type) && ($floor_type->floor_type_code == $unit->floor->floor_type->floor_type_code)) ? 'selected' : ''}}>{{ $floor_type->floor_type_name }}</option>
                       @endforeach
                     </select>
-                  </div>
-      
-                  <div class="form-group col-md-6">
-                    <label for="">Select Floor</label>
-                    <select class="form-control" name="floor_id" id="floorSelect">
-                        @if(isset($unit->floor->number))
-                            <option value="{{ $unit->floor->id }}">{{ $unit->floor->number }}</option>
-                        @endif
-                    </select>
+                  </div> --}}
 
+                  
+                  <div class="form-group col-md-6">
+                    <select class="form-control" name="floor_id"  id="floorSelect">
+                      <option value="0" selected disabled>---Select---</option>
+                      @foreach ($floor_list as $floor)
+                          <option value="{{ $floor->id }}" @if($unit->floor_id == $floor->id) selected @endif>{{ $floor->number }}</option>
+                      @endforeach
+                    </select>
+                    
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="name">Apartment Number</label>
+                    <input type="text" value="{{ $unit->unit_number }}" name="unit_number" class="form-control" maxlength="4" id="unitNumber">
                   </div>
                 </div>
                 <div class="form-group row">
-                    <div class="form-group col-md-6">
-                      <label for="name">Unit Numbers</label>
-                      <input type="text" value="{{ $unit->unit_number }}" name="unit_number" class="form-control" maxlength="4" id="unitNumber">
+                    
+                    <div class="form-group col-md-3">
+                      <label for="name">Apartment Type</label>
+                      <select name="apartment_type" class="form-control" id="">
+                        <option value="Type 1" @if($unit->apartment_type == 'Type 1') selected @endif>Type 1</option>
+                        <option value="Type 2" @if($unit->apartment_type == 'Type 2') selected @endif>Type 2</option>
+                        <option value="Type 3" @if($unit->apartment_type == 'Type 3') selected @endif>Type 3</option>
+                        <option value="Type 4" @if($unit->apartment_type == 'Type 4') selected @endif>Type 4</option>
+                        <option value="Type 5" @if($unit->apartment_type == 'Type 5') selected @endif>Type 5</option>
+                      </select>
                     </div>
-                  </div> --}}
-                  
-                  
-                  <div class="form-group row">
                     <div class="form-group col-md-3">
                       <label for="">Pick Color</label>
                       <input type="text" value="{{ $unit->color_code }}" name="color_code" class="form-control colorpickerinput">
-                    </div>
-                    <div class="form-group col-md-3">
-                      <label for="">Total Rent</label>
-                      <input type="text" value="{{ $unit->unit_rent }}" name="unit_rent" class="form-control">
                     </div>
                     <div class="form-group col-md-3">
                       <label for="name">No of bed rooms</label>
@@ -102,11 +106,16 @@ Juffair Gable
                       </select>
                     </div>
                 </div>
+                  
+                  
+                 
       </div>
 
       
               <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">Update</button>
+                <a href="{{ url()->previous() }}"  class="btn btn-primary ml-2">Cancel</a>
+
               </div>
             </form>
           </div>

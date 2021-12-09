@@ -49,6 +49,13 @@
       margin: 0px 5px 0px 5px;
     }
 
+    .main-sidebar .sidebar-menu li ul.dropdown-menu li a:hover .main-sidebar .sidebar-menu li a
+    {
+      background-color: #f5f5f5 !important;
+      border-radius: 20px !important;
+      color:white !important
+    }
+
     .buttons-print
     {
       background-color: #6563ef  !important;
@@ -83,10 +90,10 @@
     {
       color:#fff !important;
     }
-    .main-sidebar .sidebar-menu li:hover a
-    {
-      color: #000000;
-      /* background-color:#fff !important; */
+    .main-sidebar .sidebar-menu li a:hover {
+        background-color: #f5f5f5;
+        color:black;
+        border-radius: 20px;
     }
     .light-sidebar:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu > li.active ul.dropdown-menu li a
     {

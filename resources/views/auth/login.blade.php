@@ -29,14 +29,14 @@
 </head>
 
 <body class="login-bg">
-  <div>
+  {{-- <div>
     <aside id="sidebar-wrapper">
       <div class="sidebar-brand">
         <a href="{{ url('/') }}"> <img alt="image" style="height: 55px !important" src="{{ asset('/public/admin/assets')}}/img/juffair_gables_logo.png" class="header-logo" /> <span
           class="logo-name"></span>
         </a>
       </div>
-  </div>
+  </div> --}}
 
   <div class="loader"></div>
   <div id="app">

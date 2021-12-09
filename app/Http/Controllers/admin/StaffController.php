@@ -6,6 +6,7 @@ use Image;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Employee;
+use App\Models\StaffDetail;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +24,16 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $staffs=User::with('staffDetail')->whereIn('userType',['employee','officer'])->get()->except(Auth::id())->toArray();
+        if(Auth::user()->userType == 'Admin')
+        {
+            $staffs=User::with('StaffDetail')->whereIn('userType',['employee','officer','general-manager'])->get()->except(Auth::id())->toArray();
+
+        }
+        else
+        {
+            $staffs=User::with('StaffDetail')->whereIn('userType',['employee','officer','general-manager'])->get()->except(Auth::id())->toArray();
+
+        }
         
         return view('admin.staff.index', compact('staffs'));
     }
@@ -35,7 +45,7 @@ class StaffController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereIn('slug', ['employee','officer'])->orderBy('name','asc')->get();
+        $roles = Role::whereIn('slug', ['employee','officer','general-manager'])->orderBy('name','asc')->get();
 
         return view('admin.staff.create', compact('roles'));
     }
@@ -60,17 +70,17 @@ class StaffController extends Controller
             'staff_date_of_birth' => 'required',
             'staff_present_address' => 'required',
             'staff_permanent_address' => 'required',
-            'leaves_per_month' => 'required',
             'annual_leaves' => 'required',
             'sallery' => 'required',
             'staff_cpr_no' => 'required|unique:employees,employee_cpr_no',
+            'passport_number' => 'required|unique:employees,passport_number',
             'lease_period_start_datetime' => 'required',
             'lease_period_end_datetime' => 'required',
             'staff_passport_copy' => 'required',
             'staff_cpr_copy' => 'required',
             'staff_contract_copy' => 'required',
         ]);
-
+        
         $staff = new User();
         $staff->name = $request->name;
         $staff->number = $request->number;
@@ -79,18 +89,17 @@ class StaffController extends Controller
         $staff->userType = $request->staffType;
         $staff->address='';
         $staff->status=1;
-
+        
         //save owner image
         if($request->file('staff_image'))
         {
             $file_name = time().'_'.trim($request->file('staff_image')->getClientOriginalName());
-            
             $image = Image::make($request->file('staff_image')->getRealPath());
             $image->resize(300,300);
             $image->save(public_path('admin/assets/img/staff/'). $file_name);
             $staff->image = $file_name;
         }
-
+        
         if($staff->save())
         {
             $employee = new Employee();
@@ -98,11 +107,11 @@ class StaffController extends Controller
             $employee->employee_mobile_phone = $request->number;
             $employee->employee_email_address =  $request->email;;
             $employee->employee_sallery = $request['sallery'];
-            $employee->leaves_per_month = $request['leaves_per_month'];
             $employee->annual_leaves = $request['annual_leaves'];
             $employee->employee_present_address = $request['staff_present_address'];
             $employee->employee_permanent_address = $request['staff_permanent_address'];
             $employee->employee_cpr_no = $request['staff_cpr_no'];
+            $employee->passport_number = $request['passport_number'];
             $employee->employee_start_datetime = $request['lease_period_start_datetime'];
             $employee->employee_end_datetime = $request['lease_period_end_datetime'];
             $employee->employee_date_of_birth = $request['staff_date_of_birth'];
@@ -210,9 +219,9 @@ class StaffController extends Controller
             'staff_present_address' => 'required',
             'staff_permanent_address' => 'required',
             'sallery' => 'required',
-            'leaves_per_month' => 'required',
             'annual_leaves' => 'required',
             'staff_cpr_no' => 'required|unique:employees,employee_cpr_no,' . $id,
+            'passport_number' => 'required|unique:employees,passport_number,' . $id,
             'lease_period_start_datetime' => 'required',
             'lease_period_end_datetime' => 'required',
         ]);
@@ -222,12 +231,12 @@ class StaffController extends Controller
         $employee->employee_name = $request->name;
         $employee->employee_mobile_phone = $request->number;
         $employee->employee_email_address =  $request->email;
-        $employee->leaves_per_month = $request['leaves_per_month'];
         $employee->annual_leaves = $request['annual_leaves'];
         $employee->employee_sallery = $request['sallery'];
         $employee->employee_present_address = $request['staff_present_address'];
         $employee->employee_permanent_address = $request['staff_permanent_address'];
         $employee->employee_cpr_no = $request['staff_cpr_no'];
+        $employee->passport_number = $request['passport_number'];
         $employee->employee_start_datetime = $request['lease_period_start_datetime'];
         $employee->employee_end_datetime = $request['lease_period_end_datetime'];
         $employee->employee_date_of_birth = $request['staff_date_of_birth'];
@@ -340,5 +349,115 @@ class StaffController extends Controller
 
         Toastr::success('Staff deleted successfully!');
         return redirect()->route('staff.list');
+    }
+
+    public function profile(Request $request)
+    {
+        return view('admin.staff.profile');
+    }
+
+    public function change_profile_image(Request $request, $id)
+    {
+        $staff = User::find($id);
+       
+        //save owner image
+        if($request->file('profile_image'))
+        {
+            
+            unlink(public_path('admin/assets/img/staff/'). $staff->image);
+            $file_name = time().'_'.trim($request->file('profile_image')->getClientOriginalName());
+            $image = Image::make($request->file('profile_image')->getRealPath());
+            $image->resize(300,300);
+            $image->save(public_path('admin/assets/img/staff/'). $file_name);
+            $staff->image = $file_name;
+        }
+
+        if($staff->save())
+        {
+            $employee = Employee::where('employee_email_address', $staff->email)->first();
+            $employee->employee_image = $file_name;
+            $employee->save();
+            Toastr::success('Profile image changed.');
+            return redirect()->back();
+        }
+        else
+        {
+            Toastr::error('Something went wrong');
+            return redirect()->back();
+        }
+    }
+
+    public function edit_profile(Request $request,$id)
+    {
+        $request->validate([
+            'number'=>'required|size:8|unique:users,number,' . $id,
+            'present_address' => 'required',
+            'permanent_address' => 'required',
+        ]);
+
+        
+
+        $staff = User::find($id);
+
+        $staff->number = $request->input('number');
+
+        if($staff->save())
+        {
+            $employee = Employee::where('employee_email_address', $staff->email)->first();
+            $employee->employee_mobile_phone = $request->input('number');
+            $employee->employee_present_address = $request->input('present_address');
+            $employee->employee_permanent_address = $request->input('permanent_address');
+            $employee->save();
+            Toastr::success('Profile information updated successfully.');
+            return redirect()->back();
+        }
+        else
+        {
+            Toastr::error('Something went wrong');
+            return redirect()->back();
+        }
+    }
+
+    public function change_password(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|min:6',
+            'confirm_password' => 'required|same:password'
+        ],[
+            'confirm_password.same' => 'Confirm password field does not match.'
+        ]);
+
+        $staff = User::find($id);
+        $staff->password = Hash::make($request->input('password'));
+
+        if($staff->save())
+        {
+            Toastr::success('Your password is changed.');
+            return redirect()->back();
+        }
+        else
+        {
+            Toastr::error('Something went wrong');
+            return redirect()->back();
+        }
+
+    }
+
+    public function staff_passed($id)
+    {
+        $user = User::find($id);
+
+        $user->is_passed = 1;
+
+        if($user->save())
+        {
+            Toastr::success('This employee is passed.');
+            return back();
+        }
+        else
+        {
+            Toastr::error('Something went wrong.');
+            return back();
+        }
     }
 }

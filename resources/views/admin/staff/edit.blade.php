@@ -77,8 +77,8 @@ Juffair Gable
                         </div>
                      </div>
                      <div class="form-group col-md-4">
-                        <label for="number">Contact</label>
-                        <input type="text" class="form-control"  name="number" id="number"
+                        <label for="number">Contact Number (Without Country Code)</label>
+                        <input type="text" class="form-control" maxlength="8"  name="number" id="number"
                         @if (!empty($staffData['employee_mobile_phone'])) value="{{$staffData['employee_mobile_phone']}}" @else value="{{ old('employee_mobile_phone')}}" @endif
                         placeholder="Staff number">
                         <div class="invalid-feedback">
@@ -112,10 +112,7 @@ Juffair Gable
                            @endif  
                         </div>
                      </div>
-                     <div class="form-group col-md-4">
-                        <label>Total Leaves Per Month</label>
-                        <input type="text" value="{{ isset($staffData['leaves_per_month']) ? $staffData['leaves_per_month'] : '' }}" name="leaves_per_month" class="form-control" id="leaves_per_month"></input>
-                     </div>
+                     
                      <div class="form-group col-md-4">
                         <label>Annual Leaves</label>
                         <input type="text" value="{{ isset($staffData['annual_leaves']) ? $staffData['annual_leaves'] : '' }}" name="annual_leaves" class="form-control" id="annual_leaves"></input>
@@ -133,8 +130,12 @@ Juffair Gable
                         <textarea name="staff_permanent_address" class="form-control">{{ isset($staffData['employee_permanent_address']) ? $staffData['employee_permanent_address'] : '' }}</textarea>
                      </div>
                      <div class="form-group col-md-4">
-                        <label>CPR</label>
+                        <label>Cpr Number</label>
                         <input type="text" value="{{ isset($staffData['employee_cpr_no']) ? $staffData['employee_cpr_no'] : '' }}" maxlength="9" name="staff_cpr_no" class="form-control" id="cprNumber">
+                     </div>
+                     <div class="form-group col-md-4">
+                        <label>Passport Number</label>
+                        <input type="text" value="{{ isset($staffData['passport_number']) ? $staffData['passport_number'] : '' }}" maxlength="9" name="passport_number" class="form-control" id="cprNumber">
                      </div>
                      <div class="form-group col-md-4">
                         <label>LeasePeriodStartDate</label>

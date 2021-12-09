@@ -1,26 +1,32 @@
 <?php
 
+use App\Models\MaintenanceRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PagesController;
 
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\admin\RentController;
 use App\Http\Controllers\admin\RoleController;
+use App\Http\Controllers\admin\RoomController;
 use App\Http\Controllers\admin\TaskController;
 use App\Http\Controllers\admin\UnitController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\admin\FloorController;
 use App\Http\Controllers\admin\OwnerController;
 use App\Http\Controllers\admin\StaffController;
+use App\Http\Controllers\admin\LeavesController;
+
 use App\Http\Controllers\admin\ModuleController;
+
 use App\Http\Controllers\admin\NoticeController;
+
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\admin\TenantController;
-
-use App\Http\Controllers\admin\RoomController;
-
-use App\Http\Controllers\Admin\RequestController;
-use App\Http\Controllers\Admin\LeavesController;
+use App\Http\Controllers\admin\InvoiceController;
+use App\Http\Controllers\Admin\MessageController;
+use App\Http\Controllers\admin\RequestController;
+use App\Http\Controllers\admin\ServiceController;
 use App\Http\Controllers\admin\VisitorController;
 use App\Http\Controllers\admin\EmployeeController;
 use App\Http\Controllers\admin\HelpdeskController;
@@ -28,13 +34,15 @@ use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\ComplaintsController;
 use App\Http\Controllers\admin\PermissionController;
 use App\Http\Controllers\admin\RentreportController;
+use App\Http\Controllers\admin\ReservationController;
+use App\Http\Controllers\admin\TestimonialController;
 use App\Http\Controllers\admin\UtilitybillController;
 use App\Http\Controllers\admin\VisitorsreportController;
 use App\Http\Controllers\admin\ComplaintreportController;
 use App\Http\Controllers\admin\MaintenanceCostController;
 use App\Http\Controllers\admin\SecuritydepositController;
 use App\Http\Controllers\admin\UnitstatusreportController;
-use App\Http\Controllers\admin\ReservationController;
+use App\Http\Controllers\admin\MaintenanceRequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,17 +60,22 @@ Auth::routes();
 Route::view('/', 'index');
 Route::view('/terms', 'termsofservice');
 Route::view('/jobs', 'job');
+Route::get('/testimonials',  [PagesController::class, 'testimonials_info']);
 Route::view('/contact', 'contact');
 Route::post('/save_job_info', [PagesController::class, 'save_job_info'])->name('save_job_info');
 Route::get('/login', [LoginController::class, 'showLoginForm']);
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
+
 Route::group(['middleware' => ['auth:web']], function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('dashboard/task/closed/{id}', [TaskController::class, 'task_closed'])->name('dashboard.task.closed');
+    
     Route::get('/fetch_floors/{floor_type_code}', [PagesController::class, 'fetch_floors'])->name('floor_type.fetch_floors');
     Route::get('/fetch_all_units_and_floors_list/{floor_type_code}', [PagesController::class, 'fetch_all_units_and_floors_list'])->name('floor_type.fetch_all_units_and_floors_list');
     Route::get('/fetch_units/{floor_id}', [PagesController::class, 'fetch_units'])->name('floor.fetch_units');
     Route::get('/fetch_all_units/{floor_id}', [PagesController::class, 'fetch_all_units'])->name('floor_type.fetch_all_units');
+    Route::get('/send/message', [PagesController::class, 'send_message'])->name('send_message');
 
 
     //Floor routes
@@ -73,6 +86,26 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::delete('/floor/delete/{id}', [FloorController::class, 'destroy'])->name('delete');
         Route::get('/floor/edit/{id}', [FloorController::class, 'edit'])->name('edit');
         Route::post('/floor/update/{id}', [FloorController::class, 'update'])->name('update');
+       
+    });
+
+    //Messages routes
+    Route::group(['prefix' => 'messages', 'as' => 'messages.'], function () {
+        Route::get('/messages', [MessageController::class, 'index'])->name('list');
+        Route::get('/message/show/{id}', [MessageController::class, 'show'])->name('show');
+        Route::delete('/message/delete/{id}', [MessageController::class, 'destroy'])->name('delete');
+        
+    });
+
+    //Service Contract list
+    Route::group(['prefix' => 'service_contract', 'as' => 'service_contract.'], function () {
+        Route::get('/list', [ServiceController::class, 'index'])->name('list');
+        Route::get('/create', [ServiceController::class, 'create'])->name('create');
+        Route::post('/service_contract/store', [ServiceController::class, 'store'])->name('store');
+        Route::get('/service_contract/show/{id}', [ServiceController::class, 'show'])->name('show');
+        Route::delete('/service_contract/delete/{id}', [ServiceController::class, 'destroy'])->name('delete');
+        Route::get('/service_contract/edit/{id}', [ServiceController::class, 'edit'])->name('edit');
+        Route::post('/service_contract/update/{id}', [ServiceController::class, 'update'])->name('update');
        
     });
 
@@ -106,7 +139,7 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::get('/create', [UnitController::class, 'create'])->name('create');
         Route::post('/unit/store', [UnitController::class, 'store'])->name('store');
         Route::get('/unit/show/{id}', [UnitController::class, 'show'])->name('show');
-        Route::get('/search_by_apartment', [UnitController::class, 'search_by_appartment'])->name('search_by_apartment_list');
+        Route::any('/search_by_apartment', [UnitController::class, 'search_by_appartment'])->name('search_by_apartment_list');
         Route::get('/search_by_apartment/show/{id}', [UnitController::class, 'show'])->name('search_by_apartment.show');
         Route::get('/unit/edit/{id}', [UnitController::class, 'edit'])->name('edit');
         Route::post('/unit/update/{id}', [UnitController::class, 'update'])->name('update');
@@ -127,6 +160,16 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::any('assign-permission/{id}', [ RoleController::class, 'assignPermission'])->name('assignPermission');
 
         
+    });
+
+    //Reports routes
+    Route::group(['prefix' => 'reports', 'as' => 'reports.'], function () {
+        Route::get('/', [ReportController::class, 'index'])->name('list');
+        Route::get('/rented_apartment_list', [ReportController::class, 'generate_rented_apartment_list'])->name('generate_rented_apartment_list');
+        Route::get('/vacant_apartment_list', [ReportController::class, 'generate_vacant_apartment_list'])->name('generate_vacant_apartment_list');
+        Route::get('/full_apartment_list', [ReportController::class, 'generate_full_apartment_list'])->name('generate_full_apartment_list');
+        Route::get('/generate_active_tenant_list', [ReportController::class, 'generate_active_tenant_list'])->name('generate_active_tenant_list');
+        Route::get('/generate_passed_tenant_list', [ReportController::class, 'generate_passed_tenant_list'])->name('generate_passed_tenant_list');
     });
 
     // Modules routes
@@ -159,6 +202,11 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::delete('/delete/{id}', [StaffController::class, 'destroy'])->name('delete');
         Route::get('/edit/{id}', [StaffController::class, 'edit'])->name('edit');
         Route::post('/update/{id}', [StaffController::class, 'update'])->name('update');
+        Route::get('/profile', [StaffController::class, 'profile'])->name('profile');
+        Route::post('/profile/change_image/{id}', [StaffController::class, 'change_profile_image'])->name('change_profile_image');
+        Route::post('/profile/edit-profile/{id}', [StaffController::class, 'edit_profile'])->name('edit_profile');
+        Route::post('/profile/change_password/{id}', [StaffController::class, 'change_password'])->name('change_password');
+        Route::get('/staff/passed/{id}', [StaffController::class, 'staff_passed'])->name('passed');
         
     });
  
@@ -176,6 +224,7 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::get('/tenant/edit/{id}', [TenantController::class, 'edit'])->name('edit');
         Route::post('/tenant/update/{id}', [TenantController::class, 'update'])->name('update');
         Route::delete('/tenant/delete/{id}', [TenantController::class, 'destroy'])->name('delete');
+        Route::get('/tenant/passed/{id}', [TenantController::class, 'tenant_passed'])->name('passed');
     });
 
      // Employee routes
@@ -190,7 +239,7 @@ Route::group(['middleware' => ['auth:web']], function() {
      });
 
     // Rent Collection routes
-    Route::group(['prefix' => 'rent', 'as' => 'rent.'], function () {
+        Route::group(['prefix' => 'rent', 'as' => 'rent.'], function () {
         Route::get('/rent_list', [RentController::class, 'index'])->name('list');
         Route::get('/rent/create', [RentController::class, 'create'])->name('create');
         Route::post('/rent/store', [RentController::class, 'store'])->name('store');
@@ -198,6 +247,12 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::get('/rent/edit/{id}', [RentController::class, 'edit'])->name('edit');
         Route::post('/rent/update/{id}', [RentController::class, 'update'])->name('update');
         Route::delete('/rent/delete/{id}', [RentController::class, 'destroy'])->name('delete');
+    });
+
+    //Invoice routes
+    Route::group(['prefix' => 'invoice', 'as' => 'invoice.'], function () {
+        Route::get('/invoice/create/{id}', [InvoiceController::class, 'create'])->name('create');
+        Route::post('/save_invoice_info', [InvoiceController::class, 'save_invoice_info'])->name('save_invoice_info');
     });
 
     // Utility bill routes
@@ -235,28 +290,40 @@ Route::group(['middleware' => ['auth:web']], function() {
         Route::post('/complaints/update/{id}', [ComplaintsController::class, 'update'])->name('update');
         Route::delete('/complaints/delete/{id}', [ComplaintsController::class, 'destroy'])->name('delete');
         Route::get('/complaints/show/{id}', [ComplaintsController::class, 'show'])->name('show');
+        Route::post('/assign_request/', [ComplaintsController::class, 'assign_request'])->name('assign_request');
+        Route::post('/add_solution/', [ComplaintsController::class, 'add_solution'])->name('add_solution');
     });
     //Complaints routes
     Route::group(['prefix' => 'tasks', 'as' => 'tasks.'], function () {
-        Route::get('/list', [TaskController::class, 'index'])->name('list');
+        Route::get('task/list', [TaskController::class, 'index'])->name('list');
         Route::get('/task/create', [TaskController::class, 'create'])->name('create');
         Route::post('/task/store', [TaskController::class, 'store'])->name('store');
         Route::get('/task/edit/{id}', [TaskController::class, 'edit'])->name('edit');
         Route::post('/task/update/{id}', [TaskController::class, 'update'])->name('update');
         Route::delete('/task/delete/{id}', [TaskController::class, 'destroy'])->name('delete');
         Route::get('/task/show/{id}', [TaskController::class, 'show'])->name('show');
-        Route::post('/task/complete/{id}', [TaskController::class, 'complete_task']);
+        Route::post('/change_task_status', [TaskController::class, 'change_task_status'])->name('change_task_status');
+        Route::get('/closed/{id}', [TaskController::class, 'task_closed'])->name('closed');
+        Route::get('/cancel/{id}', [TaskController::class, 'task_cancelled'])->name('cancelled');
+        Route::post('/task/resubmit', [TaskController::class, 'resubmit_task'])->name('resubmit');
+        Route::get('/completed_task/list', [TaskController::class, 'complete_task_list'])->name('completed_task.list');
+        Route::get('/locations/{id}', [TaskController::class, 'get_task_location'])->name('get_task_location');
+        Route::post('/assign_task', [TaskController::class, 'assign_task'])->name('assign_task');
+        Route::post('/search', [TaskController::class, 'search_tasks_by_status'])->name('search_tasks_by_status');
+        Route::post('/assign_task_for_maintenance', [TaskController::class, 'assign_task_for_maintenance'])->name('assign_task_for_maintenance');
+
     });
 
     //Request Routes
     Route::group(['prefix' => 'request', 'as' => 'request.'], function () {
         Route::get('/request/list', [RequestController::class, 'index'])->name('list');
         Route::get('/request/create', [RequestController::class, 'create'])->name('create');
-        Route::post('/request/store', [RequestController::class, 'store'])->name('store');
+        Route::post('/request/store', [MaintenanceRequestController::class, 'store'])->name('store');
         Route::get('/request/edit/{id}', [RequestController::class, 'edit'])->name('edit');
         Route::post('/request/update/{id}', [RequestController::class, 'update'])->name('update');
         Route::delete('/request/delete/{id}', [RequestController::class, 'destroy'])->name('delete');
-        Route::get('/request/show/{id}', [RequestController::class, 'show'])->name('show');
+        Route::get('/request/show/{id}', [MaintenanceRequestController::class, 'show'])->name('show');
+        Route::get('/request/under_review/{id}', [MaintenanceRequestController::class, 'maintenance_request_under_review'])->name('under_review');
         Route::post('/request/action/{id}', [RequestController::class, 'request_action']);
     });
      //Visitors routes
@@ -310,18 +377,38 @@ Route::group(['middleware' => ['auth:web']], function() {
     Route::post('/leave/update/{id}', [LeavesController::class, 'update'])->name('update');
     Route::delete('/leave/delete/{id}', [LeavesController::class, 'destroy'])->name('delete');
     Route::get('/leave/show/{id}', [LeavesController::class, 'show'])->name('show');
+    Route::post('/leave/get_approved_leave_info', [LeavesController::class, 'get_approved_leave_info'])->name('get_approved_leave_info');
+    Route::post('/leave/get_disapproved_leave_info', [LeavesController::class, 'get_disapproved_leave_info'])->name('get_disapproved_leave_info');
+   });
+   //Testimonials routes
+   Route::group(['prefix' => 'testimonials', 'as' => 'testimonials.'], function () {
+    Route::get('/testimonials_list', [TestimonialController::class, 'index'])->name('list');
+    Route::get('/testimonials/create', [TestimonialController::class, 'create'])->name('create');
+    Route::post('/testimonials/store', [TestimonialController::class, 'store'])->name('store');
+    Route::get('/testimonials/edit/{id}', [TestimonialController::class, 'edit'])->name('edit');
+    Route::post('/testimonials/update/{id}', [TestimonialController::class, 'update'])->name('update');
+    Route::delete('/testimonials/delete/{id}', [TestimonialController::class, 'destroy'])->name('delete');
+    Route::get('/testimonials/show/{id}', [TestimonialController::class, 'show'])->name('show');
 
    });
 
+   Route::post('/send_email', [PagesController::class, 'send_email'])->name('email.send');
+
+
+    //Rent routes
+    Route::group(['prefix' => 'rent', 'as' => 'rent.'], function () {
+    Route::get('/rent_list', [RentController::class, 'index'])->name('list');
+    Route::get('/rent/create', [RentController::class, 'create'])->name('create');
+    Route::post('/rent/store', [RentController::class, 'store'])->name('store');
+    Route::get('/rent/edit/{id}', [RentController::class, 'edit'])->name('edit');
+    Route::post('/rent/update/{id}', [RentController::class, 'update'])->name('update');
+    Route::delete('/rent/delete/{id}', [RentController::class, 'destroy'])->name('delete');
+    Route::get('/rent/show/{id}', [RentController::class, 'show'])->name('show');
+   });
    //Approve routes
    Route::group(['prefix' => 'approveleave', 'as' => 'approveleave.'], function () {
     Route::get('/approveleave_list', [LeavesController::class, 'index'])->name('list');
-    Route::get('/approveleave/create', [LeavesController::class, 'create'])->name('create');
-    Route::post('/approveleave/store', [LeavesController::class, 'store'])->name('store');
-    Route::get('/approveleave/edit/{id}', [LeavesController::class, 'edit'])->name('edit');
-    Route::post('/approveleave/update/{id}', [LeavesController::class, 'update'])->name('update');
-    Route::delete('/approveleave/delete/{id}', [LeavesController::class, 'destroy'])->name('delete');
-    Route::get('/approveleave/show/{id}', [LeavesController::class, 'show'])->name('show');
+    Route::post('/save_leave_status', [LeavesController::class, 'save_leave_status'])->name('save_leave_status');
 });
 
 

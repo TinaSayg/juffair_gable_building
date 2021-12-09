@@ -22,20 +22,12 @@
                              <div class="card-body">
                                 <div class="row">
                                 <div class="form-group col-md-4">
-                                    <label>leave start date</label>
-                                    <input type="date" name="leave_start_date" class="form-control">
+                                    <label>Leave Start Date</label>
+                                    <input type="text" name="leave_start_date" class="form-control" id="datepicker1">
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label>leave end date</label>
-                                    <input type="date" name="leave_end_date" class="form-control">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Apply Date</label>
-                                    <input type="date" name="apply_date" class="form-control">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Reason</label>
-                                    <textarea name="leave_reason" class="form-control"></textarea>
+                                    <label>Leave End Date</label>
+                                    <input type="text" name="leave_end_date" class="form-control " id="datepicker2">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Leave Type</label>
@@ -45,12 +37,21 @@
                                         @endforeach
                                     </select>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="form-group col-md-4 attachdocument">
                                     <label>Attach Medical Certificate</label>
                                     <input type="file" name="leave_document" class="form-control">
                                 </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-8">
+                                    <label>Reason</label>
+                                    <textarea name="leave_reason" class="form-control"></textarea>
+                                </div>
                         </div>
-                        <button  class="btn btn-primary mr-1" type="submit">save</a>
+                        <button  class="btn btn-primary mr-1" type="submit">Submit</button>
+                        <a href="{{ url()->previous() }}"  class="btn btn-primary ml-2">Cancel</a>
                     </div>
                 </form>
              </div>
@@ -70,5 +71,38 @@
         $('.attachdocument').hide()
     }
    }
+
+</script>
+<script>
+    $("#datepicker1").daterangepicker({
+        locale: { format: "YYYY-MM-DD" },
+        singleDatePicker: true,
+        minDate: new Date(),
+    });
+
+    $("#datepicker2").daterangepicker({
+            locale: { format: "YYYY-MM-DD" },
+            singleDatePicker: true,
+    });
+
+    $("#datepicker1").change(function(){
+        let start = $("#datepicker1").val()
+        $("#datepicker2").daterangepicker({
+            locale: { format: "YYYY-MM-DD" },
+            singleDatePicker: true,
+            minDate: start,
+        });
+    })
+
+    $("#datepicker2").change(function(){
+        let max = $("#datepicker2").val()
+        
+        $("#datepicker1").daterangepicker({
+            locale: { format: "YYYY-MM-DD" },
+            singleDatePicker: true,
+            minDate: new Date(),
+            maxDate: max,
+        });
+    })
 </script>
 @stop

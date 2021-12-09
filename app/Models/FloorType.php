@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class FloorType extends Model
 {
     use HasFactory;
+    
 }

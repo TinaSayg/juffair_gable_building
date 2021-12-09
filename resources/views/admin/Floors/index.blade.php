@@ -24,26 +24,26 @@ Juffair Gable
     
     </ul> --}}
      <div class="row">
+      <div class="col-lg-12 col-12">
+        @if(request()->user()->can('create-floor'))
+            <button type="button" data-toggle="modal" data-target="#floorModal" class="btn btn-primary float-right mb-4" style="padding:7px 35px;">Add Floor
+            </button>
+        @endif
+      </div>
       <div class="col-12">
         <div class="card">
-          <div class="card-header">
-           <h4>Floor List</h4>
-            <div class="card-header-form">
-            @if(request()->user()->can('create-floor'))
-              <button type="button" data-toggle="modal" data-target="#floorModal" class="btn btn-primary">Add Floor
-              </button>
-            @endif
-            </div>
-          </div>
+          
             <div class="card-body">
               <div class="table-responsive">
-                <table id="tableExport" class="table table-export table-striped table-hover">
+                <table id="table-1" class="table table-export table-striped table-hover">
                   <thead>
                     <tr>
                       <th>Floor No</th>
                       <th>Floor Type</th>
                        {{-- @if(request()->user()->userType == 'Admin') --}}
+                       @if(Auth::user()->userType == 'Admin')
                        <th>Action</th>
+                       @endif
                        {{-- @endif --}}
                     </tr>
                   </thead>
@@ -54,18 +54,15 @@ Juffair Gable
                             <td> {{ $floor->from }} - {{ $floor->to }}</td>
                             <td>{{ isset($floor->floor_type) ? $floor->floor_type->floor_type_name : '' }}</td>
                             {{-- @if(request()->user()->userType == 'Admin') --}}
-                            <td>
-                              @if(request()->user()->can('edit-floor'))
-                                  {{-- <a title="Edit Floor"  id="editFloor" onclick="getfloorDetails({{ $floor['id'] }})"><i class="fas fa-edit"></i></a>&nbsp;&nbsp; --}}
-                              @endif
-                              @if(request()->user()->can('delete-floor'))
-                                  <a title="delete Floor" href="#" onclick="form_alert('floor-{{ $floor['id'] }}','Want to delete this floor')" class="confirmDelete"><i class="fas fa-trash text-danger"></i></a>
-                                  <form action="{{ route('floors.delete', $floor['id']) }}"
-                                      method="post" id="floor-{{ $floor['id'] }}">
-                                      @csrf @method('delete')
-                                  </form>
-                              @endif
-                          </td>
+                            @if(Auth::user()->userType == 'Admin')
+                              <td>
+                                    <a title="delete Floor" href="#" onclick="form_alert('floor-{{ $floor['id'] }}','Want to delete this floor')" class="confirmDelete"><i class="fas fa-trash text-danger"></i></a>
+                                    <form action="{{ route('floors.delete', $floor['id']) }}"
+                                        method="post" id="floor-{{ $floor['id'] }}">
+                                        @csrf @method('delete')
+                                    </form>
+                              </td>
+                            @endif
                           {{-- @endif --}}
                           </tr>  
                     @endforeach

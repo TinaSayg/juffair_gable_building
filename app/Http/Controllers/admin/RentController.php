@@ -9,40 +9,36 @@ use App\Models\Floor;
 use App\Models\Tenant;
 use App\Models\Building;
 use App\Models\RentType;
+use App\Models\FloorType;
+use App\Models\UnitStatus;
 use Illuminate\Http\Request;
+use App\Models\RentPaidStatus;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class RentController extends Controller
 {
-    public $building_id;
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware(function ($request, $next){
-            $this->building_id = Session::get('building_id');
-    
-            return $next($request);
-        });
-    }
-
+   
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $tenant_rent_details = Tenant::where('building_id', $this->building_id)->orderBy('floor_id','asc')->get();
-        // dd($units_rent_details->first()->tenant);
-        // dd($tenant_rent_details);
-        return view('admin.rents.index', compact('tenant_rent_details'));
+    public function index(Request $request)
+    {  
+        $units = Unit::orderBy('id','desc')->get();
+        $rent_paid_status = RentPaidStatus::all();
+        $rent_details = Rent::orderBy('id','desc')->get();
+    
+        return view('admin.rent.index', compact('rent_details','rent_paid_status'));
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -50,11 +46,17 @@ class RentController extends Controller
      */
     public function create()
     {
+       
         $rent_types = RentType::all();
-        $floors_list = Floor::where('building_id', $this->building_id)->get();
-        return view('admin.rents.create', compact('floors_list','rent_types'));
+        $units = Unit::orderBy('id','desc')->get();
+        $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
+        $unit_status = UnitStatus::all();
+        $rent_paid_status = RentPaidStatus::all();
+        $tenant_list = Tenant::where('is_passed', null)->get();
+        
+        return view('admin.rent.create', compact('rent_types','units','floor_types','unit_status','rent_paid_status','tenant_list'));
     }
-
+   
     /**
      * Store a newly created resource in storage.
      *
@@ -75,9 +77,7 @@ class RentController extends Controller
             'rent_month' => 'required|string',
             'payment_method' => 'required|string',
         ]);
-
         $rent = new Rent();
-        $rent->building_id = $this->building_id;
         $rent->floor_id = $request['floor_id'];
         $rent->unit_id = $request['unit_id'];
         $rent->renter_name = $request['renter_name'];
@@ -105,7 +105,6 @@ class RentController extends Controller
     {
         $tenant_rent_detail = Tenant::where('id', $id)->where('building_id', $this->building_id)->orderBy('floor_id','asc')->first();
         return view('admin.rents.view_invoice', compact('tenant_rent_detail'));
-
     }
 
     /**
@@ -115,11 +114,10 @@ class RentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        $rent = Rent::find($id);
+    {    
+        $rent=Rent::find($id);
         $rent_types = RentType::all();
         $floors_list = Floor::where('building_id', $this->building_id)->get();
-
         return view('admin.rents.edit', compact('rent','floors_list','rent_types'));
     }
 
@@ -173,10 +171,70 @@ class RentController extends Controller
     public function destroy($id)
     {
         $rent = Rent::find($id);
-
         $rent->delete();
-
         Toastr::success('This Rent details deleted successfully!');
         return back();
+    }
+   
+    public function search_filter(Request $request)
+    {
+        $rent_month = $request->input('rent_month',null);
+        $rent_year = $request->input('rent_year',null);
+        $query = Rent::query();
+
+        if($tenant_id)
+        {
+            $query->where('tenant_id', $tenant_id);
+        }
+
+        if($apartment_type){
+            
+            if($apartment_type != "all")
+            {
+                $query->where('apartment_type', $apartment_type);
+            }
+
+        }
+
+        if($unit_status_code){
+            
+            if($unit_status_code != "all")
+            {
+                $query->where('unit_status_code', $unit_status_code);
+            }
+
+        }
+        if($color_code)
+        {
+            if($color_code != "all")
+            {
+                $query->where('color_code', $color_code);
+            }
+            
+        }
+       
+        $units = $query->get();
+        
+        $floor_types = FloorType::where('floor_type_code', '!=', 1)->get();
+
+        $unit_status = UnitStatus::all();
+        $color_codes_list = Unit::pluck('color_code');
+        // dd($color_codes_list);
+        $instance = new ColorInterpreter();
+
+        $color_names_list = [];
+
+        if($color_codes_list->isNotEmpty())
+        {
+            foreach($color_codes_list as $color_code)
+            {
+
+                $result = $instance->name($color_code);
+                array_push($color_names_list,$result['name']);    
+            }
+
+            $color_codes_list = $color_codes_list->combine($color_names_list);
+        }
+        return view('admin.units.index',compact('units','floor_types','unit_status','color_codes_list'));
     }
 }

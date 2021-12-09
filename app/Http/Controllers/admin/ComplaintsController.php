@@ -23,9 +23,12 @@ class ComplaintsController extends Controller
      */
     public function index()
     {
-        $complaints =Complain::orderBy('id','desc')->get();
-        // dd($complaints);
-        return view('admin.complaints.index',compact('complaints'));
+        $complaints = Complain::orderBy('id','desc')->get();
+        $employee_list = User::where('userType', 'employee')->get();
+        $officer_list = User::where('userType', 'officer')->get();
+        $complaint_status_list = ComplainStatus::all();
+        
+        return view('admin.complaints.index',compact('complaints','employee_list','officer_list','complaint_status_list'));
     }
 
     /**
@@ -234,4 +237,66 @@ class ComplaintsController extends Controller
         Toastr::success('Complaint deleted successfully!');
         return back();
     }
+
+    public function assign_request(Request $request)
+    {
+        
+        $complain_id = $request->input("complain_id");
+        $employee_id = $request->input("employee_id");
+        $officer_id = $request->input("officer_id");
+
+        $complaint = Complain::find($complain_id);
+        
+        if($employee_id)
+        {
+            $complaint->assigneed_id = $employee_id;
+            $complaint->save();
+            Toastr::success('This request assigned to employee successfully!');
+            return back();
+        }
+        elseif($officer_id)
+        {
+            $complaint->assigneed_id = $officer_id;
+            $complaint->save();
+            Toastr::success('This request assigned to officer successfully!');
+            return back();
+        }
+        else
+        {
+            Toastr::error('Please select the employee or officer to assign request.');
+            return back();
+        }
+     }
+
+     public function add_solution(Request $request)
+     {
+        $request->validate([
+            'complain_status_code' => 'required',
+            'solution' => 'required',
+        ],
+        [
+            'complain_status_code.required' => 'Select the status',
+        ]);
+
+        $complain_id = $request->input("complain_id");
+        $complain_status_code = $request->input("complain_status_code");
+        $solution = $request->input("solution");
+       
+        $store = new ComplainSolution();
+
+        $store->solution = $solution;
+
+        if($store->save()){
+
+            Complain::where('id', $complain_id)->update(array('complain_status_code' => $complain_status_code, 'complain_solution_id' => $store->id));
+            Toastr::success('Complain solution added successfully.');
+            return back();
+        }
+        else
+        {
+            Toastr::error('Something went wrong.');
+            return back();
+        }
+
+     }
 }

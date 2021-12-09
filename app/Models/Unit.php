@@ -19,6 +19,7 @@ class Unit extends Model
     protected $fillable = [
         'unit_number',
         'unit_rent',
+        'apartment_type',
         'color_code',
         'no_of_bed_rooms',
         'unit_area',

@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Rent extends Model
 {
     use HasFactory;
-
+    protected $table = 'rents';
+    
     public function unit(){
         return $this->belongsTo(Unit::class, 'unit_id', 'id');
     }
@@ -19,12 +20,10 @@ class Rent extends Model
     public function floor(){
         return $this->belongsTo(Floor::class, 'floor_id', 'id');
     }
-
-    public function building(){
-        return $this->belongsTo(Building::class, 'building_id', 'id');
-    }
-
     public function rent_type(){
         return $this->belongsTo(RentType::class, 'rent_type_code', 'rent_type_code');
+    }
+    public function rent_paid_status(){
+        return $this->belongsTo(RentPaidStatus::class, 'rent_paid_status_code', 'rent_paid_status_code');
     }
 }
